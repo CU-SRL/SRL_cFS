@@ -141,7 +141,7 @@
 **  \par Limits
 **      Not Applicable
 */
-#define CFE_MISSION_TIME_CFG_FAKE_TONE  true
+#define CFE_MISSION_TIME_CFG_FAKE_TONE  false
 
 
 /**

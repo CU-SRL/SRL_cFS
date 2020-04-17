@@ -409,7 +409,7 @@
 **  \par Limits
 **       Only applies if #CFE_PLATFORM_TIME_CFG_SERVER is set to true.
 */
-#define CFE_PLATFORM_TIME_CFG_SOURCE  false
+#define CFE_PLATFORM_TIME_CFG_SOURCE  true
 
 
 /**
