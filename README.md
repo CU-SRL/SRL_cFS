@@ -14,7 +14,10 @@ This is the core Flight System repository for the Avionics team of the [Sounding
 * [Brendan Haines](https://github.com/brendanhaines "brendanhaines")
 
 ---
+
 ## Instructions
+These are instructions on how to build the core Flight System on the SRL Virtual Machine for development. Instructions on how to build for deployment on Microcontroller to come.
+
 	make BUILDTYPE=release OMIT_DEPRECATED=true CC=/opt/gcc-7.5.0/bin/gcc CXX=/opt/gcc-7.5.0/bin/g++ prep
 
 	make -j 4
