@@ -14,5 +14,16 @@ This is the core Flight System repository for the Avionics team of the [Sounding
 * [Brendan Haines](https://github.com/brendanhaines "brendanhaines")
 
 ---
+## Instructions
+	make BUILDTYPE=release OMIT_DEPRECATED=true CC=/opt/gcc-7.5.0/bin/gcc CXX=/opt/gcc-7.5.0/bin/g++ prep
 
+	make -j 4
+
+	sudo make install
+
+	cd build/exe/cpu1
+
+	sudo ./core-cpu1
+
+---
 ## Code Version Notes
