@@ -3,7 +3,7 @@
 # SRL_cFS
 
 This is the core Flight System repository for the Avionics team of the [Sounding Rocket Laboratory](https://www.colorado.edu/studentgroups/cobra/ "CU Sounding Rocket Laboratory Website") at the University of Colorado, Boulder. 
-
+The core Flight System is a Flight Software architecture framework that was designed to be used on amultitude of spacecraft. The CU Sounding Rocket Laboratory uses it as the basis for the Flight Software that is to be used on the Avionics suite. 
 
 ## Team Members
 * [Lyon Foster](https://github.com/LyonFoster "LyonFoster")
