@@ -1,0 +1,1 @@
+/opt/gcc-7.5.0/bin/gcc -O3 -DNDEBUG -Wl,--export-dynamic -rdynamic CMakeFiles/core-cpu1.dir/src/target_config.c.o -o core-cpu1  -Wl,--whole-archive ../cfe-core/libcfe-core.a ../osal/libosal.a ../psp/libpsp-pc-linux.a ../msg/libmsg.a ../sbr/libsbr.a -Wl,--no-whole-archive ../osal/libosal_bsp.a -lpthread -ldl -lrt 

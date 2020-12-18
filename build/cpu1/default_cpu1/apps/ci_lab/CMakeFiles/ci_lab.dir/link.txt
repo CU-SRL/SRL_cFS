@@ -1,0 +1,1 @@
+/opt/gcc-7.5.0/bin/gcc -fPIC -O3 -DNDEBUG -shared  -o ci_lab.so CMakeFiles/ci_lab.dir/fsw/src/ci_lab_app.c.o 

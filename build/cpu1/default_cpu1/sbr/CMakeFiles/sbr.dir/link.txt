@@ -1,0 +1,2 @@
+/usr/bin/ar qc libsbr.a CMakeFiles/sbr.dir/src/cfe_sbr_map_direct.c.o CMakeFiles/sbr.dir/src/cfe_sbr_route_unsorted.c.o
+/usr/bin/ranlib libsbr.a

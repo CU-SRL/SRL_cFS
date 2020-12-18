@@ -1,0 +1,3 @@
+/exe/host/cmdUtil
+/exe/host/elf2cfetbl
+/exe/host/cfe_ts_crc

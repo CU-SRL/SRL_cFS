@@ -1,0 +1,1 @@
+/opt/gcc-7.5.0/bin/gcc -fPIC -O3 -DNDEBUG -shared  -o sch_lab.so CMakeFiles/sch_lab.dir/fsw/src/sch_lab_app.c.o 

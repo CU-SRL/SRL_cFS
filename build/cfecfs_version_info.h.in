@@ -1,0 +1,18 @@
+/* Auto-generated version information file */
+#define MISSION_CONFIG      "@MISSIONCONFIG@"
+#define MISSION_NAME        "@MISSION_NAME@"
+#define SAMPLEMISSION_VERSION "@MISSION_VERSION@"
+#define CI_LAB_VERSION "@ci_lab_VERSION@"
+#define TO_LAB_VERSION "@to_lab_VERSION@"
+#define SCH_LAB_VERSION "@sch_lab_VERSION@"
+#define SAMPLE_APP_VERSION "@sample_app_VERSION@"
+#define SAMPLE_LIB_VERSION "@sample_lib_VERSION@"
+#define CFE_VERSION "@cfe-core_VERSION@"
+#define OSAL_VERSION "@osal_VERSION@"
+#define PSP_VERSION "@psp_VERSION@"
+#define MSG_VERSION "@msg_VERSION@"
+#define SBR_VERSION "@sbr_VERSION@"
+
+#define MISSION_VERSION SAMPLEMISSION_VERSION
+
+ /* end */
