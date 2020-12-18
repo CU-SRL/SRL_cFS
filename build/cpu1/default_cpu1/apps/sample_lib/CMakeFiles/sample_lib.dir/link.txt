@@ -1,1 +1,0 @@
-/opt/gcc-7.5.0/bin/gcc -fPIC -O3 -DNDEBUG -shared  -o sample_lib.so CMakeFiles/sample_lib.dir/fsw/src/sample_lib.c.o 

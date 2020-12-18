@@ -1,1 +1,0 @@
-/opt/gcc-7.5.0/bin/gcc -fPIC -O3 -DNDEBUG -shared  -o to_lab.so CMakeFiles/to_lab.dir/fsw/src/to_lab_app.c.o 

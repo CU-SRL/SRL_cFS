@@ -1,1 +1,0 @@
-/opt/gcc-7.5.0/bin/gcc -fPIC -O3 -DNDEBUG -shared  -o sample_app.so CMakeFiles/sample_app.dir/fsw/src/sample_app.c.o 

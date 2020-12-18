@@ -1,1 +1,0 @@
-/opt/gcc-7.5.0/bin/gcc -O3 -DNDEBUG -rdynamic CMakeFiles/elf2cfetbl.dir/elf2cfetbl.c.o -o elf2cfetbl 

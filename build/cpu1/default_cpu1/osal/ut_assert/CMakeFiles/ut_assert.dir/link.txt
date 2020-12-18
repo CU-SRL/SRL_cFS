@@ -1,2 +1,0 @@
-/usr/bin/ar qc libut_assert.a CMakeFiles/ut_assert.dir/src/utassert.c.o CMakeFiles/ut_assert.dir/src/utbsp.c.o CMakeFiles/ut_assert.dir/src/utlist.c.o CMakeFiles/ut_assert.dir/src/utstubs.c.o CMakeFiles/ut_assert.dir/src/uttest.c.o CMakeFiles/ut_assert.dir/src/uttools.c.o
-/usr/bin/ranlib libut_assert.a

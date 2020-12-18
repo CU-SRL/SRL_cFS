@@ -1,2 +1,0 @@
-/usr/bin/ar qc libosal_bsp.a CMakeFiles/osal_bsp.dir/src/bsp/shared/src/osapi-bsp.c.o CMakeFiles/osal_bsp.dir/src/bsp/shared/src/bsp_default_app_run.c.o CMakeFiles/osal_bsp.dir/src/bsp/shared/src/bsp_default_app_startup.c.o CMakeFiles/osal_bsp.dir/src/bsp/shared/src/bsp_default_symtab.c.o generic-linux_impl/CMakeFiles/osal_generic-linux_impl.dir/src/bsp_start.c.o generic-linux_impl/CMakeFiles/osal_generic-linux_impl.dir/src/bsp_console.c.o
-/usr/bin/ranlib libosal_bsp.a

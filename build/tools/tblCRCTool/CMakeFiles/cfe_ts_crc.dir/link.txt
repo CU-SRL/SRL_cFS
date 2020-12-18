@@ -1,1 +1,0 @@
-/opt/gcc-7.5.0/bin/gcc -O3 -DNDEBUG -rdynamic CMakeFiles/cfe_ts_crc.dir/cfe_ts_crc.c.o -o cfe_ts_crc 

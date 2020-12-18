@@ -1,5 +1,0 @@
-/* Auto-generated build information file */
-#define MISSION_BUILDDATE   "@BUILDDATE@"
-#define MISSION_BUILDUSER   "@USERNAME@"
-#define MISSION_BUILDHOST   "@HOSTNAME@"
-
