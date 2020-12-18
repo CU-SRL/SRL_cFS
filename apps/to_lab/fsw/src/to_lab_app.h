@@ -60,7 +60,7 @@
  */
 #define TO_LAB_TLM_PIPE_DEPTH OS_QUEUE_MAX_DEPTH
 
-#define cfgTLM_ADDR        "192.168.1.81"
+#define cfgTLM_ADDR        "192.168.42.58"
 #define cfgTLM_PORT        1235
 #define TO_LAB_VERSION_NUM "5.1.0"
 
