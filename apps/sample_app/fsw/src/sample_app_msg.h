@@ -33,9 +33,9 @@
 /*
 ** SAMPLE App command codes
 */
-#define SAMPLE_APP_NOOP_CC           36
-#define SAMPLE_APP_RESET_COUNTERS_CC 37
-#define SAMPLE_APP_PROCESS_CC        38
+#define SAMPLE_APP_NOOP_CC           0
+#define SAMPLE_APP_RESET_COUNTERS_CC 1
+#define SAMPLE_APP_PROCESS_CC        2
 
 /*************************************************************************/
 
