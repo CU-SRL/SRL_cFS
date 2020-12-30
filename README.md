@@ -24,9 +24,9 @@ These instructions were pulled from the [Alan's Tech Notes](http://alanstechnote
 
 First, you need to edit sample_defs/toolchain-cpu1.cmake
 
-In the file below, change the CMAKE_SYSTEM_PROCESSOR to arm
+**In the file below, change the CMAKE_SYSTEM_PROCESSOR to arm**
 
-Also comment out the last line that has the “-m32” switch
+**Also comment out the last line that has the “-m32” switch**
 
 	--------------------------------------------------------------------------------------------------
 	# This example toolchain file describes the cross compiler to use for
@@ -64,7 +64,7 @@ Also comment out the last line that has the “-m32” switch
 
 Next, edit the tools/elf2cfetbl/CMakelists.txt file
 
-You need to comment out the “-m32” switch as below:
+**You need to comment out the “-m32” switch as below:**
 
 	------------------------------------------------------------------------------------
 	# force build as 32-bit
@@ -82,7 +82,7 @@ If everything built OK, then you can run the cFS:
 	$ sudo ./core-cpu1.bin
 
 ## Instructions for cFS compiliation on OpenSUSE LEAP 15.2 (SRL VM)
-These are instructions on how to build the core Flight System on the SRL Virtual Machine for development running OpenSUSE LEAP 15.2 . These steps must be taken everytime a change has been made and the repository must be rebuilt. **Furthermore flight ready code must be compiled on this machine with the BUILDTYPE=release and OMIT-DEPRECATED set in order to avoid any issues during flight.
+These are instructions on how to build the core Flight System on the SRL Virtual Machine for development running OpenSUSE LEAP 15.2 . These steps must be taken everytime a change has been made and the repository must be rebuilt. **Furthermore flight ready code must be compiled on this machine with the BUILDTYPE=release and OMIT-DEPRECATED set in order to avoid any issues during flight.**
 
 	# Change directory to SRL_CFS after you have cloned it from this repo
 	cd SRL_CFS
