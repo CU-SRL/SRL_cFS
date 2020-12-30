@@ -7,7 +7,7 @@
 2. [Compilation Instructions](#Compilation-Instructions)
     - [Instructions for cFS compilation on Raspberry PI - Development ONLY](#Instructions-for-cFS-compilation-on-Raspberry-PI---Development-ONLY)
     - [Instructions for Development Machine Setup](#Instructions-for-Development-Machine-Setup)
-    - [Instructions for cFS compiliation on OpenSUSE LEAP 15.2 - SRL VM](#Instructions-for-cFS-compiliation-on-OpenSUSE-LEAP-15.2---SRL-VM)
+    - [Instructions for cFS compiliation](#Instructions-for-cFS-compiliation)
     - [Instructions for flashing cFS unto the BeagleBone Black](#Instructions-for-flashing-cFS-unto-the-BeagleBone-Black)
     - [Instructions for COSMOS compilation and installation](#Instructions-for-COSMOS-compilation-and-installation)
 3. [Code Version Notes](#Code-Version-Notes)
@@ -99,8 +99,8 @@ If everything built OK, then you can run the cFS:
 
 ** TO DO **
 
-### Instructions for cFS compiliation on OpenSUSE LEAP 15.2 - SRL VM
-These are instructions on how to build the core Flight System on the SRL Virtual Machine for development running OpenSUSE LEAP 15.2 . These steps must be taken everytime a change has been made and the repository must be rebuilt. **Furthermore flight ready code must be compiled on this machine with the BUILDTYPE=release and OMIT-DEPRECATED set in order to avoid any issues during flight.**
+### Instructions for cFS compiliation
+These are instructions on how to build the core Flight System on a machine running OpenSUSE LEAP 15.2 . Similiar steps are taken for other operating systems but it is up to the user to modify as needed. These steps must be taken everytime a change has been made and the repository must be rebuilt. **Furthermore flight ready code must be compiled on this machine with the BUILDTYPE=release and OMIT-DEPRECATED set in order to avoid any issues during flight.**
 
 	# Change directory to SRL_CFS after you have cloned it from this repo
 	$ cd SRL_CFS
