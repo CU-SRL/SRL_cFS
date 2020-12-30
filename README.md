@@ -4,7 +4,11 @@
 
 This is the core Flight System repository for the Avionics team of the [Sounding Rocket Laboratory](https://www.colorado.edu/studentgroups/cobra/ "CU Sounding Rocket Laboratory Website") at the University of Colorado, Boulder.
 
-The core Flight System is a Flight Software architecture framework that was designed to be used on a multitude of spacecraft. The CU Sounding Rocket Laboratory uses it as the basis for the Flight Software that is to be used on the Avionics suite. 
+The core Flight System is a Flight Software architecture framework that was designed to be used on a multitude of spacecraft. The CU Sounding Rocket Laboratory uses it as the basis for the Flight Software that is to be used on the Avionics suite.
+
+**NOTE: Development and Compilation of cFS MUST happen on a linux system, however files can be edited and viewed on a seperate system whether that be Windows, Mac OS, or Linux**
+
+**NOTE: Development and Compilation of COSMOS can happen on any of the supported systems outlined by the [Ball Aerospace COSMOS documentation](https://cosmosrb.com "COSMOS")**
 
 ## Team Members
 * [Lyon Foster](https://github.com/LyonFoster "LyonFoster")
@@ -15,9 +19,9 @@ The core Flight System is a Flight Software architecture framework that was desi
 
 ---
 
-## Instructions for development machine setup
+## Compilation Instructions
 
-## Instructions for cFS compilation on Raspberry PI (Development ONLY)
+### Instructions for cFS compilation on Raspberry PI (Development ONLY)
 These are the instructions to compile cFS on a Raspberry Pi for development and to be able to push changes to the repo for compilation on the SRL VM.
 
 These instructions were pulled from the [Alan's Tech Notes](http://alanstechnotes.blogspot.com/2018/11/how-to-compile-core-flight-system-on.html "Alan's Tech Notes")
@@ -80,31 +84,39 @@ If everything built OK, then you can run the cFS:
 
 	$ cd build/exe/cpu1
 	$ sudo ./core-cpu1.bin
+	
+### Instructions for Development Machine Setup
 
-## Instructions for cFS compiliation on OpenSUSE LEAP 15.2 (SRL VM)
+** TO DO **
+
+### Instructions for cFS compiliation on OpenSUSE LEAP 15.2 (SRL VM)
 These are instructions on how to build the core Flight System on the SRL Virtual Machine for development running OpenSUSE LEAP 15.2 . These steps must be taken everytime a change has been made and the repository must be rebuilt. **Furthermore flight ready code must be compiled on this machine with the BUILDTYPE=release and OMIT-DEPRECATED set in order to avoid any issues during flight.**
 
 	# Change directory to SRL_CFS after you have cloned it from this repo
-	cd SRL_CFS
+	$ cd SRL_CFS
 
 	# Prep the repository for build
-	make BUILDTYPE=release OMIT_DEPRECATED=true CC=/opt/gcc-7.5.0/bin/gcc CXX=/opt/gcc-7.5.0/bin/g++ prep
+	$ make BUILDTYPE=release OMIT_DEPRECATED=true CC=/opt/gcc-7.5.0/bin/gcc CXX=/opt/gcc-7.5.0/bin/g++ prep
 	
 	# Make the repository with 4 processes
-	make -j 4
+	$ make -j 4
 
 	# Install the exectuable
-	sudo make install
+	$ sudo make install
 	
 	# Go to the executable
-	cd build/exe/cpu1
+	$ cd build/exe/cpu1
 	
 	# Run the executable with executive permissions because needs special access
-	sudo ./core-cpu1
+	$ sudo ./core-cpu1
 
-## Instructions for flashing cFS unto the BeagleBone Black
+### Instructions for flashing cFS unto the BeagleBone Black
 
  ** TO DO **
+ 
+### Instructions for COSMOS compilation and installation
+
+** TO DO **
 
 ---
 ## Code Version Notes
