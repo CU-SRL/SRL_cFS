@@ -18,6 +18,11 @@ The core Flight System is a Flight Software architecture framework that was desi
 * [Brendan Haines](https://github.com/brendanhaines "brendanhaines")
 
 ---
+#### Table of contents
+
+1. [Compilation Instructions](#Compilation-Instructions)
+    - [Subsection a](#subsection-a)
+    - [Subsection b](#subsection-b)
 
 ## Compilation Instructions
 
