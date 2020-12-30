@@ -1,7 +1,18 @@
 ![SRL Logo](https://www.colorado.edu/studentgroups/cobra/sites/default/files/styles/slider/public/slider/logo_crop.png?itok=jh4F9ZcZ)
 
 # SRL_cFS
+#### Table of contents
+1. [Introduction](#Introduction)
+    - [Team Members](#Team-Members)
+2. [Compilation Instructions](#Compilation-Instructions)
+    - [Instructions for cFS compilation on Raspberry PI (Development ONLY)](#Instructions-for-cFS-compilation-on-Raspberry-PI-(Development-ONLY))
+    - [Instructions for Development Machine Setup](#Instructions-for-Development-Machine-Setup)
+    - [Instructions for cFS compiliation on OpenSUSE LEAP 15.2 (SRL VM)](#Instructions-for-cFS-compiliation-on-OpenSUSE-LEAP-15.2-(SRL-VM))
+    - [Instructions for flashing cFS unto the BeagleBone Black](#Instructions-for-flashing-cFS-unto-the-BeagleBone-Black)
+    - [Instructions for COSMOS compilation and installation](#Instructions-for-COSMOS-compilation-and-installation)
+3. [Code Version Notes](#Code-Version-Notes)
 
+## Introduction
 This is the core Flight System repository for the Avionics team of the [Sounding Rocket Laboratory](https://www.colorado.edu/studentgroups/cobra/ "CU Sounding Rocket Laboratory Website") at the University of Colorado, Boulder.
 
 The core Flight System is a Flight Software architecture framework that was designed to be used on a multitude of spacecraft. The CU Sounding Rocket Laboratory uses it as the basis for the Flight Software that is to be used on the Avionics suite.
@@ -10,7 +21,7 @@ The core Flight System is a Flight Software architecture framework that was desi
 
 **NOTE: Development and Compilation of COSMOS can happen on any of the supported systems outlined by the [Ball Aerospace COSMOS documentation](https://cosmosrb.com "COSMOS")**
 
-## Team Members
+### Team Members
 * [Lyon Foster](https://github.com/LyonFoster "LyonFoster")
 * [Jason Popich](https://github.com/japopich "japopich")
 * [Zoe Roy](https://github.com/zroy33 "zroy33")
@@ -18,12 +29,6 @@ The core Flight System is a Flight Software architecture framework that was desi
 * [Brendan Haines](https://github.com/brendanhaines "brendanhaines")
 
 ---
-#### Table of contents
-
-1. [Compilation Instructions](#Compilation-Instructions)
-    - [Subsection a](#subsection-a)
-    - [Subsection b](#subsection-b)
-
 ## Compilation Instructions
 
 ### Instructions for cFS compilation on Raspberry PI (Development ONLY)
@@ -125,3 +130,5 @@ These are instructions on how to build the core Flight System on the SRL Virtual
 
 ---
 ## Code Version Notes
+
+** TO DO **
