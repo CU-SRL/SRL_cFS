@@ -5,9 +5,9 @@
 1. [Introduction](#Introduction)
     - [Team Members](#Team-Members)
 2. [Compilation Instructions](#Compilation-Instructions)
-    - [Instructions for cFS compilation on Raspberry PI (Development ONLY)](#Instructions-for-cFS-compilation-on-Raspberry-PI-(Development-ONLY))
+    - [Instructions for cFS compilation on Raspberry PI (Development ONLY)](#Instructions-for-cFS-compilation-on-Raspberry-PI-Development-ONLY)
     - [Instructions for Development Machine Setup](#Instructions-for-Development-Machine-Setup)
-    - [Instructions for cFS compiliation on OpenSUSE LEAP 15.2 (SRL VM)](#Instructions-for-cFS-compiliation-on-OpenSUSE-LEAP-15.2-(SRL-VM))
+    - [Instructions for cFS compiliation on OpenSUSE LEAP 15.2 (SRL VM)](#Instructions-for-cFS-compiliation-on-OpenSUSE-LEAP-15.2-SRL-VM)
     - [Instructions for flashing cFS unto the BeagleBone Black](#Instructions-for-flashing-cFS-unto-the-BeagleBone-Black)
     - [Instructions for COSMOS compilation and installation](#Instructions-for-COSMOS-compilation-and-installation)
 3. [Code Version Notes](#Code-Version-Notes)
@@ -31,7 +31,7 @@ The core Flight System is a Flight Software architecture framework that was desi
 ---
 ## Compilation Instructions
 
-### Instructions for cFS compilation on Raspberry PI (Development ONLY)
+### Instructions for cFS compilation on Raspberry PI - Development ONLY
 These are the instructions to compile cFS on a Raspberry Pi for development and to be able to push changes to the repo for compilation on the SRL VM.
 
 These instructions were pulled from the [Alan's Tech Notes](http://alanstechnotes.blogspot.com/2018/11/how-to-compile-core-flight-system-on.html "Alan's Tech Notes")
@@ -99,7 +99,7 @@ If everything built OK, then you can run the cFS:
 
 ** TO DO **
 
-### Instructions for cFS compiliation on OpenSUSE LEAP 15.2 (SRL VM)
+### Instructions for cFS compiliation on OpenSUSE LEAP 15.2 - SRL VM
 These are instructions on how to build the core Flight System on the SRL Virtual Machine for development running OpenSUSE LEAP 15.2 . These steps must be taken everytime a change has been made and the repository must be rebuilt. **Furthermore flight ready code must be compiled on this machine with the BUILDTYPE=release and OMIT-DEPRECATED set in order to avoid any issues during flight.**
 
 	# Change directory to SRL_CFS after you have cloned it from this repo
