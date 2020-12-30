@@ -22,11 +22,11 @@ These are the instructions to compile cFS on a Raspberry Pi for development and 
 
 These instructions were pulled from the [Alan's Tech Notes](http://alanstechnotes.blogspot.com/2018/11/how-to-compile-core-flight-system-on.html "Alan's Tech Notes")
 
-First, you need to edit sample_defs/toolchain-cpu1.cmake
+First, you need to edit **sample_defs/toolchain-cpu1.cmake**
 
-**In the file below, change the CMAKE_SYSTEM_PROCESSOR to arm**
+In the file below, change the **CMAKE_SYSTEM_PROCESSOR** to **arm**
 
-**Also comment out the last line that has the “-m32” switch**
+Also comment out the last line that has the **“-m32”** switch
 
 	--------------------------------------------------------------------------------------------------
 	# This example toolchain file describes the cross compiler to use for
@@ -64,7 +64,7 @@ First, you need to edit sample_defs/toolchain-cpu1.cmake
 
 Next, edit the tools/elf2cfetbl/CMakelists.txt file
 
-**You need to comment out the “-m32” switch as below:**
+You need to comment out the **“-m32”** switch as below:
 
 	------------------------------------------------------------------------------------
 	# force build as 32-bit
