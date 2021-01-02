@@ -9,7 +9,6 @@
     - [Instructions for Development Machine Setup](#Instructions-for-Development-Machine-Setup)
     - [Instructions for cFS compiliation](#Instructions-for-cFS-compiliation)
     - [Instructions for flashing cFS unto the BeagleBone Black](#Instructions-for-flashing-cFS-unto-the-BeagleBone-Black)
-    - [Instructions for COSMOS compilation and installation](#Instructions-for-COSMOS-compilation-and-installation)
 3. [Code Version Notes](#Code-Version-Notes)
 
 ## Introduction
@@ -96,16 +95,100 @@ If everything built OK, then you can run the cFS:
 	$ sudo ./core-cpu1.bin
 	
 ### Instructions for Development Machine Setup
+There are several things that must be installed on a development machine for cFS. First and foremost your development machine must be running some sort of Linux distribution with OpenSUSE LEAP 15.2, CentOS 8, Ubuntu, RaspbianOS, and Arch Linux having been tested and confirmed working with cFS. 
 
-** TO DO **
+#### GCC
+Second off, gcc-7.5.0 must be installed on said development machine with the sole exception of OpenSUSE LEAP 15.2 as gcc-7.5.0 already comes with the OS. You can check what version your OS is running if you execute the following command:
+
+	# Check gcc version
+	$ gcc --version
+
+If not running gcc-7.5.0, you can acquire gcc-7.5.0 from the [gcc mirrors](https://gcc.gnu.org/mirrors.html "gcc") while also following the following instructions with the version number in the ${GCC_VERSION} location:
+
+	# Unpack gcc directory that was acquired
+	tar -xf gcc-${GCC_VERSION}.tar.bz2
+
+	# download the prerequisites
+	cd gcc-${GCC_VERSION}
+	./contrib/download_prerequisites
+
+	# create the build directory
+	cd ..
+	mkdir gcc-build
+	cd gcc-build
+
+	# build
+	../gcc-${GCC_VERSION}/configure                      \
+    		--prefix=/usr/bin                           	 \
+    		--enable-shared                                  \
+    		--enable-threads=posix                           \
+    		--enable-__cxa_atexit                            \
+    		--enable-clocale=gnu                             \
+    		--enable-languages=all                           \
+	&& make \
+	&& make install
+	
+	# 
+
+	# Notes
+	#
+	#   --enable-shared --enable-threads=posix --enable-__cxa_atexit: 
+	#       These parameters are required to build the C++ libraries to published standards.
+	#   
+	#   --enable-clocale=gnu: 
+	#       This parameter is a failsafe for incomplete locale data.
+	#   
+	#   --disable-multilib: 
+	#       This parameter ensures that files are created for the specific
+	#       architecture of your computer.
+	#        This will disable building 32-bit support on 64-bit systems where the
+	#        32 bit version of libc is not installed and you do not want to go
+	#        through the trouble of building it. Diagnosis: "Compiler build fails
+	#        with fatal error: gnu/stubs-32.h: No such file or directory"
+	#   
+	#   --with-system-zlib: 
+	#       Uses the system zlib instead of the bundled one. zlib is used for
+	#       compressing and uncompressing GCC's intermediate language in LTO (Link
+	#       Time Optimization) object files.
+	#   
+	#   --enable-languages=all
+	#   --enable-languages=c,c++,fortran,go,objc,obj-c++: 
+	#       This command identifies which languages to build. You may modify this
+	#       command to remove undesired language
+	
+#### RTEMS Compiler and BeagleBone Black Flasher
+Finally the last thing that must be installed is RTEMS compiler and the BeagleBone Black (BBB) flasher. This can thankfully be accomplished using a repository that was created by another guy. **If you so choose to do this by yourself you must install the RTEMS compiler and the BeagleBone Black Flasher seperately using their provided instructions.** Finally some of the most common errors are packages that are missing simple google searches should fix them. The instructions are as follow:
+
+	# Clone the repository
+	$ git clone https://gitlab.com/c-mauderer/rtems-bbb.git
+	
+	# Move into directory
+	$ cd rtems-bbb
+	
+	# Build the RTEMS compiler and BBB Flasher
+	$ make setup
+	
+	# Add to the path by first creating a(n) env file
+	$ sudo touch /etc/profile.d/env.sh
+	
+	# Add it to the file and source it to use
+	$ su
+	$ echo "export PATH=$PATH:${PWD}/rtems-bbb/install/rtems/6/bin" >> /etc/profile.d/env.sh
+	$ exit
+	$ source /etc/profile.d/env.sh
+
 
 ### Instructions for cFS compiliation
-These are instructions on how to build the core Flight System on a machine running OpenSUSE LEAP 15.2 . Similiar steps are taken for other operating systems but it is up to the user to modify as needed. These steps must be taken everytime a change has been made and the repository must be rebuilt. **Furthermore flight ready code must be compiled on this machine with the BUILDTYPE=release and OMIT-DEPRECATED set in order to avoid any issues during flight.**
+These are instructions on how to build the core Flight System. Similiar steps are taken for different operating systems but it is up to the user to modify as needed. These steps must be taken everytime a change has been made and the repository must be rebuilt. **Furthermore flight ready code must be compiled on this machine with the BUILDTYPE=release and OMIT-DEPRECATED set in order to avoid any issues during flight.**
 
 	# Change directory to SRL_CFS after you have cloned it from this repo
 	$ cd SRL_CFS
 
-	# Prep the repository for build
+	# Prep the repository for build (If on a system WITH gcc-7.5.0)
+	$ make BUILDTYPE=release OMIT_DEPRECATED=true prep
+
+	# Prep the repository for build (If on a system that does NOT have gcc-7.5.0)
+	# The respective toolchain-cpu*.cmake files must have /opt/gcc-7.5.0/bin/gcc and /opt/gcc-7.5.0/bin/g++ in the CMAKE_C_COMPILER and CMAKE_CXX_COMPILER lines
 	$ make BUILDTYPE=release OMIT_DEPRECATED=true CC=/opt/gcc-7.5.0/bin/gcc CXX=/opt/gcc-7.5.0/bin/g++ prep
 	
 	# Make the repository with 4 processes
@@ -123,10 +206,6 @@ These are instructions on how to build the core Flight System on a machine runni
 ### Instructions for flashing cFS unto the BeagleBone Black
 
  ** TO DO **
- 
-### Instructions for COSMOS compilation and installation
-
-** TO DO **
 
 ---
 ## Code Version Notes
