@@ -188,6 +188,7 @@ These are instructions on how to build the core Flight System. Similiar steps ar
 	$ make BUILDTYPE=release OMIT_DEPRECATED=true prep
 
 	# Prep the repository for build (If on a system that does NOT have gcc-7.5.0)
+	# The respective toolchain-cpu*.cmake files must have /opt/gcc-7.5.0/bin/gcc and /opt/gcc-7.5.0/bin/g++ in the CMAKE_C_COMPILER and CMAKE_CXX_COMPILER lines
 	$ make BUILDTYPE=release OMIT_DEPRECATED=true CC=/opt/gcc-7.5.0/bin/gcc CXX=/opt/gcc-7.5.0/bin/g++ prep
 	
 	# Make the repository with 4 processes
