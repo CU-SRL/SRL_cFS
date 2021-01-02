@@ -69,11 +69,11 @@
 # The MISSION_NAME will be compiled into the target build data structure
 # as well as being passed to "git describe" to filter the tags when building
 # the version string.
-SET(MISSION_NAME "SampleMission")
+SET(MISSION_NAME "YONIX")
 
 # SPACECRAFT_ID gets compiled into the build data structure and the PSP may use it.
 # should be an integer.
-SET(SPACECRAFT_ID 0x42)
+SET(SPACECRAFT_ID 0x69)
 
 # The "MISSION_CORE_MODULES" will be built and statically linked as part
 # of the CFE core executable on every target.  These can be used to amend
