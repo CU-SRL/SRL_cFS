@@ -18,6 +18,8 @@ The core Flight System is a Flight Software architecture framework that was desi
 
 **NOTE: Development and Compilation of cFS MUST happen on a linux system, however files can be edited and viewed on a seperate system whether that be Windows, Mac OS, or Linux**
 
+**NOTE: Firewall on the development system must be disabled to allow comms from the ground station in / comms out.**
+
 ### Team Members
 * [Lyon Foster](https://github.com/LyonFoster "LyonFoster")
 * [Jason Popich](https://github.com/japopich "japopich")
