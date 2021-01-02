@@ -18,8 +18,6 @@ The core Flight System is a Flight Software architecture framework that was desi
 
 **NOTE: Development and Compilation of cFS MUST happen on a linux system, however files can be edited and viewed on a seperate system whether that be Windows, Mac OS, or Linux**
 
-**NOTE: Development and Compilation of COSMOS can happen on any of the supported systems outlined by the [Ball Aerospace COSMOS documentation](https://cosmosrb.com "COSMOS")**
-
 ### Team Members
 * [Lyon Foster](https://github.com/LyonFoster "LyonFoster")
 * [Jason Popich](https://github.com/japopich "japopich")
