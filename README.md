@@ -105,7 +105,10 @@ These are instructions on how to build the core Flight System on a machine runni
 	# Change directory to SRL_CFS after you have cloned it from this repo
 	$ cd SRL_CFS
 
-	# Prep the repository for build
+	# Prep the repository for build (If on a system WITH GCC-7.5.0)
+	$ make BUILDTYPE=release OMIT_DEPRECATED=true prep
+
+	# Prep the repository for build (If on a system that does not have GCC-7.5.0)
 	$ make BUILDTYPE=release OMIT_DEPRECATED=true CC=/opt/gcc-7.5.0/bin/gcc CXX=/opt/gcc-7.5.0/bin/g++ prep
 	
 	# Make the repository with 4 processes
@@ -123,10 +126,6 @@ These are instructions on how to build the core Flight System on a machine runni
 ### Instructions for flashing cFS unto the BeagleBone Black
 
  ** TO DO **
- 
-### Instructions for COSMOS compilation and installation
-
-** TO DO **
 
 ---
 ## Code Version Notes
