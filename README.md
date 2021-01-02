@@ -7,8 +7,6 @@
 2. [Compilation Instructions](#Compilation-Instructions)
     - [Instructions for cFS compilation on Raspberry PI - Development ONLY](#Instructions-for-cFS-compilation-on-Raspberry-PI---Development-ONLY)
     - [Instructions for Development Machine Setup](#Instructions-for-Development-Machine-Setup)
-    	- [GCC](#GCC)
-	- [RTEMS Compiler and BeagleBone Black Flasher](#RTEMS-Compiler-and-BeagleBone-Black-Flasher)
     - [Instructions for cFS compiliation](#Instructions-for-cFS-compiliation)
     - [Instructions for flashing cFS unto the BeagleBone Black](#Instructions-for-flashing-cFS-unto-the-BeagleBone-Black)
 3. [Code Version Notes](#Code-Version-Notes)
