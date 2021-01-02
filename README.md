@@ -179,7 +179,7 @@ Finally the last thing that must be installed is RTEMS compiler and the BeagleBo
 
 
 ### Instructions for cFS compiliation
-These are instructions on how to build the core Flight System on a machine running OpenSUSE LEAP 15.2 . Similiar steps are taken for other operating systems but it is up to the user to modify as needed. These steps must be taken everytime a change has been made and the repository must be rebuilt. **Furthermore flight ready code must be compiled on this machine with the BUILDTYPE=release and OMIT-DEPRECATED set in order to avoid any issues during flight.**
+These are instructions on how to build the core Flight System. Similiar steps are taken for different operating systems but it is up to the user to modify as needed. These steps must be taken everytime a change has been made and the repository must be rebuilt. **Furthermore flight ready code must be compiled on this machine with the BUILDTYPE=release and OMIT-DEPRECATED set in order to avoid any issues during flight.**
 
 	# Change directory to SRL_CFS after you have cloned it from this repo
 	$ cd SRL_CFS
