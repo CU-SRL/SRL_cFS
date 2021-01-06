@@ -11,25 +11,25 @@
 
 # Basic cross system configuration
 set(CMAKE_SYSTEM_NAME       RTEMS)
-set(CMAKE_SYSTEM_PROCESSOR  i386)
+set(CMAKE_SYSTEM_PROCESSOR  arm)
 set(CMAKE_SYSTEM_VERSION    5)
 
 # The TOOLS and BSP are allowed to be installed in different locations.
 # If the README was followed they will both be installed under $HOME
 # By default it is assumed the BSP is installed to the same directory as the tools
-SET(RTEMS_TOOLS_PREFIX "$ENV{HOME}/rtems-${CMAKE_SYSTEM_VERSION}" CACHE PATH 
+SET(RTEMS_TOOLS_PREFIX "/home/SRL/rtems5/${CMAKE_SYSTEM_VERSION}" CACHE PATH 
     "RTEMS tools install directory")
-SET(RTEMS_BSP_PREFIX "${RTEMS_TOOLS_PREFIX}" CACHE PATH 
+SET(RTEMS_BSP_PREFIX "${RTEMS_TOOLS_PREFIX}/../kernel" CACHE PATH 
     "RTEMS BSP install directory")
 
 # The BSP that will be used for this build
-set(RTEMS_BSP "pc686")
+set(RTEMS_BSP "beagleboneblack")
 
 # specify the cross compiler - adjust accord to compiler installation
 # This uses the compiler-wrapper toolchain that buildroot produces
 SET(SDKHOSTBINDIR               "${RTEMS_TOOLS_PREFIX}/bin")
 set(TARGETPREFIX                "${CMAKE_SYSTEM_PROCESSOR}-rtems${CMAKE_SYSTEM_VERSION}-")
-set(RTEMS_BSP_C_FLAGS           "-march=i686 -mtune=i686 -fno-common")
+set(RTEMS_BSP_C_FLAGS           "-mthumb -march=armv7-a -mfpu=neon -mfloat-abi=hard -mtune=cortex-a8 -fno-common")
 set(RTEMS_BSP_CXX_FLAGS         ${RTEMS_BSP_C_FLAGS})
 
 
