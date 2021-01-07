@@ -17,9 +17,9 @@ set(CMAKE_SYSTEM_VERSION    5)
 # The TOOLS and BSP are allowed to be installed in different locations.
 # If the README was followed they will both be installed under $HOME
 # By default it is assumed the BSP is installed to the same directory as the tools
-SET(RTEMS_TOOLS_PREFIX "/home/SRL/rtems5/${CMAKE_SYSTEM_VERSION}" CACHE PATH 
+SET(RTEMS_TOOLS_PREFIX "/home/SRL/rtems-${CMAKE_SYSTEM_VERSION}" CACHE PATH 
     "RTEMS tools install directory")
-SET(RTEMS_BSP_PREFIX "${RTEMS_TOOLS_PREFIX}/../kernel" CACHE PATH 
+SET(RTEMS_BSP_PREFIX "${RTEMS_TOOLS_PREFIX}" CACHE PATH 
     "RTEMS BSP install directory")
 
 # The BSP that will be used for this build
