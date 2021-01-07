@@ -29,7 +29,7 @@ set(RTEMS_BSP "beagleboneblack")
 # This uses the compiler-wrapper toolchain that buildroot produces
 SET(SDKHOSTBINDIR               "${RTEMS_TOOLS_PREFIX}/bin")
 set(TARGETPREFIX                "${CMAKE_SYSTEM_PROCESSOR}-rtems${CMAKE_SYSTEM_VERSION}-")
-set(RTEMS_BSP_C_FLAGS           "-mthumb -march=armv7-a -mfpu=neon -mfloat-abi=hard -mtune=cortex-a8 -fno-common")
+set(RTEMS_BSP_C_FLAGS           "-mthumb -march=armv7-a -mtune=cortex-a8 -fno-common")
 set(RTEMS_BSP_CXX_FLAGS         ${RTEMS_BSP_C_FLAGS})
 
 
@@ -78,6 +78,6 @@ ADD_DEFINITIONS(-D_RTEMS_5_)
 #| upper memory limits for the image and the memory allocated by it to fit.
 #| Make sure the value you choose is aligned to 4 bytes.
 #+--------------------------------------------------------------------------+
-set(RTEMS_RELOCADDR 0x00100000)
+set(RTEMS_RELOCADDR 0x80008000)
 
 
