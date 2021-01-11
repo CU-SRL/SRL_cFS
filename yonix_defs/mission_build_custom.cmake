@@ -11,7 +11,7 @@
 # These options assume a GCC toolchain but a similar set should be applicable to clang.
 #
 add_compile_options(
-    -std=c99                # Target the C99 standard (without gcc extensions) 
+    -std=gnu99                # Target the C99 standard (without gcc extensions) 
     -pedantic               # Issue all the warnings demanded by strict ISO C
     -Wall                   # Warn about most questionable operations
     -Wstrict-prototypes     # Warn about missing prototypes
