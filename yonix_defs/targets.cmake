@@ -98,8 +98,8 @@ list(APPEND MISSION_GLOBAL_APPLIST sample_app sample_lib)
 SET(FT_INSTALL_SUBDIR "host/functional-test")
 
 # Each target board can have its own HW arch selection and set of included apps
-SET(MISSION_CPUNAMES arm-rtems5)
-#SET(MISSION_CPUNAMES cpu1)
+#SET(MISSION_CPUNAMES arm-rtems5)
+SET(MISSION_CPUNAMES cpu1)
 
 SET(cpu1_PROCESSORID 1)
 SET(cpu1_APPLIST ci_lab to_lab sch_lab)
