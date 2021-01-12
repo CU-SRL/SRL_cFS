@@ -43,10 +43,10 @@ systemctl enable enable-pins.service
 systemctl enable start-cfs.service
 
 # Disable sudo passwd
-#sed -i '/ALL=(ALL:ALL)/a debian ALL=NOPASSWD: ALL' /etc/sudoers
+sed -i '/ALL=(ALL:ALL)/a debian ALL=NOPASSWD: ALL' /etc/sudoers
 
 # BBB debian auto login
-#sed -i 's/\bExecStart=-\/sbin\/agetty\b/& -a debian/' /lib/systemd/system/serial-getty@.service
+sed -i 's/\bExecStart=-\/sbin\/agetty\b/& -a debian/' /lib/systemd/system/serial-getty@.service
 
 # Update the MOTD
 
