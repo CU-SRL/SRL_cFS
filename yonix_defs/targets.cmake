@@ -69,11 +69,11 @@
 # The MISSION_NAME will be compiled into the target build data structure
 # as well as being passed to "git describe" to filter the tags when building
 # the version string.
-SET(MISSION_NAME "SampleMission")
+SET(MISSION_NAME "YONIX")
 
 # SPACECRAFT_ID gets compiled into the build data structure and the PSP may use it.
 # should be an integer.
-SET(SPACECRAFT_ID 0x42)
+SET(SPACECRAFT_ID 0x45)
 
 # The "MISSION_CORE_MODULES" will be built and statically linked as part
 # of the CFE core executable on every target.  These can be used to amend
@@ -98,15 +98,18 @@ list(APPEND MISSION_GLOBAL_APPLIST sample_app sample_lib)
 SET(FT_INSTALL_SUBDIR "host/functional-test")
 
 # Each target board can have its own HW arch selection and set of included apps
-SET(MISSION_CPUNAMES cpu1)
+SET(MISSION_CPUNAMES arm-bbb)
+#SET(MISSION_CPUNAMES arm-rtems5)
+#SET(MISSION_CPUNAMES cpu1)
+
+SET(arm-bbb_PROCESSORID 1)
+SET(arm-bbb_APPLIST ci_lab to_lab sch_lab)
+SET(arm-bbb_FILELIST cfe_es_startup.scr)
+
+#SET(arm-rtems5_PROCESSORID 1)
+#SET(arm-rtems5_APPLIST ci_lab to_lab sch_lab)
+#SET(arm-rtems5_FILELIST cfe_es_startup.scr)
 
 SET(cpu1_PROCESSORID 1)
 SET(cpu1_APPLIST ci_lab to_lab sch_lab)
 SET(cpu1_FILELIST cfe_es_startup.scr)
-
-# CPU2 example.  This is not built by default anymore but 
-# serves as an example of how one would configure multiple cpus.
-SET(cpu2_PROCESSORID 2)
-SET(cpu2_APPLIST ci_lab to_lab sch_lab)
-SET(cpu2_FILELIST cfe_es_startup.scr)
-

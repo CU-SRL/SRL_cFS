@@ -80,7 +80,8 @@ void OS_BSP_Setup(void)
     const char *cmdp;
     char *      cmdi, *cmdo;
 
-    cmdlinestr = bsp_cmdline();
+    //cmdlinestr = bsp_cmdline();
+    cmdlinestr = NULL; // Added this line to compile for BeagleBone Black
 
     printf("\n\n*** RTEMS Info ***\n");
     printf("%s", OSAL_BSP_COPYRIGHT_NOTICE);
