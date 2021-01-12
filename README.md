@@ -93,7 +93,8 @@ If everything built OK, then you can run the cFS:
 
 	$ cd build/exe/cpu1
 	$ sudo ./core-cpu1.bin
-	
+
+---	
 ### Instructions for Development Machine Setup
 There are several things that must be installed on a development machine for cFS. First and foremost your development machine must be running some sort of Linux distribution with OpenSUSE LEAP 15.2, CentOS 8, Ubuntu, RaspbianOS, and Arch Linux having been tested and confirmed working with cFS. 
 
@@ -173,6 +174,7 @@ You must first get the Linaro toolchain from [here](https://www.linaro.org/downl
 	# Check to make sure it was added and if a version comes up it works.
 	$ arm-linux-gnueabihf-gcc --version
 
+---
 ### Instructions for cFS compiliation
 These are instructions on how to build the core Flight System. Similiar steps are taken for different operating systems but it is up to the user to modify as needed. These steps must be taken everytime a change has been made and the repository must be rebuilt. **Furthermore flight ready code must be compiled on this machine with the BUILDTYPE=release and OMIT-DEPRECATED set in order to avoid any issues during flight.**
 
@@ -198,6 +200,7 @@ These are instructions on how to build the core Flight System. Similiar steps ar
 	# Run the executable with executive permissions because needs special access
 	$ sudo ./core-cpu1
 
+---
 ### Instructions for flashing cFS unto the BeagleBone Black
 Flashing onto the BeagleBone Black is super simple. In order to do so the BBB must first be setup using the setupBBB.sh script found in the INSTALL directory.
 
