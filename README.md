@@ -236,12 +236,15 @@ Once the SD card has been formatted, you need to copy the INSTALL folder into th
 	# Mount the SD card
 	$ sudo mount -t vfat /dev/mmcblk0p1 /mnt/extsd
 	
-	# If you get an error the issue is that /dev/mmcblk0p1 is probably not your SD card, go and find what it is an replace accordingly.
+	# If you get an error the issue is that /dev/mmcblk0p1 is probably not your SD card, 
+	# go and find what it is and replace it accordingly in the command and then in the start-cfs.sh script inside the INSTALL/scripts folder.
+	
 	# Once that is done you can now run the install script
 	$ cd /mnt/extsd/INSTALL
 	$ sudo ./setupBBB.sh
 	
-	# After it is done your BeagleBone will reboot and you can double check if it worked because it'll automatically log you in. As well as 2 services will be started which can be checked with the following commands:
+	# After it is done your BeagleBone will reboot and you can double check if it worked because it'll automatically log you in. 
+	# As well as 2 services will be started which can be checked with the following commands:
 	
 	# Check Services
 	sudo systemctl status enable-pins.service
