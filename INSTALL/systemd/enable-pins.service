@@ -1,5 +1,5 @@
 [Unit]
-Description=Enable I2C pins
+Description=Enable pins
 After=generic-board-startup.service
 
 [Service]
