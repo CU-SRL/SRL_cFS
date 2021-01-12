@@ -1,0 +1,10 @@
+[Unit]
+Description=Start core Flight System
+After=generic-board-startup.service
+
+[Service]
+Type=simple
+ExecStart=/boot/SRL/start-cfs.sh
+
+[Install]
+WantedBy=multi-user.target

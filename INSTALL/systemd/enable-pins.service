@@ -1,0 +1,10 @@
+[Unit]
+Description=Enable I2C pins
+After=generic-board-startup.service
+
+[Service]
+Type=simple
+ExecStart=/boot/SRL/enable-pins.sh
+
+[Install]
+WantedBy=multi-user.target
