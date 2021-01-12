@@ -155,28 +155,23 @@ If not running gcc-7.5.0, you can acquire gcc-7.5.0 from the [gcc mirrors](https
 	#   --enable-languages=c,c++,fortran,go,objc,obj-c++: 
 	#       This command identifies which languages to build. You may modify this
 	#       command to remove undesired language
-	
-#### RTEMS Compiler and BeagleBone Black Flasher
-Finally the last thing that must be installed is RTEMS compiler and the BeagleBone Black (BBB) flasher. This can thankfully be accomplished using a repository that was created by another guy. **If you so choose to do this by yourself you must install the RTEMS compiler and the BeagleBone Black Flasher seperately using their provided instructions.** Finally some of the most common errors are packages that are missing simple google searches should fix them. The instructions are as follow:
 
-	# Clone the repository
-	$ git clone https://gitlab.com/c-mauderer/rtems-bbb.git
-	
-	# Move into directory
-	$ cd rtems-bbb
-	
-	# Build the RTEMS compiler and BBB Flasher
-	$ make setup
-	
-	# Add to the path by first creating a(n) env file
-	$ sudo touch /etc/profile.d/env.sh
-	
-	# Add it to the file and source it to use
-	$ su
-	$ echo "export PATH=$PATH:${PWD}/rtems-bbb/install/rtems/6/bin" >> /etc/profile.d/env.sh
-	$ exit
-	$ source /etc/profile.d/env.sh
+#### BeagleBone Black ARM Compiler
+Once the GCC is setup for the environment the ARM compiler must also be setup in order to cross-compile onto the BeagleBone Black. Installation is relatively easy.
+You must first get the Linaro toolchain from [here](https://www.linaro.org/downloads/ linaro). **MAKE SURE YOU GET THE arm-linux-gnueabihf**
 
+	# After you have downloaded the toolchain unzip it
+	$ tar -xvf <TOOLCHAIN DOWNLOAD>
+	
+	# Then move the extracted output to the /opt/ folder.
+	$ mv -r <EXTRACTED OUTPUT> /opt/gcc-arm-linux/
+	
+	# Add it to the path
+	$ sudo vim /etc/profile.d/env.sh
+	$ export PATH=$PATH:/opt/gcc-arm-linux/bin
+	
+	# Check to make sure it was added and if a version comes up it works.
+	$ arm-linux-gnueabihf-gcc --version
 
 ### Instructions for cFS compiliation
 These are instructions on how to build the core Flight System. Similiar steps are taken for different operating systems but it is up to the user to modify as needed. These steps must be taken everytime a change has been made and the repository must be rebuilt. **Furthermore flight ready code must be compiled on this machine with the BUILDTYPE=release and OMIT-DEPRECATED set in order to avoid any issues during flight.**
@@ -204,10 +199,61 @@ These are instructions on how to build the core Flight System. Similiar steps ar
 	$ sudo ./core-cpu1
 
 ### Instructions for flashing cFS unto the BeagleBone Black
+Flashing onto the BeagleBone Black is super simple. In order to do so the BBB must first be setup using the setupBBB.sh script found in the INSTALL directory.
 
- ** TO DO **
+**NOTE: An SD card is required every boot. The bigger the SD card the better with a max of 32Gb (for now until tested higher).**
+
+#### Setting up the BeagleBone Black
+You need a computer capable of Serial Communication. Ideally Mac or Linux computers as they are the easiest to use because of in built terminal commands. For Windows computers google the equivalent of the following commands.
+
+Once your computer is connected to the BBB pull up a terminal and determine which USB port corresponds to your BBB and then connect to it using a baud of 115200 by running the following commands.
+
+	# List Devices, find the tty.usbxxx where xxx is something
+	$ ls -al /dev/
+	
+	# Connect to it
+	$ sudo screen -L /dev/tty.usbxxx 115200
+	
+	# You should now see the BeagleBoneBlack, the username is debian and password is temppwd
+
+After a successful connection it is now time to prep the SD, and get ready for SRL installation using the provided scripts in the INSTALL directory. The first step in this process is by formatting the SD card as FAT32. **BE VERY CAREFUL WHEN FORMATTING AS YOU DON'T WANT TO ACCIDENTALLY REFORMAT YOUR DRIVE IF NEEDED ASK FOR HELP.** On Mac OS, this can be done by executing the following commands in the terminal:
+
+	# Execute the following command to identify the mount name of SD card following the pattern /dev/diskX, e.g., /dev/disk2
+	$ diskutil list 
+	
+	# Say the disk name is /dev/disk2. Now format the card to FAT32 by running the following command:
+	$ sudo diskutil eraseDisk FAT32 MYSD MBRFormat /dev/disk2
+	
+On Linux use fdisk, the commands are the following and use the following [guide](https://ragnyll.gitlab.io/2018/05/22/format-a-sd-card-to-fat-32linux.html FAT32)
+
+For Windows, use the in built windows disk formatter. Just right click the SD card, select FAT32, and let it go.
+
+Once the SD card has been formatted, you need to copy the INSTALL folder into the SD card then place the mini-sd into the BeagleBone Black and reboot the BeagleBone Black. After that is done you need to mount the SD card tho only this first time as the INSTALL script will creates services that will mount the SD on boot. In order to mount the SD card do the following commands in the BBB:
+
+	# Create mount point
+	$ sudo mkdir /mnt/extsd
+	
+	# Mount the SD card
+	$ sudo mount -t vfat /dev/mmcblk0p1 /mnt/extsd
+	
+	# If you get an error the issue is that /dev/mmcblk0p1 is probably not your SD card, go and find what it is an replace accordingly.
+	# Once that is done you can now run the install script
+	$ cd /mnt/extsd/INSTALL
+	$ sudo ./setupBBB.sh
+	
+	# After it is done your BeagleBone will reboot and you can double check if it worked because it'll automatically log you in. As well as 2 services will be started which can be checked with the following commands:
+	
+	# Check Services
+	sudo systemctl status enable-pins.service
+	sudo systemctl status start-cfs.service <--------- THIS ONE MAY NOT BE STARTED DEPENDING ON IF THE arm-bbb FOLDER EXISTS ON THE SD CARD
+	
+And your BeagleBone Black is now setup and ready to be used with cFS.
+
+#### BeagleBone Black core Flight System Compilation and loading.
+
+** TO DO **
 
 ---
 ## Code Version Notes
 
-** TO DO **
+6.7.0a - core Flight System release
