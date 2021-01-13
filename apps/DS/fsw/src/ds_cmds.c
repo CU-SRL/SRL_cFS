@@ -49,9 +49,11 @@
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void DS_CmdNoop(CFE_SB_MsgPtr_t MessagePtr)
+void DS_CmdNoop(CFE_MSG_Message_t* MessagePtr)
 {
-    uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    //uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    CFE_MSG_Size_t ActualLength;
+    CFE_MSG_GetSize(MessagePtr, &ActualLength);
     uint16 ExpectedLength = sizeof(DS_NoopCmd_t);
 
     if (ExpectedLength != ActualLength)
@@ -63,7 +65,7 @@ void DS_CmdNoop(CFE_SB_MsgPtr_t MessagePtr)
 
         CFE_EVS_SendEvent(DS_NOOP_CMD_ERR_EID, CFE_EVS_EventType_ERROR,
                          "Invalid NOOP command length: expected = %d, actual = %d",
-                          ExpectedLength, ActualLength);
+                          ExpectedLength, (int)ActualLength);
     }
     else
     {
@@ -88,9 +90,11 @@ void DS_CmdNoop(CFE_SB_MsgPtr_t MessagePtr)
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void DS_CmdReset(CFE_SB_MsgPtr_t MessagePtr)
+void DS_CmdReset(CFE_MSG_Message_t* MessagePtr)
 {
-    uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    // uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    CFE_MSG_Size_t ActualLength;
+    CFE_MSG_GetSize(MessagePtr, &ActualLength);
     uint16 ExpectedLength = sizeof(DS_ResetCmd_t);
 
     if (ExpectedLength != ActualLength)
@@ -102,7 +106,7 @@ void DS_CmdReset(CFE_SB_MsgPtr_t MessagePtr)
 
         CFE_EVS_SendEvent(DS_RESET_CMD_ERR_EID, CFE_EVS_EventType_ERROR,
                          "Invalid RESET command length: expected = %d, actual = %d",
-                          ExpectedLength, ActualLength);
+                          ExpectedLength, (int)ActualLength);
     }
     else
     {
@@ -150,10 +154,12 @@ void DS_CmdReset(CFE_SB_MsgPtr_t MessagePtr)
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void DS_CmdSetAppState(CFE_SB_MsgPtr_t MessagePtr)
+void DS_CmdSetAppState(CFE_MSG_Message_t* MessagePtr)
 {
     DS_AppStateCmd_t *DS_AppStateCmd = (DS_AppStateCmd_t *) MessagePtr;
-    uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    //uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    CFE_MSG_Size_t ActualLength;
+    CFE_MSG_GetSize(MessagePtr, &ActualLength);
     uint16 ExpectedLength = sizeof(DS_AppStateCmd_t);
 
     if (ExpectedLength != ActualLength)
@@ -165,7 +171,7 @@ void DS_CmdSetAppState(CFE_SB_MsgPtr_t MessagePtr)
 
         CFE_EVS_SendEvent(DS_ENADIS_CMD_ERR_EID, CFE_EVS_EventType_ERROR,
                          "Invalid APP STATE command length: expected = %d, actual = %d",
-                          ExpectedLength, ActualLength);
+                          ExpectedLength, (int)ActualLength);
     }
     else if (DS_TableVerifyState(DS_AppStateCmd->EnableState) == false)
     {
@@ -208,10 +214,12 @@ void DS_CmdSetAppState(CFE_SB_MsgPtr_t MessagePtr)
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void DS_CmdSetFilterFile(CFE_SB_MsgPtr_t MessagePtr)
+void DS_CmdSetFilterFile(CFE_MSG_Message_t* MessagePtr)
 {
     DS_FilterFileCmd_t *DS_FilterFileCmd = (DS_FilterFileCmd_t *) MessagePtr;
-    uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    //uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    CFE_MSG_Size_t ActualLength;
+    CFE_MSG_GetSize(MessagePtr, &ActualLength);
     uint16 ExpectedLength = sizeof(DS_FilterFileCmd_t);
     DS_PacketEntry_t *pPacketEntry = NULL;
     DS_FilterParms_t *pFilterParms = NULL;
@@ -226,7 +234,7 @@ void DS_CmdSetFilterFile(CFE_SB_MsgPtr_t MessagePtr)
 
         CFE_EVS_SendEvent(DS_FILE_CMD_ERR_EID, CFE_EVS_EventType_ERROR,
                          "Invalid FILTER FILE command length: expected = %d, actual = %d",
-                          ExpectedLength, ActualLength);
+                          ExpectedLength, (int)ActualLength);
     }
     else if (DS_FilterFileCmd->MessageID == DS_UNUSED)
     {
@@ -325,10 +333,12 @@ void DS_CmdSetFilterFile(CFE_SB_MsgPtr_t MessagePtr)
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void DS_CmdSetFilterType(CFE_SB_MsgPtr_t MessagePtr)
+void DS_CmdSetFilterType(CFE_MSG_Message_t* MessagePtr)
 {
     DS_FilterTypeCmd_t *DS_FilterTypeCmd = (DS_FilterTypeCmd_t *) MessagePtr;
-    uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    //uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    CFE_MSG_Size_t ActualLength;
+    CFE_MSG_GetSize(MessagePtr, &ActualLength);
     uint16 ExpectedLength = sizeof(DS_FilterTypeCmd_t);
     DS_PacketEntry_t *pPacketEntry = NULL;
     DS_FilterParms_t *pFilterParms = NULL;
@@ -343,7 +353,7 @@ void DS_CmdSetFilterType(CFE_SB_MsgPtr_t MessagePtr)
 
         CFE_EVS_SendEvent(DS_FTYPE_CMD_ERR_EID, CFE_EVS_EventType_ERROR,
                          "Invalid FILTER TYPE command length: expected = %d, actual = %d",
-                          ExpectedLength, ActualLength);
+                          ExpectedLength, (int)ActualLength);
     }
     else if (DS_FilterTypeCmd->MessageID == DS_UNUSED)
     {
@@ -442,10 +452,12 @@ void DS_CmdSetFilterType(CFE_SB_MsgPtr_t MessagePtr)
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void DS_CmdSetFilterParms(CFE_SB_MsgPtr_t MessagePtr)
+void DS_CmdSetFilterParms(CFE_MSG_Message_t* MessagePtr)
 {
     DS_FilterParmsCmd_t *DS_FilterParmsCmd = (DS_FilterParmsCmd_t *) MessagePtr;
-    uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    //uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    CFE_MSG_Size_t ActualLength;
+    CFE_MSG_GetSize(MessagePtr, &ActualLength);
     uint16 ExpectedLength = sizeof(DS_FilterParmsCmd_t);
     DS_PacketEntry_t *pPacketEntry = NULL;
     DS_FilterParms_t *pFilterParms = NULL;
@@ -460,7 +472,7 @@ void DS_CmdSetFilterParms(CFE_SB_MsgPtr_t MessagePtr)
 
         CFE_EVS_SendEvent(DS_PARMS_CMD_ERR_EID, CFE_EVS_EventType_ERROR,
                          "Invalid FILTER PARMS command length: expected = %d, actual = %d",
-                          ExpectedLength, ActualLength);
+                          ExpectedLength, (int)ActualLength);
     }
     else if (DS_FilterParmsCmd->MessageID == DS_UNUSED)
     {
@@ -564,10 +576,12 @@ void DS_CmdSetFilterParms(CFE_SB_MsgPtr_t MessagePtr)
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void DS_CmdSetDestType(CFE_SB_MsgPtr_t MessagePtr)
+void DS_CmdSetDestType(CFE_MSG_Message_t* MessagePtr)
 {
     DS_DestTypeCmd_t *DS_DestTypeCmd = (DS_DestTypeCmd_t *) MessagePtr;
-    uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    //uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    CFE_MSG_Size_t ActualLength;
+    CFE_MSG_GetSize(MessagePtr, &ActualLength);
     uint16 ExpectedLength = sizeof(DS_DestTypeCmd_t);
     DS_DestFileEntry_t *pDest = NULL;
 
@@ -580,7 +594,7 @@ void DS_CmdSetDestType(CFE_SB_MsgPtr_t MessagePtr)
 
         CFE_EVS_SendEvent(DS_NTYPE_CMD_ERR_EID, CFE_EVS_EventType_ERROR,
                          "Invalid DEST TYPE command length: expected = %d, actual = %d",
-                          ExpectedLength, ActualLength);
+                          ExpectedLength, (int)ActualLength);
     }
     else if (DS_TableVerifyFileIndex(DS_DestTypeCmd->FileTableIndex) == false)
     {
@@ -645,10 +659,12 @@ void DS_CmdSetDestType(CFE_SB_MsgPtr_t MessagePtr)
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void DS_CmdSetDestState(CFE_SB_MsgPtr_t MessagePtr)
+void DS_CmdSetDestState(CFE_MSG_Message_t* MessagePtr)
 {
     DS_DestStateCmd_t *DS_DestStateCmd = (DS_DestStateCmd_t *) MessagePtr;
-    uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    //uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    CFE_MSG_Size_t ActualLength;
+    CFE_MSG_GetSize(MessagePtr, &ActualLength);
     uint16 ExpectedLength = sizeof(DS_DestStateCmd_t);
 
     if (ExpectedLength != ActualLength)
@@ -660,7 +676,7 @@ void DS_CmdSetDestState(CFE_SB_MsgPtr_t MessagePtr)
 
         CFE_EVS_SendEvent(DS_STATE_CMD_ERR_EID, CFE_EVS_EventType_ERROR,
                          "Invalid DEST STATE command length: expected = %d, actual = %d",
-                          ExpectedLength, ActualLength);
+                          ExpectedLength, (int)ActualLength);
     }
     else if (DS_TableVerifyFileIndex(DS_DestStateCmd->FileTableIndex) == false)
     {
@@ -725,10 +741,12 @@ void DS_CmdSetDestState(CFE_SB_MsgPtr_t MessagePtr)
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void DS_CmdSetDestPath(CFE_SB_MsgPtr_t MessagePtr)
+void DS_CmdSetDestPath(CFE_MSG_Message_t* MessagePtr)
 {
     DS_DestPathCmd_t *DS_DestPathCmd = (DS_DestPathCmd_t *) MessagePtr;
-    uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    //uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    CFE_MSG_Size_t ActualLength;
+    CFE_MSG_GetSize(MessagePtr, &ActualLength);
     uint16 ExpectedLength = sizeof(DS_DestPathCmd_t);
     DS_DestFileEntry_t *pDest = NULL;
 
@@ -741,7 +759,7 @@ void DS_CmdSetDestPath(CFE_SB_MsgPtr_t MessagePtr)
 
         CFE_EVS_SendEvent(DS_PATH_CMD_ERR_EID, CFE_EVS_EventType_ERROR,
                          "Invalid DEST PATH command length: expected = %d, actual = %d",
-                          ExpectedLength, ActualLength);
+                          ExpectedLength, (int)ActualLength);
     }
     else if (DS_TableVerifyFileIndex(DS_DestPathCmd->FileTableIndex) == false)
     {
@@ -806,10 +824,12 @@ void DS_CmdSetDestPath(CFE_SB_MsgPtr_t MessagePtr)
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void DS_CmdSetDestBase(CFE_SB_MsgPtr_t MessagePtr)
+void DS_CmdSetDestBase(CFE_MSG_Message_t* MessagePtr)
 {
     DS_DestBaseCmd_t *DS_DestBaseCmd = (DS_DestBaseCmd_t *) MessagePtr;
-    uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    //uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    CFE_MSG_Size_t ActualLength;
+    CFE_MSG_GetSize(MessagePtr, &ActualLength);
     uint16 ExpectedLength = sizeof(DS_DestBaseCmd_t);
     DS_DestFileEntry_t *pDest = NULL;
 
@@ -822,7 +842,7 @@ void DS_CmdSetDestBase(CFE_SB_MsgPtr_t MessagePtr)
 
         CFE_EVS_SendEvent(DS_BASE_CMD_ERR_EID, CFE_EVS_EventType_ERROR,
                          "Invalid DEST BASE command length: expected = %d, actual = %d",
-                          ExpectedLength, ActualLength);
+                          ExpectedLength, (int)ActualLength);
     }
     else if (DS_TableVerifyFileIndex(DS_DestBaseCmd->FileTableIndex) == false)
     {
@@ -887,10 +907,12 @@ void DS_CmdSetDestBase(CFE_SB_MsgPtr_t MessagePtr)
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void DS_CmdSetDestExt(CFE_SB_MsgPtr_t MessagePtr)
+void DS_CmdSetDestExt(CFE_MSG_Message_t* MessagePtr)
 {
     DS_DestExtCmd_t *DS_DestExtCmd = (DS_DestExtCmd_t *) MessagePtr;
-    uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    //uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    CFE_MSG_Size_t ActualLength;
+    CFE_MSG_GetSize(MessagePtr, &ActualLength);
     uint16 ExpectedLength = sizeof(DS_DestExtCmd_t);
     DS_DestFileEntry_t *pDest = NULL;
 
@@ -903,7 +925,7 @@ void DS_CmdSetDestExt(CFE_SB_MsgPtr_t MessagePtr)
 
         CFE_EVS_SendEvent(DS_EXT_CMD_ERR_EID, CFE_EVS_EventType_ERROR,
                          "Invalid DEST EXT command length: expected = %d, actual = %d",
-                          ExpectedLength, ActualLength);
+                          ExpectedLength, (int)ActualLength);
     }
     else if (DS_TableVerifyFileIndex(DS_DestExtCmd->FileTableIndex) == false)
     {
@@ -968,10 +990,12 @@ void DS_CmdSetDestExt(CFE_SB_MsgPtr_t MessagePtr)
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void DS_CmdSetDestSize(CFE_SB_MsgPtr_t MessagePtr)
+void DS_CmdSetDestSize(CFE_MSG_Message_t* MessagePtr)
 {
     DS_DestSizeCmd_t *DS_DestSizeCmd = (DS_DestSizeCmd_t *) MessagePtr;
-    uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    //uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    CFE_MSG_Size_t ActualLength;
+    CFE_MSG_GetSize(MessagePtr, &ActualLength);
     uint16 ExpectedLength = sizeof(DS_DestSizeCmd_t);
     DS_DestFileEntry_t *pDest = NULL;
 
@@ -984,7 +1008,7 @@ void DS_CmdSetDestSize(CFE_SB_MsgPtr_t MessagePtr)
 
         CFE_EVS_SendEvent(DS_SIZE_CMD_ERR_EID, CFE_EVS_EventType_ERROR,
                          "Invalid DEST SIZE command length: expected = %d, actual = %d",
-                          ExpectedLength, ActualLength);
+                          ExpectedLength, (int)ActualLength);
     }
     else if (DS_TableVerifyFileIndex(DS_DestSizeCmd->FileTableIndex) == false)
     {
@@ -1049,10 +1073,12 @@ void DS_CmdSetDestSize(CFE_SB_MsgPtr_t MessagePtr)
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void DS_CmdSetDestAge(CFE_SB_MsgPtr_t MessagePtr)
+void DS_CmdSetDestAge(CFE_MSG_Message_t* MessagePtr)
 {
     DS_DestAgeCmd_t *DS_DestAgeCmd = (DS_DestAgeCmd_t *) MessagePtr;
-    uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    //uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    CFE_MSG_Size_t ActualLength;
+    CFE_MSG_GetSize(MessagePtr, &ActualLength);
     uint16 ExpectedLength = sizeof(DS_DestAgeCmd_t);
     DS_DestFileEntry_t *pDest = NULL;
 
@@ -1065,7 +1091,7 @@ void DS_CmdSetDestAge(CFE_SB_MsgPtr_t MessagePtr)
 
         CFE_EVS_SendEvent(DS_AGE_CMD_ERR_EID, CFE_EVS_EventType_ERROR,
                          "Invalid DEST AGE command length: expected = %d, actual = %d",
-                          ExpectedLength, ActualLength);
+                          ExpectedLength, (int)ActualLength);
     }
     else if (DS_TableVerifyFileIndex(DS_DestAgeCmd->FileTableIndex) == false)
     {
@@ -1130,10 +1156,12 @@ void DS_CmdSetDestAge(CFE_SB_MsgPtr_t MessagePtr)
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void DS_CmdSetDestCount(CFE_SB_MsgPtr_t MessagePtr)
+void DS_CmdSetDestCount(CFE_MSG_Message_t* MessagePtr)
 {
     DS_DestCountCmd_t *DS_DestCountCmd = (DS_DestCountCmd_t *) MessagePtr;
-    uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    //uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    CFE_MSG_Size_t ActualLength;
+    CFE_MSG_GetSize(MessagePtr, &ActualLength);
     uint16 ExpectedLength = sizeof(DS_DestCountCmd_t);
     DS_AppFileStatus_t *FileStatus = NULL;
     DS_DestFileEntry_t *DestFile = NULL;
@@ -1147,7 +1175,7 @@ void DS_CmdSetDestCount(CFE_SB_MsgPtr_t MessagePtr)
 
         CFE_EVS_SendEvent(DS_SEQ_CMD_ERR_EID, CFE_EVS_EventType_ERROR,
                          "Invalid DEST COUNT command length: expected = %d, actual = %d",
-                          ExpectedLength, ActualLength);
+                          ExpectedLength, (int)ActualLength);
     }
     else if (DS_TableVerifyFileIndex(DS_DestCountCmd->FileTableIndex) == false)
     {
@@ -1223,10 +1251,12 @@ void DS_CmdSetDestCount(CFE_SB_MsgPtr_t MessagePtr)
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void DS_CmdCloseFile(CFE_SB_MsgPtr_t MessagePtr)
+void DS_CmdCloseFile(CFE_MSG_Message_t* MessagePtr)
 {
     DS_CloseFileCmd_t *DS_CloseFileCmd = (DS_CloseFileCmd_t *) MessagePtr;
-    uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    //uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    CFE_MSG_Size_t ActualLength;
+    CFE_MSG_GetSize(MessagePtr, &ActualLength);
     uint16 ExpectedLength = sizeof(DS_CloseFileCmd_t);
 
     if (ExpectedLength != ActualLength)
@@ -1238,7 +1268,7 @@ void DS_CmdCloseFile(CFE_SB_MsgPtr_t MessagePtr)
 
         CFE_EVS_SendEvent(DS_CLOSE_CMD_ERR_EID, CFE_EVS_EventType_ERROR,
                          "Invalid DEST CLOSE command length: expected = %d, actual = %d",
-                          ExpectedLength, ActualLength);
+                          ExpectedLength, (int)ActualLength);
     }
     else if (DS_TableVerifyFileIndex(DS_CloseFileCmd->FileTableIndex) == false)
     {
@@ -1280,9 +1310,11 @@ void DS_CmdCloseFile(CFE_SB_MsgPtr_t MessagePtr)
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void DS_CmdCloseAll(CFE_SB_MsgPtr_t MessagePtr)
+void DS_CmdCloseAll(CFE_MSG_Message_t* MessagePtr)
 {
-    uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    //uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    CFE_MSG_Size_t ActualLength;
+    CFE_MSG_GetSize(MessagePtr, &ActualLength);
     uint16 ExpectedLength = sizeof(DS_CloseAllCmd_t);
     int32  i = 0;
 
@@ -1295,7 +1327,7 @@ void DS_CmdCloseAll(CFE_SB_MsgPtr_t MessagePtr)
 
         CFE_EVS_SendEvent(DS_CLOSE_ALL_CMD_ERR_EID, CFE_EVS_EventType_ERROR,
                          "Invalid DEST CLOSE ALL command length: expected = %d, actual = %d",
-                          ExpectedLength, ActualLength);
+                          ExpectedLength, (int)ActualLength);
     }
     else
     {
@@ -1328,10 +1360,12 @@ void DS_CmdCloseAll(CFE_SB_MsgPtr_t MessagePtr)
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void DS_CmdGetFileInfo(CFE_SB_MsgPtr_t MessagePtr)
+void DS_CmdGetFileInfo(CFE_MSG_Message_t* MessagePtr)
 {
     DS_FileInfoPkt_t DS_FileInfoPkt;
-    uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    //uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    CFE_MSG_Size_t ActualLength;
+    CFE_MSG_GetSize(MessagePtr, &ActualLength);
     uint16 ExpectedLength = sizeof(DS_GetFileInfoCmd_t);
     int32 i = 0;
 
@@ -1344,7 +1378,7 @@ void DS_CmdGetFileInfo(CFE_SB_MsgPtr_t MessagePtr)
 
         CFE_EVS_SendEvent(DS_GET_FILE_INFO_CMD_ERR_EID, CFE_EVS_EventType_ERROR,
                          "Invalid GET FILE INFO command length: expected = %d, actual = %d",
-                          ExpectedLength, ActualLength);
+                          ExpectedLength, (int)ActualLength);
     }
     else
     {
@@ -1358,7 +1392,8 @@ void DS_CmdGetFileInfo(CFE_SB_MsgPtr_t MessagePtr)
         /*
         ** Initialize file info telemetry packet...
         */
-        CFE_SB_InitMsg(&DS_FileInfoPkt, DS_DIAG_TLM_MID, sizeof(DS_FileInfoPkt_t), true);
+        //CFE_SB_InitMsg(&DS_FileInfoPkt, DS_DIAG_TLM_MID, sizeof(DS_FileInfoPkt_t), true);
+	CFE_MSG_Init((CFE_MSG_Message_t *) &DS_FileInfoPkt, DS_DIAG_TLM_MID, sizeof(DS_FileInfoPkt_t));
 
         /*
         ** Process array of destination file info data...
@@ -1414,8 +1449,8 @@ void DS_CmdGetFileInfo(CFE_SB_MsgPtr_t MessagePtr)
         /*
         ** Timestamp and send file info telemetry packet...
         */
-        CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &DS_FileInfoPkt);
-        CFE_SB_SendMsg((CFE_SB_Msg_t *) &DS_FileInfoPkt);
+        CFE_SB_TimeStampMsg((CFE_MSG_Message_t *) &DS_FileInfoPkt);
+        CFE_SB_TransmitMsg((CFE_MSG_Message_t *) &DS_FileInfoPkt, true);
     }
 
     return;
@@ -1429,10 +1464,12 @@ void DS_CmdGetFileInfo(CFE_SB_MsgPtr_t MessagePtr)
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void DS_CmdAddMID(CFE_SB_MsgPtr_t MessagePtr)
+void DS_CmdAddMID(CFE_MSG_Message_t* MessagePtr)
 {
     DS_AddMidCmd_t *DS_AddMidCmd = (DS_AddMidCmd_t *) MessagePtr;
-    uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    //uint16 ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    CFE_MSG_Size_t ActualLength;
+    CFE_MSG_GetSize(MessagePtr, &ActualLength);
     uint16 ExpectedLength = sizeof(DS_AddMidCmd_t);
     DS_PacketEntry_t *pPacketEntry = NULL;
     DS_FilterParms_t *pFilterParms = NULL;
@@ -1449,7 +1486,7 @@ void DS_CmdAddMID(CFE_SB_MsgPtr_t MessagePtr)
 
         CFE_EVS_SendEvent(DS_ADD_MID_CMD_ERR_EID, CFE_EVS_EventType_ERROR,
                          "Invalid ADD MID command length: expected = %d, actual = %d",
-                          ExpectedLength, ActualLength);
+                          ExpectedLength, (int)ActualLength);
     }
     else if (DS_AddMidCmd->MessageID == DS_UNUSED)
     {

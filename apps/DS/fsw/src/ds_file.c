@@ -46,7 +46,7 @@
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void DS_FileStorePacket(CFE_SB_MsgId_t MessageID, CFE_SB_MsgPtr_t MessagePtr)
+void DS_FileStorePacket(CFE_SB_MsgId_t MessageID, CFE_MSG_Message_t* MessagePtr)
 {
     DS_PacketEntry_t *PacketEntry = NULL;
     DS_FilterParms_t *FilterParms = NULL;
@@ -138,17 +138,18 @@ void DS_FileStorePacket(CFE_SB_MsgId_t MessageID, CFE_SB_MsgPtr_t MessagePtr)
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void DS_FileSetupWrite(int32 FileIndex, CFE_SB_MsgPtr_t MessagePtr)
+void DS_FileSetupWrite(int32 FileIndex, CFE_MSG_Message_t* MessagePtr)
 {
     DS_DestFileEntry_t *DestFile = &DS_AppData.DestFileTblPtr->File[FileIndex];
     DS_AppFileStatus_t *FileStatus = &DS_AppData.FileStatus[FileIndex];
     bool OpenNewFile = false;
-    uint16 PacketLength = 0;
 
     /*
     ** Create local pointers for array indexed data...
     */
-    PacketLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    // PacketLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    CFE_MSG_Size_t PacketLength;
+    CFE_MSG_GetSize(MessagePtr, &PacketLength);
 
     if (FileStatus->FileHandle == DS_CLOSED_FILE_HANDLE)
     {

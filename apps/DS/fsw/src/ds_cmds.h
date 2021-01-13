@@ -47,11 +47,11 @@
 **  \par Assumptions, External Events, and Notes:
 **       (none)
 **       
-**  \param [in]  Software Bus message pointer (#CFE_SB_MsgPtr_t)
+**  \param [in]  Software Bus message pointer (#CFE_MSG_Message_t*)
 **
 **  \sa #DS_NOOP_CC, #DS_NoopCmd_t
 */
-void DS_CmdNoop(CFE_SB_MsgPtr_t MessagePtr);
+void DS_CmdNoop(CFE_MSG_Message_t* MessagePtr);
 
 
 /*******************************************************************/
@@ -68,11 +68,11 @@ void DS_CmdNoop(CFE_SB_MsgPtr_t MessagePtr);
 **  \par Assumptions, External Events, and Notes:
 **       (none)
 **       
-**  \param [in]  Software Bus message pointer (#CFE_SB_MsgPtr_t)
+**  \param [in]  Software Bus message pointer (#CFE_MSG_Message_t*)
 **
 **  \sa #DS_RESET_CC, #DS_ResetCmd_t
 */
-void DS_CmdReset(CFE_SB_MsgPtr_t MessagePtr);
+void DS_CmdReset(CFE_MSG_Message_t* MessagePtr);
 
 
 /*******************************************************************/
@@ -90,11 +90,11 @@ void DS_CmdReset(CFE_SB_MsgPtr_t MessagePtr);
 **  \par Assumptions, External Events, and Notes:
 **       (none)
 **       
-**  \param [in]  Software Bus message pointer (#CFE_SB_MsgPtr_t)
+**  \param [in]  Software Bus message pointer (#CFE_MSG_Message_t*)
 **
 **  \sa #DS_SET_APP_STATE_CC, #DS_AppStateCmd_t
 */
-void DS_CmdSetAppState(CFE_SB_MsgPtr_t MessagePtr);
+void DS_CmdSetAppState(CFE_MSG_Message_t* MessagePtr);
 
 
 /*******************************************************************/
@@ -115,11 +115,11 @@ void DS_CmdSetAppState(CFE_SB_MsgPtr_t MessagePtr);
 **  \par Assumptions, External Events, and Notes:
 **       (none)
 **       
-**  \param [in]  Software Bus message pointer (#CFE_SB_MsgPtr_t)
+**  \param [in]  Software Bus message pointer (#CFE_MSG_Message_t*)
 **
 **  \sa #DS_SET_FILTER_FILE_CC, #DS_FilterFileCmd_t
 */
-void DS_CmdSetFilterFile(CFE_SB_MsgPtr_t MessagePtr);
+void DS_CmdSetFilterFile(CFE_MSG_Message_t* MessagePtr);
 
 
 /*******************************************************************/
@@ -140,11 +140,11 @@ void DS_CmdSetFilterFile(CFE_SB_MsgPtr_t MessagePtr);
 **  \par Assumptions, External Events, and Notes:
 **       (none)
 **       
-**  \param [in]  Software Bus message pointer (#CFE_SB_MsgPtr_t)
+**  \param [in]  Software Bus message pointer (#CFE_MSG_Message_t*)
 **
 **  \sa #DS_SET_FILTER_TYPE_CC, #DS_FilterTypeCmd_t
 */
-void DS_CmdSetFilterType(CFE_SB_MsgPtr_t MessagePtr);
+void DS_CmdSetFilterType(CFE_MSG_Message_t* MessagePtr);
 
 
 /*******************************************************************/
@@ -165,11 +165,11 @@ void DS_CmdSetFilterType(CFE_SB_MsgPtr_t MessagePtr);
 **  \par Assumptions, External Events, and Notes:
 **       (none)
 **       
-**  \param [in]  Software Bus message pointer (#CFE_SB_MsgPtr_t)
+**  \param [in]  Software Bus message pointer (#CFE_MSG_Message_t*)
 **
 **  \sa #DS_SET_FILTER_PARMS_CC, #DS_FilterParmsCmd_t
 */
-void DS_CmdSetFilterParms(CFE_SB_MsgPtr_t MessagePtr);
+void DS_CmdSetFilterParms(CFE_MSG_Message_t* MessagePtr);
 
 
 /*******************************************************************/
@@ -190,11 +190,11 @@ void DS_CmdSetFilterParms(CFE_SB_MsgPtr_t MessagePtr);
 **  \par Assumptions, External Events, and Notes:
 **       (none)
 **       
-**  \param [in]  Software Bus message pointer (#CFE_SB_MsgPtr_t)
+**  \param [in]  Software Bus message pointer (#CFE_MSG_Message_t*)
 **
 **  \sa #DS_SET_DEST_TYPE_CC, #DS_DestTypeCmd_t
 */
-void DS_CmdSetDestType(CFE_SB_MsgPtr_t MessagePtr);
+void DS_CmdSetDestType(CFE_MSG_Message_t* MessagePtr);
 
 
 /*******************************************************************/
@@ -215,11 +215,11 @@ void DS_CmdSetDestType(CFE_SB_MsgPtr_t MessagePtr);
 **  \par Assumptions, External Events, and Notes:
 **       (none)
 **       
-**  \param [in]  Software Bus message pointer (#CFE_SB_MsgPtr_t)
+**  \param [in]  Software Bus message pointer (#CFE_MSG_Message_t*)
 **
 **  \sa #DS_SET_DEST_STATE_CC, #DS_DestStateCmd_t
 */
-void DS_CmdSetDestState(CFE_SB_MsgPtr_t MessagePtr);
+void DS_CmdSetDestState(CFE_MSG_Message_t* MessagePtr);
 
 
 /*******************************************************************/
@@ -240,11 +240,11 @@ void DS_CmdSetDestState(CFE_SB_MsgPtr_t MessagePtr);
 **  \par Assumptions, External Events, and Notes:
 **       (none)
 **       
-**  \param [in]  Software Bus message pointer (#CFE_SB_MsgPtr_t)
+**  \param [in]  Software Bus message pointer (#CFE_MSG_Message_t*)
 **
 **  \sa #DS_SET_DEST_PATH_CC, #DS_DestPathCmd_t
 */
-void DS_CmdSetDestPath(CFE_SB_MsgPtr_t MessagePtr);
+void DS_CmdSetDestPath(CFE_MSG_Message_t* MessagePtr);
 
 
 /*******************************************************************/
@@ -265,11 +265,11 @@ void DS_CmdSetDestPath(CFE_SB_MsgPtr_t MessagePtr);
 **  \par Assumptions, External Events, and Notes:
 **       (none)
 **       
-**  \param [in]  Software Bus message pointer (#CFE_SB_MsgPtr_t)
+**  \param [in]  Software Bus message pointer (#CFE_MSG_Message_t*)
 **
 **  \sa #DS_SET_DEST_BASE_CC, #DS_DestBaseCmd_t
 */
-void DS_CmdSetDestBase(CFE_SB_MsgPtr_t MessagePtr);
+void DS_CmdSetDestBase(CFE_MSG_Message_t* MessagePtr);
 
 
 /*******************************************************************/
@@ -290,11 +290,11 @@ void DS_CmdSetDestBase(CFE_SB_MsgPtr_t MessagePtr);
 **  \par Assumptions, External Events, and Notes:
 **       (none)
 **       
-**  \param [in]  Software Bus message pointer (#CFE_SB_MsgPtr_t)
+**  \param [in]  Software Bus message pointer (#CFE_MSG_Message_t*)
 **
 **  \sa #DS_SET_DEST_EXT_CC, #DS_DestExtCmd_t
 */
-void DS_CmdSetDestExt(CFE_SB_MsgPtr_t MessagePtr);
+void DS_CmdSetDestExt(CFE_MSG_Message_t* MessagePtr);
 
 
 /*******************************************************************/
@@ -315,11 +315,11 @@ void DS_CmdSetDestExt(CFE_SB_MsgPtr_t MessagePtr);
 **  \par Assumptions, External Events, and Notes:
 **       (none)
 **       
-**  \param [in]  Software Bus message pointer (#CFE_SB_MsgPtr_t)
+**  \param [in]  Software Bus message pointer (#CFE_MSG_Message_t*)
 **
 **  \sa #DS_SET_DEST_SIZE_CC, #DS_DestSizeCmd_t
 */
-void DS_CmdSetDestSize(CFE_SB_MsgPtr_t MessagePtr);
+void DS_CmdSetDestSize(CFE_MSG_Message_t* MessagePtr);
 
 
 /*******************************************************************/
@@ -340,11 +340,11 @@ void DS_CmdSetDestSize(CFE_SB_MsgPtr_t MessagePtr);
 **  \par Assumptions, External Events, and Notes:
 **       (none)
 **       
-**  \param [in]  Software Bus message pointer (#CFE_SB_MsgPtr_t)
+**  \param [in]  Software Bus message pointer (#CFE_MSG_Message_t*)
 **
 **  \sa #DS_SET_DEST_AGE_CC, #DS_DestAgeCmd_t
 */
-void DS_CmdSetDestAge(CFE_SB_MsgPtr_t MessagePtr);
+void DS_CmdSetDestAge(CFE_MSG_Message_t* MessagePtr);
 
 
 /*******************************************************************/
@@ -365,11 +365,11 @@ void DS_CmdSetDestAge(CFE_SB_MsgPtr_t MessagePtr);
 **  \par Assumptions, External Events, and Notes:
 **       (none)
 **       
-**  \param [in]  Software Bus message pointer (#CFE_SB_MsgPtr_t)
+**  \param [in]  Software Bus message pointer (#CFE_MSG_Message_t*)
 **
 **  \sa #DS_SET_DEST_COUNT_CC, #DS_DestCountCmd_t
 */
-void DS_CmdSetDestCount(CFE_SB_MsgPtr_t MessagePtr);
+void DS_CmdSetDestCount(CFE_MSG_Message_t* MessagePtr);
 
 
 /*******************************************************************/
@@ -389,11 +389,11 @@ void DS_CmdSetDestCount(CFE_SB_MsgPtr_t MessagePtr);
 **  \par Assumptions, External Events, and Notes:
 **       (none)
 **       
-**  \param [in]  Software Bus message pointer (#CFE_SB_MsgPtr_t)
+**  \param [in]  Software Bus message pointer (#CFE_MSG_Message_t*)
 **
 **  \sa #DS_CLOSE_FILE_CC, #DS_CloseFileCmd_t
 */
-void DS_CmdCloseFile(CFE_SB_MsgPtr_t MessagePtr);
+void DS_CmdCloseFile(CFE_MSG_Message_t* MessagePtr);
 
 
 /*******************************************************************/
@@ -412,11 +412,11 @@ void DS_CmdCloseFile(CFE_SB_MsgPtr_t MessagePtr);
 **  \par Assumptions, External Events, and Notes:
 **       (none)
 **       
-**  \param [in]  Software Bus message pointer (#CFE_SB_MsgPtr_t)
+**  \param [in]  Software Bus message pointer (#CFE_MSG_Message_t*)
 **
 **  \sa #DS_CLOSE_ALL_CC, #DS_CloseAllCmd_t
 */
-void DS_CmdCloseAll(CFE_SB_MsgPtr_t MessagePtr);
+void DS_CmdCloseAll(CFE_MSG_Message_t* MessagePtr);
 
 
 /*******************************************************************/
@@ -434,11 +434,11 @@ void DS_CmdCloseAll(CFE_SB_MsgPtr_t MessagePtr);
 **  \par Assumptions, External Events, and Notes:
 **       (none)
 **       
-**  \param [in]  Software Bus message pointer (#CFE_SB_MsgPtr_t)
+**  \param [in]  Software Bus message pointer (#CFE_MSG_Message_t*)
 **
 **  \sa #DS_GET_FILE_INFO_CC, #DS_GetFileInfoCmd_t, #DS_FileInfoPkt_t
 */
-void DS_CmdGetFileInfo(CFE_SB_MsgPtr_t MessagePtr);
+void DS_CmdGetFileInfo(CFE_MSG_Message_t* MessagePtr);
 
 
 /*******************************************************************/
@@ -458,11 +458,11 @@ void DS_CmdGetFileInfo(CFE_SB_MsgPtr_t MessagePtr);
 **  \par Assumptions, External Events, and Notes:
 **       (none)
 **       
-**  \param [in]  Software Bus message pointer (#CFE_SB_MsgPtr_t)
+**  \param [in]  Software Bus message pointer (#CFE_MSG_Message_t*)
 **
 **  \sa #DS_ADD_MID_CC, #DS_AddMidCmd_t
 */
-void DS_CmdAddMID(CFE_SB_MsgPtr_t MessagePtr);
+void DS_CmdAddMID(CFE_MSG_Message_t* MessagePtr);
 
 
 #endif /* _ds_cmds_h_ */

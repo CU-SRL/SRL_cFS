@@ -166,9 +166,9 @@ int32 DS_AppInitialize(void);
 **  \par Assumptions, External Events, and Notes:
 **       (none)
 **       
-**  \param [in]  Software Bus message pointer (#CFE_SB_MsgPtr_t)
+**  \param [in]  Software Bus message pointer (#CFE_MSG_Message_t*)
 */
-void DS_AppProcessMsg(CFE_SB_MsgPtr_t MessagePtr);
+void DS_AppProcessMsg(CFE_MSG_Message_t* MessagePtr);
 
 
 /*******************************************************************/
@@ -181,9 +181,9 @@ void DS_AppProcessMsg(CFE_SB_MsgPtr_t MessagePtr);
 **  \par Assumptions, External Events, and Notes:
 **       (none)
 **       
-**  \param [in]  Software Bus message pointer (#CFE_SB_MsgPtr_t)
+**  \param [in]  Software Bus message pointer (#CFE_MSG_Message_t*)
 */
-void DS_AppProcessCmd(CFE_SB_MsgPtr_t MessagePtr);
+void DS_AppProcessCmd(CFE_MSG_Message_t* MessagePtr);
 
 
 /*
@@ -199,7 +199,7 @@ void DS_AppProcessCmd(CFE_SB_MsgPtr_t MessagePtr);
 **  \par Assumptions, External Events, and Notes:
 **       (none)
 **       
-**  \param [in]  Software Bus message pointer (#CFE_SB_MsgPtr_t)
+**  \param [in]  Software Bus message pointer (#CFE_MSG_Message_t*)
 **
 **  \sa #DS_HkPacket_t
 */
@@ -218,11 +218,11 @@ void DS_AppProcessHK(void);
 **       (none)
 **       
 **  \param [in]  Message ID (extracted from message pointer)
-**  \param [in]  Software Bus message pointer (#CFE_SB_MsgPtr_t)
+**  \param [in]  Software Bus message pointer (#CFE_MSG_Message_t*)
 **
-**  \sa #CFE_SB_MsgPtr_t
+**  \sa #CFE_MSG_Message_t*
 */
-void DS_AppStorePacket(CFE_SB_MsgId_t MessageID, CFE_SB_MsgPtr_t MessagePtr);
+void DS_AppStorePacket(CFE_SB_MsgId_t MessageID, CFE_MSG_Message_t* MessagePtr);
 
 #endif /* _ds_app_h_ */
 

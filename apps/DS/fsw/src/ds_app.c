@@ -65,7 +65,7 @@ DS_AppData_t DS_AppData;
 
 void DS_AppMain(void)
 {
-    CFE_SB_MsgPtr_t MessagePtr = NULL;
+    CFE_MSG_Message_t* MessagePtr = NULL;
     int32 Result = CFE_SUCCESS;
     uint32 RunStatus = CFE_ES_RunStatus_APP_RUN;
 
@@ -111,7 +111,11 @@ void DS_AppMain(void)
         /*
         ** Wait for next Software Bus message...
         */
-        Result = CFE_SB_RcvMsg(&MessagePtr, DS_AppData.InputPipe, CFE_SB_PEND_FOREVER);
+        // Result = CFE_SB_RcvMsg(&MessagePtr, DS_AppData.InputPipe, CFE_SB_PEND_FOREVER);
+	CFE_SB_Buffer_t *SBBufPtr;
+	Result = CFE_SB_ReceiveBuffer(&SBBufPtr, DS_AppData.InputPipe, CFE_SB_PEND_FOREVER);
+	MessagePtr = &SBBufPtr->Msg;
+
 
         /*
         ** Performance Log (start time counter)...
@@ -290,11 +294,13 @@ int32 DS_AppInitialize(void)
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void DS_AppProcessMsg(CFE_SB_MsgPtr_t MessagePtr)
+void DS_AppProcessMsg(CFE_MSG_Message_t* MessagePtr)
 {
-    CFE_SB_MsgId_t MessageID = CFE_SB_GetMsgId(MessagePtr);
-    uint16 ActualLength = 0;
+    // CFE_SB_MsgId_t MessageID = CFE_SB_GetMsgId(MessagePtr);
+    CFE_SB_MsgId_t MessageID;
+    CFE_MSG_GetMsgId(MessagePtr, &MessageID);
     uint16 ExpectedLength = 0;
+    CFE_MSG_Size_t ActualLength;
 
     switch (MessageID)
     {
@@ -314,13 +320,16 @@ void DS_AppProcessMsg(CFE_SB_MsgPtr_t MessagePtr)
         */
         case DS_SEND_HK_MID:
 
-            ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
-            ExpectedLength = CFE_SB_CMD_HDR_SIZE;
-            if (ExpectedLength != ActualLength)
+            // ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+	    CFE_MSG_GetSize(MessagePtr, &ActualLength);
+	    
+	    // ExpectedLength = CFE_SB_CMD_HDR_SIZE;
+            ExpectedLength = (sizeof(CFE_MSG_CommandHeader_t));
+	    if (ExpectedLength != ActualLength)
             {
                 CFE_EVS_SendEvent(DS_HK_REQUEST_ERR_EID, CFE_EVS_EventType_ERROR,
                    "Invalid HK request length: expected = %d, actual = %d",
-                    ExpectedLength, ActualLength);
+                    ExpectedLength, (int)ActualLength);
             }
             else
             {
@@ -351,9 +360,11 @@ void DS_AppProcessMsg(CFE_SB_MsgPtr_t MessagePtr)
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void DS_AppProcessCmd(CFE_SB_MsgPtr_t MessagePtr)
+void DS_AppProcessCmd(CFE_MSG_Message_t* MessagePtr)
 {
-    uint16 CommandCode  = CFE_SB_GetCmdCode(MessagePtr);
+    //uint16 CommandCode  = CFE_SB_GetCmdCode(MessagePtr);
+    uint16 CommandCode;
+    CFE_MSG_GetFcnCode(MessagePtr, &CommandCode);
 
     switch (CommandCode)
     {
@@ -517,7 +528,8 @@ void DS_AppProcessHK(void)
     /*
     ** Initialize housekeeping packet...
     */
-    CFE_SB_InitMsg(&HkPacket, DS_HK_TLM_MID, sizeof(DS_HkPacket_t), true);
+    //CFE_SB_InitMsg(&HkPacket, DS_HK_TLM_MID, sizeof(DS_HkPacket_t), true);
+    CFE_MSG_Init((CFE_MSG_Message_t *) &HkPacket, DS_HK_TLM_MID, sizeof (DS_HkPacket_t));
 
     /*
     ** Process data storage file age limits...
@@ -610,8 +622,8 @@ void DS_AppProcessHK(void)
     /*
     ** Timestamp and send housekeeping telemetry packet...
     */
-    CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &HkPacket);
-    CFE_SB_SendMsg((CFE_SB_Msg_t *) &HkPacket);
+    CFE_SB_TimeStampMsg((CFE_MSG_Message_t *) &HkPacket);
+    CFE_SB_TransmitMsg((CFE_MSG_Message_t *) &HkPacket, true);
 
     return;
 
@@ -624,7 +636,7 @@ void DS_AppProcessHK(void)
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-void DS_AppStorePacket(CFE_SB_MsgId_t MessageID, CFE_SB_MsgPtr_t MessagePtr)
+void DS_AppStorePacket(CFE_SB_MsgId_t MessageID, CFE_MSG_Message_t* MessagePtr)
 {
 
     if (DS_AppData.AppEnableState == DS_DISABLED)

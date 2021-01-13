@@ -83,11 +83,11 @@ typedef struct
 **       (none)
 **       
 **  \param [in]  Message ID (extracted from message pointer)
-**  \param [in]  Software Bus message pointer (#CFE_SB_MsgPtr_t)
+**  \param [in]  Software Bus message pointer (#CFE_MSG_Message_t*)
 **
 **  \sa #DS_PacketEntry_t, #DS_FilterParms_t, #DS_DestFileEntry_t
 */
-void DS_FileStorePacket(CFE_SB_MsgId_t MessageID, CFE_SB_MsgPtr_t MessagePtr);
+void DS_FileStorePacket(CFE_SB_MsgId_t MessageID, CFE_MSG_Message_t* MessagePtr);
 
 
 /*******************************************************************/
@@ -109,11 +109,11 @@ void DS_FileStorePacket(CFE_SB_MsgId_t MessageID, CFE_SB_MsgPtr_t MessagePtr);
 **       (none)
 **       
 **  \param [in]  Destination file index
-**  \param [in]  Software Bus message pointer (#CFE_SB_MsgPtr_t)
+**  \param [in]  Software Bus message pointer (#CFE_MSG_Message_t*)
 **
 **  \sa #DS_AppFileStatus_t, #DS_DestFileEntry_t
 */
-void DS_FileSetupWrite(int32 FileIndex, CFE_SB_MsgPtr_t MessagePtr);
+void DS_FileSetupWrite(int32 FileIndex, CFE_MSG_Message_t* MessagePtr);
 
 
 /*******************************************************************/
