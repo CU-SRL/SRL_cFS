@@ -44,13 +44,13 @@
  **       Apps, and Tables) to occur, the table must be enabled
  **       and overall checksumming must be enabled.
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_DISABLE_EEPROM_CC
  **
  *************************************************************************/
-void CS_DisableEepromCmd(CFE_SB_MsgPtr_t MessagePtr);
+void CS_DisableEepromCmd(CFE_MSG_Message_t* MessagePtr);
 
 /************************************************************************/
 /** \brief Process an enable background checking for the Eeprom 
@@ -65,13 +65,13 @@ void CS_DisableEepromCmd(CFE_SB_MsgPtr_t MessagePtr);
  **       Apps, and Tables) to occur, the table must be enabled
  **       and overall checksumming must be enabled.
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_ENABLE_EEPROM_CC
  **
  *************************************************************************/
-void CS_EnableEepromCmd(CFE_SB_MsgPtr_t MessagePtr);
+void CS_EnableEepromCmd(CFE_MSG_Message_t* MessagePtr);
 
 /************************************************************************/
 /** \brief Proccess a report baseline of a Eeprom Entry command 
@@ -83,13 +83,13 @@ void CS_EnableEepromCmd(CFE_SB_MsgPtr_t MessagePtr);
  **  \par Assumptions, External Events, and Notes:
  **        None
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_REPORT_BASELINE_EEPROM_CC
  **
  *************************************************************************/
-void CS_ReportBaselineEntryIDEepromCmd(CFE_SB_MsgPtr_t MessagePtr);
+void CS_ReportBaselineEntryIDEepromCmd(CFE_MSG_Message_t* MessagePtr);
 
 /************************************************************************/
 /** \brief Process a disable background checking for an Eeprom 
@@ -108,13 +108,13 @@ void CS_ReportBaselineEntryIDEepromCmd(CFE_SB_MsgPtr_t MessagePtr);
  **       is not updated.  If the entry does not exist in the results table, 
  **       neither table is updated.
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_DISABLE_ENTRY_EEPROM_CC
  **
  *************************************************************************/
-void CS_DisableEntryIDEepromCmd(CFE_SB_MsgPtr_t MessagePtr);
+void CS_DisableEntryIDEepromCmd(CFE_MSG_Message_t* MessagePtr);
 
 /************************************************************************/
 /** \brief Process a recopmute baseline of a Eeprom table entry command
@@ -126,13 +126,13 @@ void CS_DisableEntryIDEepromCmd(CFE_SB_MsgPtr_t MessagePtr);
  **  \par Assumptions, External Events, and Notes:
  **       None
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_RECOMPUTE_BASELINE_EEPROM_CC
  **
  *************************************************************************/
-void CS_RecomputeBaselineEepromCmd (CFE_SB_MsgPtr_t MessagePtr);
+void CS_RecomputeBaselineEepromCmd (CFE_MSG_Message_t* MessagePtr);
 
 /************************************************************************/
 /** \brief Process an enable background checking for an Eeprom 
@@ -151,13 +151,13 @@ void CS_RecomputeBaselineEepromCmd (CFE_SB_MsgPtr_t MessagePtr);
  **       is not updated.  If the entry does not exist in the results table, 
  **       neither table is updated.
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_ENABLE_ENTRY_EEPROM_CC
  **
  *************************************************************************/
-void CS_EnableEntryIDEepromCmd(CFE_SB_MsgPtr_t MessagePtr);
+void CS_EnableEntryIDEepromCmd(CFE_MSG_Message_t* MessagePtr);
 
 /************************************************************************/
 /** \brief Process a get Eeprom Entry by Address command 
@@ -168,13 +168,13 @@ void CS_EnableEntryIDEepromCmd(CFE_SB_MsgPtr_t MessagePtr);
  **  \par Assumptions, External Events, and Notes:
  **       None
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_GET_ENTRY_ID_EEPROM_CC
  **
  *************************************************************************/
-void CS_GetEntryIDEepromCmd(CFE_SB_MsgPtr_t MessagePtr);
+void CS_GetEntryIDEepromCmd(CFE_MSG_Message_t* MessagePtr);
 
 #endif /* cs_eeprom_cmds */
 

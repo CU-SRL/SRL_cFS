@@ -41,13 +41,13 @@
  **  \par Assumptions, External Events, and Notes:
  **       None
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_NOOP_CC
  **
  *************************************************************************/
-void CS_NoopCmd (CFE_SB_MsgPtr_t MessagePtr);
+void CS_NoopCmd (CFE_MSG_Message_t* MessagePtr);
 
 /************************************************************************/
 /** \brief Process reset counters command
@@ -61,13 +61,13 @@ void CS_NoopCmd (CFE_SB_MsgPtr_t MessagePtr);
  **  \par Assumptions, External Events, and Notes:
  **       None
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_RESET_CC
  **
  *************************************************************************/
-void CS_ResetCmd (CFE_SB_MsgPtr_t MessagePtr);
+void CS_ResetCmd (CFE_MSG_Message_t* MessagePtr);
 
 /************************************************************************/
 /** \brief process a background checking cycle
@@ -79,12 +79,12 @@ void CS_ResetCmd (CFE_SB_MsgPtr_t MessagePtr);
  **  \par Assumptions, External Events, and Notes:
  **       None
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **
  *************************************************************************/
-void CS_BackgroundCheckCmd (CFE_SB_MsgPtr_t MessagePtr);
+void CS_BackgroundCheckCmd (CFE_MSG_Message_t* MessagePtr);
 
 /************************************************************************/
 /** \brief Process a disable overall background checking command
@@ -96,13 +96,13 @@ void CS_BackgroundCheckCmd (CFE_SB_MsgPtr_t MessagePtr);
  **  \par Assumptions, External Events, and Notes:
  **       
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_DISABLE_ALL_CS_CC
  **
  *************************************************************************/
-void CS_DisableAllCSCmd (CFE_SB_MsgPtr_t MessagePtr);
+void CS_DisableAllCSCmd (CFE_MSG_Message_t* MessagePtr);
 
 /************************************************************************/
 /** \brief Process a enable overall background checking command 
@@ -113,13 +113,13 @@ void CS_DisableAllCSCmd (CFE_SB_MsgPtr_t MessagePtr);
  **  \par Assumptions, External Events, and Notes:
  **       None
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_ENABLE_ALL_CS_CC
  **
  *************************************************************************/
-void CS_EnableAllCSCmd (CFE_SB_MsgPtr_t MessagePtr);
+void CS_EnableAllCSCmd (CFE_MSG_Message_t* MessagePtr);
 
 /************************************************************************/
 /** \brief Process a disable background checking for the cFE core 
@@ -134,13 +134,13 @@ void CS_EnableAllCSCmd (CFE_SB_MsgPtr_t MessagePtr);
  **       Apps, and Tables) to occurr, the table must be enabled
  **       and overall checksumming must be enabled.
  **      
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_DISABLE_CFECORE_CC
  **
  *************************************************************************/
-void CS_DisableCfeCoreCmd(CFE_SB_MsgPtr_t MessagePtr);
+void CS_DisableCfeCoreCmd(CFE_MSG_Message_t* MessagePtr);
 
 /************************************************************************/
 /** \brief Process a enable background checking for the cFE core code
@@ -155,13 +155,13 @@ void CS_DisableCfeCoreCmd(CFE_SB_MsgPtr_t MessagePtr);
  **       Apps, and Tables) to occurr, the table must be enabled
  **       and overall checksumming must be enabled.
  **      
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_ENABLE_CFECORE_CC
  **
  *************************************************************************/
-void CS_EnableCfeCoreCmd(CFE_SB_MsgPtr_t MessagePtr);
+void CS_EnableCfeCoreCmd(CFE_MSG_Message_t* MessagePtr);
 
 /************************************************************************/
 /** \brief Process a disable background checking for the OS code
@@ -176,13 +176,13 @@ void CS_EnableCfeCoreCmd(CFE_SB_MsgPtr_t MessagePtr);
  **       Apps, and Tables) to occurr, the table must be enabled
  **       and overall checksumming must be enabled.
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_DISABLE_OS_CC
  **
  *************************************************************************/
-void CS_DisableOSCmd(CFE_SB_MsgPtr_t MessagePtr);
+void CS_DisableOSCmd(CFE_MSG_Message_t* MessagePtr);
 /************************************************************************/
 /** \brief Process a enable background checking for the OS code 
  **        segment command 
@@ -196,13 +196,13 @@ void CS_DisableOSCmd(CFE_SB_MsgPtr_t MessagePtr);
  **       Apps, and Tables) to occurr, the table must be enabled
  **       and overall checksumming must be enabled.
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_ENABLE_OS_CC
  **
  *************************************************************************/
-void CS_EnableOSCmd(CFE_SB_MsgPtr_t MessagePtr);
+void CS_EnableOSCmd(CFE_MSG_Message_t* MessagePtr);
 
 /************************************************************************/
 /** \brief Process a report baseline of the cFE Core command 
@@ -214,13 +214,13 @@ void CS_EnableOSCmd(CFE_SB_MsgPtr_t MessagePtr);
  **  \par Assumptions, External Events, and Notes:
  **       None
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_REPORT_BASELINE_CFECORE_CC
  **
  *************************************************************************/
-void CS_ReportBaselineCfeCoreCmd(CFE_SB_MsgPtr_t MessagePtr);
+void CS_ReportBaselineCfeCoreCmd(CFE_MSG_Message_t* MessagePtr);
 
 /************************************************************************/
 /** \brief Proccess a report baseline of the OS command 
@@ -232,13 +232,13 @@ void CS_ReportBaselineCfeCoreCmd(CFE_SB_MsgPtr_t MessagePtr);
  **  \par Assumptions, External Events, and Notes:
  **        None
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_REPORT_BASELINE_OS_CC
  **
  *************************************************************************/
-void CS_ReportBaselineOSCmd(CFE_SB_MsgPtr_t MessagePtr);
+void CS_ReportBaselineOSCmd(CFE_MSG_Message_t* MessagePtr);
 
 /************************************************************************/
 /** \brief Process a recopmute baseline of the cFE core code segment command
@@ -250,13 +250,13 @@ void CS_ReportBaselineOSCmd(CFE_SB_MsgPtr_t MessagePtr);
  **  \par Assumptions, External Events, and Notes:
  **       None
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_RECOMPUTE_BASELINE_CFECORE_CC
  **
  *************************************************************************/
-void CS_RecomputeBaselineCfeCoreCmd (CFE_SB_MsgPtr_t MessagePtr);
+void CS_RecomputeBaselineCfeCoreCmd (CFE_MSG_Message_t* MessagePtr);
 /************************************************************************/
 /** \brief Process a recopmute baseline of the OS command
  **  
@@ -267,13 +267,13 @@ void CS_RecomputeBaselineCfeCoreCmd (CFE_SB_MsgPtr_t MessagePtr);
  **  \par Assumptions, External Events, and Notes:
  **       None
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_RECOMPUTE_BASELINE_OS_CC
  **
  *************************************************************************/
-void CS_RecomputeBaselineOSCmd (CFE_SB_MsgPtr_t MessagePtr);
+void CS_RecomputeBaselineOSCmd (CFE_MSG_Message_t* MessagePtr);
 
 /************************************************************************/
 /** \brief Process a start a one shot checksum command
@@ -285,13 +285,13 @@ void CS_RecomputeBaselineOSCmd (CFE_SB_MsgPtr_t MessagePtr);
  **  \par Assumptions, External Events, and Notes:
  **
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_ONESHOT_CC
  **
  *************************************************************************/
-void CS_OneShotCmd (CFE_SB_MsgPtr_t MessagePtr);
+void CS_OneShotCmd (CFE_MSG_Message_t* MessagePtr);
 
 /************************************************************************/
 /** \brief Process a cancel one shot checksum command 
@@ -303,13 +303,13 @@ void CS_OneShotCmd (CFE_SB_MsgPtr_t MessagePtr);
  **  \par Assumptions, External Events, and Notes:
  **
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_CANCEL_ONESHOT_CC
  **
  *************************************************************************/
-void CS_CancelOneShotCmd (CFE_SB_MsgPtr_t MessagePtr);
+void CS_CancelOneShotCmd (CFE_MSG_Message_t* MessagePtr);
 
 
 #endif /* _cs_cmds_ */

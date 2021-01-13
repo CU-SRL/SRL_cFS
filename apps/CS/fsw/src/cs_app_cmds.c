@@ -38,7 +38,7 @@
 /* CS Disable background checking of App command                   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_DisableAppCmd(CFE_SB_MsgPtr_t MessagePtr)
+void CS_DisableAppCmd(CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16              ExpectedLength = sizeof(CS_NoArgsCmd_t);
@@ -66,7 +66,7 @@ void CS_DisableAppCmd(CFE_SB_MsgPtr_t MessagePtr)
 /* CS Enable background checking of App command                    */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_EnableAppCmd(CFE_SB_MsgPtr_t MessagePtr)
+void CS_EnableAppCmd(CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16              ExpectedLength = sizeof(CS_NoArgsCmd_t);
@@ -93,7 +93,7 @@ void CS_EnableAppCmd(CFE_SB_MsgPtr_t MessagePtr)
 /* CS Report the baseline checksum of an entry in the App table    */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_ReportBaselineAppCmd(CFE_SB_MsgPtr_t MessagePtr)
+void CS_ReportBaselineAppCmd(CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16                                  ExpectedLength = sizeof(CS_AppNameCmd_t);
@@ -145,7 +145,7 @@ void CS_ReportBaselineAppCmd(CFE_SB_MsgPtr_t MessagePtr)
 /* CS Recompute the baseline of an entry in the App table cmd      */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_RecomputeBaselineAppCmd (CFE_SB_MsgPtr_t MessagePtr)
+void CS_RecomputeBaselineAppCmd (CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16                                  ExpectedLength = sizeof(CS_AppNameCmd_t);
@@ -232,7 +232,7 @@ void CS_RecomputeBaselineAppCmd (CFE_SB_MsgPtr_t MessagePtr)
 /* CS Disable a specific entry in the App table command            */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_DisableNameAppCmd(CFE_SB_MsgPtr_t MessagePtr)
+void CS_DisableNameAppCmd(CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16                                 ExpectedLength = sizeof(CS_AppNameCmd_t);
@@ -293,7 +293,7 @@ void CS_DisableNameAppCmd(CFE_SB_MsgPtr_t MessagePtr)
 /* CS Enable a specific entry in the App table command             */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_EnableNameAppCmd(CFE_SB_MsgPtr_t MessagePtr)
+void CS_EnableNameAppCmd(CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16                                 ExpectedLength = sizeof(CS_AppNameCmd_t);

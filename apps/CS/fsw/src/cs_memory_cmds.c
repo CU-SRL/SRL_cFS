@@ -40,7 +40,7 @@
 /* CS Disable background checking of Memory command                */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_DisableMemoryCmd(CFE_SB_MsgPtr_t MessagePtr)
+void CS_DisableMemoryCmd(CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16                                  ExpectedLength = sizeof(CS_NoArgsCmd_t);
@@ -69,7 +69,7 @@ void CS_DisableMemoryCmd(CFE_SB_MsgPtr_t MessagePtr)
 /* CS Enable background checking of Memory command                 */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_EnableMemoryCmd(CFE_SB_MsgPtr_t MessagePtr)
+void CS_EnableMemoryCmd(CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16                                  ExpectedLength = sizeof(CS_NoArgsCmd_t);
@@ -98,7 +98,7 @@ void CS_EnableMemoryCmd(CFE_SB_MsgPtr_t MessagePtr)
 /* CS Report the baseline checksum of an entry in the Memory table */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_ReportBaselineEntryIDMemoryCmd(CFE_SB_MsgPtr_t MessagePtr)
+void CS_ReportBaselineEntryIDMemoryCmd(CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16                                  ExpectedLength = sizeof(CS_EntryCmd_t);
@@ -166,7 +166,7 @@ void CS_ReportBaselineEntryIDMemoryCmd(CFE_SB_MsgPtr_t MessagePtr)
 /* CS Recompute the baseline of an entry in the Memory table cmd   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_RecomputeBaselineMemoryCmd (CFE_SB_MsgPtr_t MessagePtr)
+void CS_RecomputeBaselineMemoryCmd (CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16                                  ExpectedLength = sizeof(CS_EntryCmd_t);
@@ -267,7 +267,7 @@ void CS_RecomputeBaselineMemoryCmd (CFE_SB_MsgPtr_t MessagePtr)
 /* CS Enable a specific entry in the Memory table command          */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_EnableEntryIDMemoryCmd(CFE_SB_MsgPtr_t MessagePtr)
+void CS_EnableEntryIDMemoryCmd(CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16                                  ExpectedLength = sizeof(CS_EntryCmd_t);
@@ -339,7 +339,7 @@ void CS_EnableEntryIDMemoryCmd(CFE_SB_MsgPtr_t MessagePtr)
 /* CS Disable a specific entry in the Memory table command         */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_DisableEntryIDMemoryCmd(CFE_SB_MsgPtr_t MessagePtr)
+void CS_DisableEntryIDMemoryCmd(CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16                                  ExpectedLength = sizeof(CS_EntryCmd_t);
@@ -414,7 +414,7 @@ void CS_DisableEntryIDMemoryCmd(CFE_SB_MsgPtr_t MessagePtr)
 /* CS Retrieve an EntryID based on Address from Memory table cmd   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_GetEntryIDMemoryCmd(CFE_SB_MsgPtr_t MessagePtr)
+void CS_GetEntryIDMemoryCmd(CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16                                  ExpectedLength      = sizeof(CS_GetEntryIDCmd_t);

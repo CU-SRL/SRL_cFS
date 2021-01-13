@@ -41,7 +41,7 @@
 /* CS no operation command                                         */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_NoopCmd (CFE_SB_MsgPtr_t MessagePtr)
+void CS_NoopCmd (CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16              ExpectedLength = sizeof(CS_NoArgsCmd_t);
@@ -66,7 +66,7 @@ void CS_NoopCmd (CFE_SB_MsgPtr_t MessagePtr)
 /* CS Reset Application counters command                           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_ResetCmd (CFE_SB_MsgPtr_t MessagePtr)
+void CS_ResetCmd (CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16              ExpectedLength = sizeof(CS_NoArgsCmd_t);
@@ -97,7 +97,7 @@ void CS_ResetCmd (CFE_SB_MsgPtr_t MessagePtr)
 /* CS's background checksumming command                            */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_BackgroundCheckCmd (CFE_SB_MsgPtr_t MessagePtr)
+void CS_BackgroundCheckCmd (CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16                                  ExpectedLength = sizeof(CS_NoArgsCmd_t);
@@ -105,20 +105,24 @@ void CS_BackgroundCheckCmd (CFE_SB_MsgPtr_t MessagePtr)
     bool                                    EndOfList = false   ;
     CFE_SB_MsgId_t MessageID;
     uint16  CommandCode;
-    uint16  ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
-    
+    // uint16  ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    CFE_MSG_Size_t ActualLength;
+    CFE_MSG_GetSize(MessagePtr, &ActualLength);
+
     /* Verify the command packet length */
     if (ExpectedLength != ActualLength)
     {
-        CommandCode = CFE_SB_GetCmdCode(MessagePtr);
-        MessageID= CFE_SB_GetMsgId(MessagePtr);
-        
+        // CommandCode = CFE_SB_GetCmdCode(MessagePtr);
+	CFE_MSG_GetFcnCode(MessagePtr, &CommandCode);
+        // MessageID= CFE_SB_GetMsgId(MessagePtr);
+        CFE_MSG_GetMsgId(MessagePtr, &MessageID);
+
         CFE_EVS_SendEvent(CS_LEN_ERR_EID,
                           CFE_EVS_EventType_ERROR,
                           "Invalid msg length: ID = 0x%04X, CC = %d, Len = %d, Expected = %d",
-                          MessageID,
-                          CommandCode,
-                          ActualLength,
+                          (unsigned int)CFE_SB_MsgIdToValue(MessageID),
+                          (unsigned int)CommandCode,
+                          (int)ActualLength,
                           ExpectedLength);
     }    
     else
@@ -199,7 +203,7 @@ void CS_BackgroundCheckCmd (CFE_SB_MsgPtr_t MessagePtr)
 /* CS Disable all background checksumming command                  */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_DisableAllCSCmd (CFE_SB_MsgPtr_t MessagePtr)
+void CS_DisableAllCSCmd (CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16              ExpectedLength = sizeof(CS_NoArgsCmd_t);
@@ -233,7 +237,7 @@ void CS_DisableAllCSCmd (CFE_SB_MsgPtr_t MessagePtr)
 /* CS Enable all background checksumming command                   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_EnableAllCSCmd (CFE_SB_MsgPtr_t MessagePtr)
+void CS_EnableAllCSCmd (CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16              ExpectedLength = sizeof(CS_NoArgsCmd_t);
@@ -257,7 +261,7 @@ void CS_EnableAllCSCmd (CFE_SB_MsgPtr_t MessagePtr)
 /* CS Disable background checking of the cFE core command          */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_DisableCfeCoreCmd(CFE_SB_MsgPtr_t MessagePtr)
+void CS_DisableCfeCoreCmd(CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16              ExpectedLength = sizeof(CS_NoArgsCmd_t);
@@ -286,7 +290,7 @@ void CS_DisableCfeCoreCmd(CFE_SB_MsgPtr_t MessagePtr)
 /* CS Enable background checking of the cFE core command           */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_EnableCfeCoreCmd(CFE_SB_MsgPtr_t MessagePtr)
+void CS_EnableCfeCoreCmd(CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16              ExpectedLength = sizeof(CS_NoArgsCmd_t);
@@ -316,7 +320,7 @@ void CS_EnableCfeCoreCmd(CFE_SB_MsgPtr_t MessagePtr)
 /* CS Disable background checking of the OS code segment command   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_DisableOSCmd(CFE_SB_MsgPtr_t MessagePtr)
+void CS_DisableOSCmd(CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16              ExpectedLength = sizeof(CS_NoArgsCmd_t);
@@ -345,7 +349,7 @@ void CS_DisableOSCmd(CFE_SB_MsgPtr_t MessagePtr)
 /* CS Enable background checking of the OS code segment command    */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_EnableOSCmd(CFE_SB_MsgPtr_t MessagePtr)
+void CS_EnableOSCmd(CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16              ExpectedLength = sizeof(CS_NoArgsCmd_t);
@@ -373,7 +377,7 @@ void CS_EnableOSCmd(CFE_SB_MsgPtr_t MessagePtr)
 /* CS Report the baseline checksum for the cFE core command        */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_ReportBaselineCfeCoreCmd(CFE_SB_MsgPtr_t MessagePtr)
+void CS_ReportBaselineCfeCoreCmd(CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16              ExpectedLength = sizeof(CS_NoArgsCmd_t);
@@ -405,7 +409,7 @@ void CS_ReportBaselineCfeCoreCmd(CFE_SB_MsgPtr_t MessagePtr)
 /* CS Report the baseline checksum for the OS code segment command */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_ReportBaselineOSCmd(CFE_SB_MsgPtr_t MessagePtr)
+void CS_ReportBaselineOSCmd(CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16              ExpectedLength = sizeof(CS_NoArgsCmd_t);
@@ -436,7 +440,7 @@ void CS_ReportBaselineOSCmd(CFE_SB_MsgPtr_t MessagePtr)
 /* CS Recompute the baseline checksum for the cFE core command     */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_RecomputeBaselineCfeCoreCmd (CFE_SB_MsgPtr_t MessagePtr)
+void CS_RecomputeBaselineCfeCoreCmd (CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16              ExpectedLength = sizeof(CS_NoArgsCmd_t);
@@ -499,7 +503,7 @@ void CS_RecomputeBaselineCfeCoreCmd (CFE_SB_MsgPtr_t MessagePtr)
 /* CS Recompute the baseline checksum for the OS code seg command  */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_RecomputeBaselineOSCmd (CFE_SB_MsgPtr_t MessagePtr)
+void CS_RecomputeBaselineOSCmd (CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16              ExpectedLength = sizeof(CS_NoArgsCmd_t);
@@ -561,7 +565,7 @@ void CS_RecomputeBaselineOSCmd (CFE_SB_MsgPtr_t MessagePtr)
 /* CS Compute the OneShot checksum command                         */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_OneShotCmd (CFE_SB_MsgPtr_t MessagePtr)
+void CS_OneShotCmd (CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16              ExpectedLength = sizeof(CS_OneShotCmd_t);
@@ -656,7 +660,7 @@ void CS_OneShotCmd (CFE_SB_MsgPtr_t MessagePtr)
 /* CS Cancel the OneShot checksum command                          */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_CancelOneShotCmd (CFE_SB_MsgPtr_t MessagePtr)
+void CS_CancelOneShotCmd (CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16              ExpectedLength = sizeof(CS_NoArgsCmd_t);

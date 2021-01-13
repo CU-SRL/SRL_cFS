@@ -389,7 +389,7 @@ bool    CS_FindEnabledAppEntry(uint16* EnabledEntry);
  **  \par Assumptions, External Events, and Notes:
  **       None
  **       
- **  \param [in]   msg              A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   msg              A #CFE_MSG_Message_t* pointer that
  **                                 references the software bus message 
  **
  **  \param [in]   ExpectedLength   The expected length of the message
@@ -403,7 +403,7 @@ bool    CS_FindEnabledAppEntry(uint16* EnabledEntry);
  **  \sa #CS_LEN_ERR_EID
  **
  *************************************************************************/
-bool    CS_VerifyCmdLength(CFE_SB_MsgPtr_t msg, 
+bool    CS_VerifyCmdLength(CFE_MSG_Message_t* msg, 
                            uint16          ExpectedLength);
 
 /************************************************************************/

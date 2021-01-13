@@ -465,26 +465,30 @@ bool    CS_FindEnabledAppEntry(uint16* EnabledEntry)
 /* CS Verify the length of the command                             */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-bool    CS_VerifyCmdLength(CFE_SB_MsgPtr_t msg, 
+bool    CS_VerifyCmdLength(CFE_MSG_Message_t* msg, 
                            uint16          ExpectedLength)
 {
     CFE_SB_MsgId_t MessageID;
     uint16  CommandCode;
     bool    Result = true   ;
-    uint16  ActualLength = CFE_SB_GetTotalMsgLength(msg);
-    
+    // uint16  ActualLength = CFE_SB_GetTotalMsgLength(msg);
+    CFE_MSG_Size_t ActualLength;
+    CFE_MSG_GetSize(msg, &ActualLength);
+
     /* Verify the command packet length */
     if (ExpectedLength != ActualLength)
     {
-        CommandCode = CFE_SB_GetCmdCode(msg);
-        MessageID= CFE_SB_GetMsgId(msg);
+	// CommandCode = CFE_SB_GetCmdCode(msg);
+        CFE_MSG_GetFcnCode(msg, &CommandCode);
+        // MessageID= CFE_SB_GetMsgId(msg);
+        CFE_MSG_GetMsgId(msg, &MessageID);
         
         CFE_EVS_SendEvent(CS_LEN_ERR_EID,
                           CFE_EVS_EventType_ERROR,
                           "Invalid msg length: ID = 0x%04X, CC = %d, Len = %d, Expected = %d",
-                          MessageID,
-                          CommandCode,
-                          ActualLength,
+                          (unsigned int)CFE_SB_MsgIdToValue(MessageID),
+                          (unsigned int)CommandCode,
+                          (int)ActualLength,
                           ExpectedLength);
         Result = false   ;
         CS_AppData.CmdErrCounter++;

@@ -78,13 +78,13 @@ int32 CS_AppInit (void);
  **  \par Assumptions, External Events, and Notes:
  **       None
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CFE_SB_RcvMsg
  **
  *************************************************************************/
-int32 CS_AppPipe (CFE_SB_MsgPtr_t MessagePtr);
+int32 CS_AppPipe (CFE_MSG_Message_t* MessagePtr);
 
 /************************************************************************/
 /** \brief Process housekeeping request
@@ -95,11 +95,11 @@ int32 CS_AppPipe (CFE_SB_MsgPtr_t MessagePtr);
  **  \par Assumptions, External Events, and Notes:
  **       This command does not affect the command execution counter
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  *************************************************************************/
-void CS_HousekeepingCmd (CFE_SB_MsgPtr_t MessagePtr);
+void CS_HousekeepingCmd (CFE_MSG_Message_t* MessagePtr);
 
 #if (CS_PRESERVE_STATES_ON_PROCESSOR_RESET == true   )
 /************************************************************************/
@@ -154,11 +154,15 @@ void CS_AppMain (void)
         CFE_ES_PerfLogExit (CS_APPMAIN_PERF_ID);
         
         /* Wait for the next Software Bus message */
-        Result = CFE_SB_RcvMsg (&CS_AppData.MsgPtr,
+        /*Result = CFE_SB_RcvMsg (&CS_AppData.MsgPtr,
                                 CS_AppData.CmdPipe,
                                 CFE_SB_PEND_FOREVER);
-        
-        /* Performance Log (start time counter)  */
+	*/
+	CFE_SB_Buffer_t *SBBufPtr;
+	Result = CFE_SB_ReceiveBuffer(&SBBufPtr, CS_AppData.CmdPipe, CFE_SB_PEND_FOREVER);
+	CS_AppData.MsgPtr = &SBBufPtr->Msg;
+
+	/* Performance Log (start time counter)  */
         CFE_ES_PerfLogEntry (CS_APPMAIN_PERF_ID);
         
         if (Result == CFE_SUCCESS)
@@ -247,10 +251,8 @@ int32 CS_AppInit (void)
     CS_AppData.PipeDepth = CS_PIPE_DEPTH;
     
     /* Initialize housekeeping packet */
-    CFE_SB_InitMsg (& CS_AppData.HkPacket,
-                    CS_HK_TLM_MID, 
-                    sizeof (CS_HkPacket_t),
-                    true   );
+    // CFE_SB_InitMsg (& CS_AppData.HkPacket, CS_HK_TLM_MID, sizeof (CS_HkPacket_t), true);
+    CFE_MSG_Init((CFE_MSG_Message_t *) &CS_AppData.HkPacket, CS_HK_TLM_MID, sizeof (CS_HkPacket_t));
     
 
     /* Create Software Bus message pipe */
@@ -517,13 +519,14 @@ int32 CS_AppInit (void)
 /* CS's command pipe processing                                    */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-int32 CS_AppPipe (CFE_SB_MsgPtr_t MessagePtr)
+int32 CS_AppPipe (CFE_MSG_Message_t* MessagePtr)
 {
     CFE_SB_MsgId_t          MessageID = 0;
     uint16                  CommandCode = 0;
     int32                   Result = CFE_SUCCESS;
         
-    MessageID = CFE_SB_GetMsgId(MessagePtr);
+    // MessageID = CFE_SB_GetMsgId(MessagePtr);
+    CFE_MSG_GetMsgId(MessagePtr, &MessageID);
     switch (MessageID)
     {
             /* Housekeeping telemetry request */
@@ -625,7 +628,8 @@ int32 CS_AppPipe (CFE_SB_MsgPtr_t MessagePtr)
                         
         case CS_CMD_MID:
             
-            CommandCode = CFE_SB_GetCmdCode(MessagePtr);
+            // CommandCode = CFE_SB_GetCmdCode(MessagePtr);
+	    CFE_MSG_GetFcnCode(MessagePtr,&CommandCode);
             switch (CommandCode)
         {
                 /* All CS Commands */
@@ -824,26 +828,30 @@ int32 CS_AppPipe (CFE_SB_MsgPtr_t MessagePtr)
 /* CS Housekeeping command                                         */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_HousekeepingCmd (CFE_SB_MsgPtr_t MessagePtr)
+void CS_HousekeepingCmd (CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16              ExpectedLength = sizeof(CS_NoArgsCmd_t);
     CFE_SB_MsgId_t MessageID;
     uint16  CommandCode;
-    uint16  ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
-    
+    // uint16  ActualLength = CFE_SB_GetTotalMsgLength(MessagePtr);
+    CFE_MSG_Size_t ActualLength;
+    CFE_MSG_GetSize(MessagePtr, &ActualLength);
+
     /* Verify the command packet length */
     if (ExpectedLength != ActualLength)
     {
-        CommandCode = CFE_SB_GetCmdCode(MessagePtr);
-        MessageID= CFE_SB_GetMsgId(MessagePtr);
+	// CommandCode = CFE_SB_GetCmdCode(MessagePtr);
+        CFE_MSG_GetFcnCode(MessagePtr, &CommandCode);
+        // MessageID= CFE_SB_GetMsgId(MessagePtr);
+        CFE_MSG_GetMsgId(MessagePtr, &MessageID);
         
         CFE_EVS_SendEvent(CS_LEN_ERR_EID,
                           CFE_EVS_EventType_ERROR,
                           "Invalid msg length: ID = 0x%04X, CC = %d, Len = %d, Expected = %d",
-                          MessageID,
-                          CommandCode,
-                          ActualLength,
+                          (unsigned int)CFE_SB_MsgIdToValue(MessageID),
+                          (unsigned int)CommandCode,
+                          (int)ActualLength,
                           ExpectedLength);
     }    
     else
@@ -877,8 +885,8 @@ void CS_HousekeepingCmd (CFE_SB_MsgPtr_t MessagePtr)
         CS_AppData.HkPacket.PassCounter         = CS_AppData.PassCounter;
 
         /* Send housekeeping telemetry packet */
-        CFE_SB_TimeStampMsg ( (CFE_SB_Msg_t *) & CS_AppData.HkPacket);
-        CFE_SB_SendMsg      ( (CFE_SB_Msg_t *) & CS_AppData.HkPacket);
+        CFE_SB_TimeStampMsg ( (CFE_MSG_Message_t *) & CS_AppData.HkPacket);
+        CFE_SB_TransmitMsg  ( (CFE_MSG_Message_t *) & CS_AppData.HkPacket, true);
     }
 
     return;

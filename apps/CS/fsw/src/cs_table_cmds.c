@@ -38,7 +38,7 @@
 /* CS Disable background checking of Tables command                */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_DisableTablesCmd(CFE_SB_MsgPtr_t MessagePtr)
+void CS_DisableTablesCmd(CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16              ExpectedLength = sizeof(CS_NoArgsCmd_t);
@@ -66,7 +66,7 @@ void CS_DisableTablesCmd(CFE_SB_MsgPtr_t MessagePtr)
 /* CS Enable background checking of Tables command                 */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_EnableTablesCmd(CFE_SB_MsgPtr_t MessagePtr)
+void CS_EnableTablesCmd(CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16              ExpectedLength = sizeof(CS_NoArgsCmd_t);
@@ -93,7 +93,7 @@ void CS_EnableTablesCmd(CFE_SB_MsgPtr_t MessagePtr)
 /* CS Report the baseline checksum of an entry in the Tables table */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_ReportBaselineTablesCmd(CFE_SB_MsgPtr_t MessagePtr)
+void CS_ReportBaselineTablesCmd(CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16                                  ExpectedLength = sizeof(CS_TableNameCmd_t);
@@ -145,7 +145,7 @@ void CS_ReportBaselineTablesCmd(CFE_SB_MsgPtr_t MessagePtr)
 /* CS Recompute the baseline of an entry in the Tables table cmd   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_RecomputeBaselineTablesCmd (CFE_SB_MsgPtr_t MessagePtr)
+void CS_RecomputeBaselineTablesCmd (CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16                                  ExpectedLength = sizeof(CS_TableNameCmd_t);
@@ -232,7 +232,7 @@ void CS_RecomputeBaselineTablesCmd (CFE_SB_MsgPtr_t MessagePtr)
 /* CS Disable a specific entry in the Tables table command         */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_DisableNameTablesCmd(CFE_SB_MsgPtr_t MessagePtr)
+void CS_DisableNameTablesCmd(CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16                                  ExpectedLength = sizeof(CS_TableNameCmd_t);
@@ -294,7 +294,7 @@ void CS_DisableNameTablesCmd(CFE_SB_MsgPtr_t MessagePtr)
 /* CS Enable a specific entry in the Tables table command          */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_EnableNameTablesCmd(CFE_SB_MsgPtr_t MessagePtr)
+void CS_EnableNameTablesCmd(CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16                                 ExpectedLength = sizeof(CS_TableNameCmd_t);

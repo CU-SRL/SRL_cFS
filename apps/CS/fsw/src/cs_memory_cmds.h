@@ -44,13 +44,13 @@
  **       Apps, and Tables) to occur, the table must be enabled
  **       and overall checksumming must be enabled.
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_DISABLE_MEMORY_CC
  **
  *************************************************************************/
-void CS_DisableMemoryCmd(CFE_SB_MsgPtr_t MessagePtr);
+void CS_DisableMemoryCmd(CFE_MSG_Message_t* MessagePtr);
 
 /************************************************************************/
 /** \brief Process an enable background checking for the Memory 
@@ -65,13 +65,13 @@ void CS_DisableMemoryCmd(CFE_SB_MsgPtr_t MessagePtr);
  **       Apps, and Tables) to occur, the table must be enabled
  **       and overall checksumming must be enabled.
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_ENABLE_MEMORY_CC
  **
  *************************************************************************/
-void CS_EnableMemoryCmd(CFE_SB_MsgPtr_t MessagePtr);
+void CS_EnableMemoryCmd(CFE_MSG_Message_t* MessagePtr);
 
 /************************************************************************/
 /** \brief Proccess a report baseline of a Memory Entry command 
@@ -83,13 +83,13 @@ void CS_EnableMemoryCmd(CFE_SB_MsgPtr_t MessagePtr);
  **  \par Assumptions, External Events, and Notes:
  **        None
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_REPORT_BASELINE_MEMORY_CC
  **
  *************************************************************************/
-void CS_ReportBaselineEntryIDMemoryCmd(CFE_SB_MsgPtr_t MessagePtr);
+void CS_ReportBaselineEntryIDMemoryCmd(CFE_MSG_Message_t* MessagePtr);
 
 /************************************************************************/
 /** \brief Process a disable background checking for an Memory 
@@ -108,13 +108,13 @@ void CS_ReportBaselineEntryIDMemoryCmd(CFE_SB_MsgPtr_t MessagePtr);
  **       is not updated.  If the entry does not exist in the results table, 
  **       neither table is updated.
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_DISABLE_ENTRY_MEMORY_CC
  **
  *************************************************************************/
-void CS_DisableEntryIDMemoryCmd(CFE_SB_MsgPtr_t MessagePtr);
+void CS_DisableEntryIDMemoryCmd(CFE_MSG_Message_t* MessagePtr);
 
 /************************************************************************/
 /** \brief Process a recopmute baseline of a Memory table entry command
@@ -126,13 +126,13 @@ void CS_DisableEntryIDMemoryCmd(CFE_SB_MsgPtr_t MessagePtr);
  **  \par Assumptions, External Events, and Notes:
  **       None
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_RECOMPUTE_BASELINE_MEMORY_CC
  **
  *************************************************************************/
-void CS_RecomputeBaselineMemoryCmd (CFE_SB_MsgPtr_t MessagePtr);
+void CS_RecomputeBaselineMemoryCmd (CFE_MSG_Message_t* MessagePtr);
 
 /************************************************************************/
 /** \brief Process an enable background checking for an Memory 
@@ -151,13 +151,13 @@ void CS_RecomputeBaselineMemoryCmd (CFE_SB_MsgPtr_t MessagePtr);
  **       is not updated.  If the entry does not exist in the results table, 
  **       neither table is updated.
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_ENABLE_ENTRY_MEMORY_CC
  **
  *************************************************************************/
-void CS_EnableEntryIDMemoryCmd(CFE_SB_MsgPtr_t MessagePtr);
+void CS_EnableEntryIDMemoryCmd(CFE_MSG_Message_t* MessagePtr);
 
 /************************************************************************/
 /** \brief Process a get Memory Entry by Address command 
@@ -168,13 +168,13 @@ void CS_EnableEntryIDMemoryCmd(CFE_SB_MsgPtr_t MessagePtr);
  **  \par Assumptions, External Events, and Notes:
  **       None
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_GET_ENTRY_ID_MEMORY_CC
  **
  *************************************************************************/
-void CS_GetEntryIDMemoryCmd(CFE_SB_MsgPtr_t MessagePtr);
+void CS_GetEntryIDMemoryCmd(CFE_MSG_Message_t* MessagePtr);
 
 #endif /* cs_memory_cmds */
 

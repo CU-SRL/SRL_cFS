@@ -44,13 +44,13 @@
  **       Apps, and Tables) to occur, the table must be enabled
  **       and overall checksumming must be enabled.
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_DISABLE_TABLES_CC
  **
  *************************************************************************/
-void CS_DisableTablesCmd(CFE_SB_MsgPtr_t MessagePtr);
+void CS_DisableTablesCmd(CFE_MSG_Message_t* MessagePtr);
 
 /************************************************************************/
 /** \brief Process an enable background checking for the Tables 
@@ -65,13 +65,13 @@ void CS_DisableTablesCmd(CFE_SB_MsgPtr_t MessagePtr);
  **       Apps, and Tables) to occur, the table must be enabled
  **       and overall checksumming must be enabled.
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_ENABLE_TABLES_CC
  **
  *************************************************************************/
-void CS_EnableTablesCmd(CFE_SB_MsgPtr_t MessagePtr);
+void CS_EnableTablesCmd(CFE_MSG_Message_t* MessagePtr);
 
 /************************************************************************/
 /** \brief Proccess a report baseline of a Table command 
@@ -83,13 +83,13 @@ void CS_EnableTablesCmd(CFE_SB_MsgPtr_t MessagePtr);
  **  \par Assumptions, External Events, and Notes:
  **        None
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_REPORT_BASELINE_TABLE_CC
  **
  *************************************************************************/
-void CS_ReportBaselineTablesCmd(CFE_SB_MsgPtr_t MessagePtr);
+void CS_ReportBaselineTablesCmd(CFE_MSG_Message_t* MessagePtr);
 
 
 /************************************************************************/
@@ -102,13 +102,13 @@ void CS_ReportBaselineTablesCmd(CFE_SB_MsgPtr_t MessagePtr);
  **  \par Assumptions, External Events, and Notes:
  **       None
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_RECOMPUTE_BASELINE_TABLE_CC
  **
  *************************************************************************/
-void CS_RecomputeBaselineTablesCmd (CFE_SB_MsgPtr_t MessagePtr);
+void CS_RecomputeBaselineTablesCmd (CFE_MSG_Message_t* MessagePtr);
 /************************************************************************/
 /** \brief Process a disable background checking for a Table 
  **        entry command 
@@ -126,13 +126,13 @@ void CS_RecomputeBaselineTablesCmd (CFE_SB_MsgPtr_t MessagePtr);
  **       is not updated.  If the entry does not exist in the results table, 
  **       neither table is updated.
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_DISABLE_NAME_TABLE_CC
  **
  *************************************************************************/
-void CS_DisableNameTablesCmd(CFE_SB_MsgPtr_t MessagePtr);
+void CS_DisableNameTablesCmd(CFE_MSG_Message_t* MessagePtr);
 /************************************************************************/
 /** \brief Process an enable background checking for a Table 
  **        entry command 
@@ -150,13 +150,13 @@ void CS_DisableNameTablesCmd(CFE_SB_MsgPtr_t MessagePtr);
  **       is not updated.  If the entry does not exist in the results table, 
  **       neither table is updated.
  **       
- **  \param [in]   MessagePtr   A #CFE_SB_MsgPtr_t pointer that
+ **  \param [in]   MessagePtr   A #CFE_MSG_Message_t* pointer that
  **                             references the software bus message 
  **
  **  \sa #CS_ENABLE_NAME_TABLE_CC
  **
  *************************************************************************/
-void CS_EnableNameTablesCmd(CFE_SB_MsgPtr_t MessagePtr);
+void CS_EnableNameTablesCmd(CFE_MSG_Message_t* MessagePtr);
 
 #endif /* _cs_table_cmds_ */
 /************************/

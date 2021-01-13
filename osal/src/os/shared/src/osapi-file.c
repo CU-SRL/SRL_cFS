@@ -138,7 +138,7 @@ int32 OS_OpenCreate(osal_id_t *filedes, const char *path, int32 flags, int32 acc
  * The OS_open and OS_creat functions are deprecated, replaced by
  * the generic OS_OpenCreate above
  */
-#ifndef OSAL_OMIT_DEPRECATED
+//#ifndef OSAL_OMIT_DEPRECATED
 
 /*----------------------------------------------------------------
  *
@@ -215,7 +215,7 @@ int32 OS_open(const char *path, int32 access, uint32 mode)
     return return_code;
 } /* end OS_open */
 
-#endif
+//#endif
 
 /*----------------------------------------------------------------
  *

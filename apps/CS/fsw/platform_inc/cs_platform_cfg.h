@@ -42,7 +42,7 @@
 **       The string length (including string terminator) cannot exceed
 **       #OS_MAX_PATH_LEN.  (limit is not verified)
 */
-#define CS_DEF_EEPROM_TABLE_FILENAME                "/cf/apps/cs_eepromtbl.tbl"
+#define CS_DEF_EEPROM_TABLE_FILENAME                "/cf/cs_eepromtbl.tbl"
 
 /**
 **  \cscfg Memory Address File Table -- default table filename
@@ -55,7 +55,7 @@
 **       The string length (including string terminator) cannot exceed
 **       #OS_MAX_PATH_LEN.  (limit is not verified)
 */
-#define CS_DEF_MEMORY_TABLE_FILENAME                "/cf/apps/cs_memorytbl.tbl"
+#define CS_DEF_MEMORY_TABLE_FILENAME                "/cf/cs_memorytbl.tbl"
 
 /**
 **  \cscfg Tables File Table -- default table filename
@@ -68,7 +68,7 @@
 **       The string length (including string terminator) cannot exceed
 **       #OS_MAX_PATH_LEN.  (limit is not verified)
 */
-#define CS_DEF_TABLES_TABLE_FILENAME                "/cf/apps/cs_tablestbl.tbl"
+#define CS_DEF_TABLES_TABLE_FILENAME                "/cf/cs_tablestbl.tbl"
 
 /**
 **  \cscfg Application File Table -- default table filename
@@ -81,7 +81,7 @@
 **       The string length (including string terminator) cannot exceed
 **       #OS_MAX_PATH_LEN.  (limit is not verified)
 */
-#define CS_DEF_APP_TABLE_FILENAME                   "/cf/apps/cs_apptbl.tbl"
+#define CS_DEF_APP_TABLE_FILENAME                   "/cf/cs_apptbl.tbl"
 
 /**
 **  \cscfg Application Pipe Depth 

@@ -40,7 +40,7 @@
 /* CS Disable background checking of Eeprom command                */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_DisableEepromCmd(CFE_SB_MsgPtr_t MessagePtr)
+void CS_DisableEepromCmd(CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16                                  ExpectedLength = sizeof(CS_NoArgsCmd_t);
@@ -69,7 +69,7 @@ void CS_DisableEepromCmd(CFE_SB_MsgPtr_t MessagePtr)
 /* CS Enable background checking of Eeprom command                 */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_EnableEepromCmd(CFE_SB_MsgPtr_t MessagePtr)
+void CS_EnableEepromCmd(CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16                                  ExpectedLength = sizeof(CS_NoArgsCmd_t);
@@ -97,7 +97,7 @@ void CS_EnableEepromCmd(CFE_SB_MsgPtr_t MessagePtr)
 /* CS Report the baseline checksum of an entry in the Eeprom table */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_ReportBaselineEntryIDEepromCmd(CFE_SB_MsgPtr_t MessagePtr)
+void CS_ReportBaselineEntryIDEepromCmd(CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16                                  ExpectedLength = sizeof(CS_EntryCmd_t);
@@ -166,7 +166,7 @@ void CS_ReportBaselineEntryIDEepromCmd(CFE_SB_MsgPtr_t MessagePtr)
 /* CS Recompute the baseline of an entry in the Eeprom table cmd   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_RecomputeBaselineEepromCmd (CFE_SB_MsgPtr_t MessagePtr)
+void CS_RecomputeBaselineEepromCmd (CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16                                  ExpectedLength = sizeof(CS_EntryCmd_t);
@@ -265,7 +265,7 @@ void CS_RecomputeBaselineEepromCmd (CFE_SB_MsgPtr_t MessagePtr)
 /* CS Enable a specific entry in the Eeprom table command          */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_EnableEntryIDEepromCmd(CFE_SB_MsgPtr_t MessagePtr)
+void CS_EnableEntryIDEepromCmd(CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16                                  ExpectedLength = sizeof(CS_EntryCmd_t);
@@ -338,7 +338,7 @@ void CS_EnableEntryIDEepromCmd(CFE_SB_MsgPtr_t MessagePtr)
 /* CS Disable a specific entry in the Eeprom table command         */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_DisableEntryIDEepromCmd(CFE_SB_MsgPtr_t MessagePtr)
+void CS_DisableEntryIDEepromCmd(CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16                                  ExpectedLength = sizeof(CS_EntryCmd_t);
@@ -414,7 +414,7 @@ void CS_DisableEntryIDEepromCmd(CFE_SB_MsgPtr_t MessagePtr)
 /* CS Retrieve an EntryID based on Address from Eeprom table cmd   */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-void CS_GetEntryIDEepromCmd(CFE_SB_MsgPtr_t MessagePtr)
+void CS_GetEntryIDEepromCmd(CFE_MSG_Message_t* MessagePtr)
 {
     /* command verification variables */
     uint16                                  ExpectedLength      = sizeof(CS_GetEntryIDCmd_t);

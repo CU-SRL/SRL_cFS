@@ -126,7 +126,7 @@ typedef struct
     CS_Res_Tables_Table_Entry_t               * RecomputeTablesEntryPtr;            /**< \brief Pointer to an entry to recompute in the 
                                                                                                 Tables table*/
     
-    CFE_SB_MsgPtr_t                             MsgPtr;                             /**< \brief Pointer to command message    */
+    CFE_MSG_Message_t*                             MsgPtr;                             /**< \brief Pointer to command message    */
     
     CFE_SB_PipeId_t                             CmdPipe;                            /**< \brief Command pipe ID               */
     
