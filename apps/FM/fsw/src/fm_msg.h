@@ -50,7 +50,7 @@
 */
 typedef struct
 {
-    uint8   CmdHeader[CFE_SB_CMD_HDR_SIZE]; /**< \brief cFE SB cmd hdr */
+    uint8   CmdHeader[(sizeof(CFE_MSG_CommandHeader_t))]; /**< \brief cFE SB cmd hdr */
 
 } FM_HousekeepingCmd_t;
 
@@ -62,7 +62,7 @@ typedef struct
 */
 typedef struct
 {
-    uint8   CmdHeader[CFE_SB_CMD_HDR_SIZE]; /**< \brief cFE SB cmd hdr */
+    uint8   CmdHeader[(sizeof(CFE_MSG_CommandHeader_t))]; /**< \brief cFE SB cmd hdr */
 
 } FM_NoopCmd_t;
 
@@ -74,7 +74,7 @@ typedef struct
 */
 typedef struct
 {
-    uint8   CmdHeader[CFE_SB_CMD_HDR_SIZE]; /**< \brief cFE SB cmd hdr */
+    uint8   CmdHeader[(sizeof(CFE_MSG_CommandHeader_t))]; /**< \brief cFE SB cmd hdr */
 
 } FM_ResetCmd_t;
 
@@ -86,7 +86,7 @@ typedef struct
 */
 typedef struct
 {
-    uint8   CmdHeader[CFE_SB_CMD_HDR_SIZE]; /**< \brief cFE SB cmd hdr */
+    uint8   CmdHeader[(sizeof(CFE_MSG_CommandHeader_t))]; /**< \brief cFE SB cmd hdr */
     uint16  Overwrite;                      /**< \brief Allow overwrite */
     char    Source[OS_MAX_PATH_LEN];        /**< \brief Source filename */
     char    Target[OS_MAX_PATH_LEN];        /**< \brief Target filename */
@@ -101,7 +101,7 @@ typedef struct
 */
 typedef struct
 {
-    uint8   CmdHeader[CFE_SB_CMD_HDR_SIZE]; /**< \brief cFE SB cmd hdr */
+    uint8   CmdHeader[(sizeof(CFE_MSG_CommandHeader_t))]; /**< \brief cFE SB cmd hdr */
     uint16  Overwrite;                      /**< \brief Allow overwrite */
     char    Source[OS_MAX_PATH_LEN];        /**< \brief Source filename */
     char    Target[OS_MAX_PATH_LEN];        /**< \brief Target filename */
@@ -116,7 +116,7 @@ typedef struct
 */
 typedef struct
 {
-    uint8   CmdHeader[CFE_SB_CMD_HDR_SIZE]; /**< \brief cFE SB cmd hdr */
+    uint8   CmdHeader[(sizeof(CFE_MSG_CommandHeader_t))]; /**< \brief cFE SB cmd hdr */
     char    Source[OS_MAX_PATH_LEN];        /**< \brief Source filename */
     char    Target[OS_MAX_PATH_LEN];        /**< \brief Target filename */
 
@@ -130,7 +130,7 @@ typedef struct
 */
 typedef struct
 {
-    uint8   CmdHeader[CFE_SB_CMD_HDR_SIZE]; /**< \brief cFE SB cmd hdr */
+    uint8   CmdHeader[(sizeof(CFE_MSG_CommandHeader_t))]; /**< \brief cFE SB cmd hdr */
     char    Filename[OS_MAX_PATH_LEN];      /**< \brief Delete filename */
 
 } FM_DeleteFileCmd_t;
@@ -143,7 +143,7 @@ typedef struct
 */
 typedef struct
 {
-    uint8   CmdHeader[CFE_SB_CMD_HDR_SIZE]; /**< \brief cFE SB cmd hdr */
+    uint8   CmdHeader[(sizeof(CFE_MSG_CommandHeader_t))]; /**< \brief cFE SB cmd hdr */
     char    Directory[OS_MAX_PATH_LEN];     /**< \brief Directory name */
 
 } FM_DeleteAllCmd_t;
@@ -156,7 +156,7 @@ typedef struct
 */
 typedef struct
 {
-    uint8   CmdHeader[CFE_SB_CMD_HDR_SIZE]; /**< \brief cFE SB cmd hdr */
+    uint8   CmdHeader[(sizeof(CFE_MSG_CommandHeader_t))]; /**< \brief cFE SB cmd hdr */
     char    Source[OS_MAX_PATH_LEN];        /**< \brief Source filename */
     char    Target[OS_MAX_PATH_LEN];        /**< \brief Target filename */
 
@@ -170,7 +170,7 @@ typedef struct
 */
 typedef struct
 {
-    uint8   CmdHeader[CFE_SB_CMD_HDR_SIZE]; /**< \brief cFE SB cmd hdr */
+    uint8   CmdHeader[(sizeof(CFE_MSG_CommandHeader_t))]; /**< \brief cFE SB cmd hdr */
     char    Source1[OS_MAX_PATH_LEN];       /**< \brief Source 1 filename */
     char    Source2[OS_MAX_PATH_LEN];       /**< \brief Source 2 filename */
     char    Target[OS_MAX_PATH_LEN];        /**< \brief Target filename */
@@ -185,7 +185,7 @@ typedef struct
 */
 typedef struct
 {
-    uint8   CmdHeader[CFE_SB_CMD_HDR_SIZE]; /**< \brief cFE SB cmd hdr */
+    uint8   CmdHeader[(sizeof(CFE_MSG_CommandHeader_t))]; /**< \brief cFE SB cmd hdr */
     char    Filename[OS_MAX_PATH_LEN];      /**< \brief Filename */
     uint32  FileInfoCRC;                    /**< \brief File info CRC method */
 
@@ -199,7 +199,7 @@ typedef struct
 */
 typedef struct
 {
-    uint8   CmdHeader[CFE_SB_CMD_HDR_SIZE]; /**< \brief cFE SB cmd hdr */
+    uint8   CmdHeader[(sizeof(CFE_MSG_CommandHeader_t))]; /**< \brief cFE SB cmd hdr */
 
 } FM_GetOpenFilesCmd_t;
 
@@ -211,7 +211,7 @@ typedef struct
 */
 typedef struct
 {
-    uint8   CmdHeader[CFE_SB_CMD_HDR_SIZE]; /**< \brief cFE SB cmd hdr */
+    uint8   CmdHeader[(sizeof(CFE_MSG_CommandHeader_t))]; /**< \brief cFE SB cmd hdr */
     char    Directory[OS_MAX_PATH_LEN];     /**< \brief Directory name */
 
 } FM_CreateDirCmd_t;
@@ -224,7 +224,7 @@ typedef struct
 */
 typedef struct
 {
-    uint8   CmdHeader[CFE_SB_CMD_HDR_SIZE]; /**< \brief cFE SB cmd hdr */
+    uint8   CmdHeader[(sizeof(CFE_MSG_CommandHeader_t))]; /**< \brief cFE SB cmd hdr */
     char    Directory[OS_MAX_PATH_LEN];     /**< \brief Directory name */
 
 } FM_DeleteDirCmd_t;
@@ -237,7 +237,7 @@ typedef struct
 */
 typedef struct
 {
-    uint8   CmdHeader[CFE_SB_CMD_HDR_SIZE]; /**< \brief cFE SB cmd hdr */
+    uint8   CmdHeader[(sizeof(CFE_MSG_CommandHeader_t))]; /**< \brief cFE SB cmd hdr */
     char    Directory[OS_MAX_PATH_LEN];     /**< \brief Directory name */
     char    Filename[OS_MAX_PATH_LEN];      /**< \brief Filename */
     uint8   GetSizeTimeMode;                /**< \brief Option to query size, time, and mode of files (CPU intensive) */
@@ -253,7 +253,7 @@ typedef struct
 */
 typedef struct
 {
-    uint8   CmdHeader[CFE_SB_CMD_HDR_SIZE]; /**< \brief cFE SB cmd hdr */
+    uint8   CmdHeader[(sizeof(CFE_MSG_CommandHeader_t))]; /**< \brief cFE SB cmd hdr */
     char    Directory[OS_MAX_PATH_LEN];     /**< \brief Directory name */
     uint32  DirListOffset;                  /**< \brief Index of 1st dir entry to put in packet */
     uint8   GetSizeTimeMode;                /**< \brief Option to query size, time, and mode of files (CPU intensive) */
@@ -269,7 +269,7 @@ typedef struct
 */
 typedef struct
 {
-    uint8   CmdHeader[CFE_SB_CMD_HDR_SIZE]; /**< \brief cFE SB cmd hdr */
+    uint8   CmdHeader[(sizeof(CFE_MSG_CommandHeader_t))]; /**< \brief cFE SB cmd hdr */
 
 } FM_GetFreeSpaceCmd_t;
 
@@ -281,7 +281,7 @@ typedef struct
 */
 typedef struct
 {
-    uint8   CmdHeader[CFE_SB_CMD_HDR_SIZE]; /**< \brief cFE SB cmd hdr */
+    uint8   CmdHeader[(sizeof(CFE_MSG_CommandHeader_t))]; /**< \brief cFE SB cmd hdr */
     uint32  TableEntryIndex;                /**< \brief Table entry index */
     uint32  TableEntryState;                /**< \brief New table entry state */
 
@@ -295,7 +295,7 @@ typedef struct
 */
 typedef struct
 {
-    uint8   CmdHeader[CFE_SB_CMD_HDR_SIZE]; /**< \brief cFE SB cmd hdr */
+    uint8   CmdHeader[(sizeof(CFE_MSG_CommandHeader_t))]; /**< \brief cFE SB cmd hdr */
     char    FileName[OS_MAX_PATH_LEN];      /**< \brief File name of the permissions to set */
     uint32  Mode;                           /**< \brief Permissions, passed directly to OS_chmod */
 
@@ -328,7 +328,7 @@ typedef struct
 **/
 typedef struct
 {
-    uint8   TlmHeader[CFE_SB_TLM_HDR_SIZE]; /**< \brief cFE SB tlm hdr */
+    uint8   TlmHeader[(sizeof(CFE_MSG_TelemetryHeader_t))]; /**< \brief cFE SB tlm hdr */
 
     char    DirName[OS_MAX_PATH_LEN];       /**< \fmtlmmnemonic \FM_DirName
                                                  \brief Directory Name */
@@ -372,7 +372,7 @@ typedef struct
 **/
 typedef struct
 {
-    uint8   TlmHeader[CFE_SB_TLM_HDR_SIZE]; /**< \brief cFE SB tlm hdr */
+    uint8   TlmHeader[(sizeof(CFE_MSG_TelemetryHeader_t))]; /**< \brief cFE SB tlm hdr */
 
     uint8   FileStatus;                     /**< \fmtlmmnemonic \FM_FileStatus
                                                  \brief Status indicating whether the file is open or closed */
@@ -417,7 +417,7 @@ typedef struct
 **/
 typedef struct
 {
-    uint8   TlmHeader[CFE_SB_TLM_HDR_SIZE]; /**< \brief cFE SB tlm hdr */
+    uint8   TlmHeader[(sizeof(CFE_MSG_TelemetryHeader_t))]; /**< \brief cFE SB tlm hdr */
 
     uint32  NumOpenFiles;                   /**< \fmtlmmnemonic \FM_TotalOpenFiles
                                                  \brief Number of files opened via cFE */
@@ -452,7 +452,7 @@ typedef struct
 **/
 typedef struct
 {
-    uint8   TlmHeader[CFE_SB_TLM_HDR_SIZE]; /**< \brief cFE SB tlm hdr */
+    uint8   TlmHeader[(sizeof(CFE_MSG_TelemetryHeader_t))]; /**< \brief cFE SB tlm hdr */
 
     FM_FreeSpacePktEntry_t  FileSys[FM_TABLE_ENTRY_COUNT]; /**< \fmtlmmnemonic \FM_PktFsList
                                                  \brief Array of file system free space entries */
@@ -470,7 +470,7 @@ typedef struct
 **/
 typedef struct
 {
-    uint8   TlmHeader[CFE_SB_TLM_HDR_SIZE]; /**< \brief cFE SB tlm hdr */
+    uint8   TlmHeader[(sizeof(CFE_MSG_TelemetryHeader_t))]; /**< \brief cFE SB tlm hdr */
 
     uint8   CommandCounter;		            /**< \fmtlmmnemonic \FM_CMDPC
                                                  \brief Application command counter */

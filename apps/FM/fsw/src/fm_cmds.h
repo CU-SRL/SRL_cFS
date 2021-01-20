@@ -53,14 +53,14 @@
 **  \param [in]  MessagePtr - Pointer to Software Bus command packet.
 **
 **  \returns
-**  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
-**  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
-**  \retstmt Boolean TRUE indicates command success  \endcode
+**  \retcode #true   \retdesc \copydoc true    \endcode
+**  \retcode #false  \retdesc \copydoc false   \endcode
+**  \retstmt Boolean true indicates command success  \endcode
 **  \endreturns
 **
 **  \sa #FM_NOOP_CC, #FM_Noop, #FM_NoopCmd_t
 **/
-boolean FM_NoopCmd(CFE_SB_MsgPtr_t MessagePtr);
+bool FM_NoopCmd(CFE_MSG_Message_t* MessagePtr);
 
 
 /**
@@ -74,14 +74,14 @@ boolean FM_NoopCmd(CFE_SB_MsgPtr_t MessagePtr);
 **  \param [in]  MessagePtr - Pointer to Software Bus command packet.
 **
 **  \returns
-**  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
-**  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
-**  \retstmt Boolean TRUE indicates command success  \endcode
+**  \retcode #true   \retdesc \copydoc true    \endcode
+**  \retcode #false  \retdesc \copydoc false   \endcode
+**  \retstmt Boolean true indicates command success  \endcode
 **  \endreturns
 **
 **  \sa #FM_RESET_CC, #FM_Reset, #FM_ResetCmd_t
 **/
-boolean FM_ResetCountersCmd(CFE_SB_MsgPtr_t MessagePtr);
+bool FM_ResetCountersCmd(CFE_MSG_Message_t* MessagePtr);
 
 
 /**
@@ -103,14 +103,14 @@ boolean FM_ResetCountersCmd(CFE_SB_MsgPtr_t MessagePtr);
 **  \param [in]  MessagePtr - Pointer to Software Bus command packet.
 **
 **  \returns
-**  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
-**  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
-**  \retstmt Boolean TRUE indicates command success  \endcode
+**  \retcode #true   \retdesc \copydoc true    \endcode
+**  \retcode #false  \retdesc \copydoc false   \endcode
+**  \retstmt Boolean true indicates command success  \endcode
 **  \endreturns
 **
 **  \sa #FM_COPY_CC, #FM_Copy, #FM_CopyFileCmd_t
 **/
-boolean FM_CopyFileCmd(CFE_SB_MsgPtr_t MessagePtr);
+bool FM_CopyFileCmd(CFE_MSG_Message_t* MessagePtr);
 
 
 /**
@@ -125,14 +125,14 @@ boolean FM_CopyFileCmd(CFE_SB_MsgPtr_t MessagePtr);
 **  \param [in]  MessagePtr - Pointer to Software Bus command packet.
 **
 **  \returns
-**  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
-**  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
-**  \retstmt Boolean TRUE indicates command success  \endcode
+**  \retcode #true   \retdesc \copydoc true    \endcode
+**  \retcode #false  \retdesc \copydoc false   \endcode
+**  \retstmt Boolean true indicates command success  \endcode
 **  \endreturns
 **
 **  \sa #FM_MOVE_CC, #FM_Move, #FM_MoveFileCmd_t
 **/
-boolean FM_MoveFileCmd(CFE_SB_MsgPtr_t MessagePtr);
+bool FM_MoveFileCmd(CFE_MSG_Message_t* MessagePtr);
 
 
 /**
@@ -147,14 +147,14 @@ boolean FM_MoveFileCmd(CFE_SB_MsgPtr_t MessagePtr);
 **  \param [in]  MessagePtr - Pointer to Software Bus command packet.
 **
 **  \returns
-**  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
-**  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
-**  \retstmt Boolean TRUE indicates command success  \endcode
+**  \retcode #true   \retdesc \copydoc true    \endcode
+**  \retcode #false  \retdesc \copydoc false   \endcode
+**  \retstmt Boolean true indicates command success  \endcode
 **  \endreturns
 **
 **  \sa #FM_RENAME_CC, #FM_Rename, #FM_RenameFileCmd_t
 **/
-boolean FM_RenameFileCmd(CFE_SB_MsgPtr_t MessagePtr);
+bool FM_RenameFileCmd(CFE_MSG_Message_t* MessagePtr);
 
 
 /**
@@ -168,14 +168,14 @@ boolean FM_RenameFileCmd(CFE_SB_MsgPtr_t MessagePtr);
 **  \param [in]  MessagePtr - Pointer to Software Bus command packet.
 **
 **  \returns
-**  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
-**  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
-**  \retstmt Boolean TRUE indicates command success  \endcode
+**  \retcode #true   \retdesc \copydoc true    \endcode
+**  \retcode #false  \retdesc \copydoc false   \endcode
+**  \retstmt Boolean true indicates command success  \endcode
 **  \endreturns
 **
 **  \sa #FM_DELETE_CC, #FM_Delete, #FM_DeleteFileCmd_t
 **/
-boolean FM_DeleteFileCmd(CFE_SB_MsgPtr_t MessagePtr);
+bool FM_DeleteFileCmd(CFE_MSG_Message_t* MessagePtr);
 
 
 /**
@@ -197,14 +197,14 @@ boolean FM_DeleteFileCmd(CFE_SB_MsgPtr_t MessagePtr);
 **  \param [in]  MessagePtr - Pointer to Software Bus command packet.
 **
 **  \returns
-**  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
-**  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
-**  \retstmt Boolean TRUE indicates command success  \endcode
+**  \retcode #true   \retdesc \copydoc true    \endcode
+**  \retcode #false  \retdesc \copydoc false   \endcode
+**  \retstmt Boolean true indicates command success  \endcode
 **  \endreturns
 **
 **  \sa #FM_DELETE_ALL_CC, #FM_DeleteAll, #FM_DeleteAllCmd_t
 **/
-boolean FM_DeleteAllFilesCmd(CFE_SB_MsgPtr_t MessagePtr);
+bool FM_DeleteAllFilesCmd(CFE_MSG_Message_t* MessagePtr);
 
 
 /**
@@ -227,14 +227,14 @@ boolean FM_DeleteAllFilesCmd(CFE_SB_MsgPtr_t MessagePtr);
 **  \param [in]  MessagePtr - Pointer to Software Bus command packet.
 **
 **  \returns
-**  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
-**  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
-**  \retstmt Boolean TRUE indicates command success  \endcode
+**  \retcode #true   \retdesc \copydoc true    \endcode
+**  \retcode #false  \retdesc \copydoc false   \endcode
+**  \retstmt Boolean true indicates command success  \endcode
 **  \endreturns
 **
 **  \sa #FM_DECOMPRESS_CC, #FM_Decompress, #FM_DecompressCmd_t
 **/
-boolean FM_DecompressFileCmd(CFE_SB_MsgPtr_t MessagePtr);
+bool FM_DecompressFileCmd(CFE_MSG_Message_t* MessagePtr);
 
 
 /**
@@ -258,14 +258,14 @@ boolean FM_DecompressFileCmd(CFE_SB_MsgPtr_t MessagePtr);
 **  \param [in]  MessagePtr - Pointer to Software Bus command packet.
 **
 **  \returns
-**  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
-**  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
-**  \retstmt Boolean TRUE indicates command success  \endcode
+**  \retcode #true   \retdesc \copydoc true    \endcode
+**  \retcode #false  \retdesc \copydoc false   \endcode
+**  \retstmt Boolean true indicates command success  \endcode
 **  \endreturns
 **
 **  \sa #FM_CONCAT_CC, #FM_Concat, #FM_ConcatCmd_t
 **/
-boolean FM_ConcatFilesCmd(CFE_SB_MsgPtr_t MessagePtr);
+bool FM_ConcatFilesCmd(CFE_MSG_Message_t* MessagePtr);
 
 
 /**
@@ -288,14 +288,14 @@ boolean FM_ConcatFilesCmd(CFE_SB_MsgPtr_t MessagePtr);
 **  \param [in]  MessagePtr - Pointer to Software Bus command packet.
 **
 **  \returns
-**  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
-**  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
-**  \retstmt Boolean TRUE indicates command success  \endcode
+**  \retcode #true   \retdesc \copydoc true    \endcode
+**  \retcode #false  \retdesc \copydoc false   \endcode
+**  \retstmt Boolean true indicates command success  \endcode
 **  \endreturns
 **
 **  \sa #FM_GET_FILE_INFO_CC, #FM_GetFileInfo, #FM_GetFileInfoCmd_t, #FM_FileInfoPkt_t
 **/
-boolean FM_GetFileInfoCmd(CFE_SB_MsgPtr_t MessagePtr);
+bool FM_GetFileInfoCmd(CFE_MSG_Message_t* MessagePtr);
 
 
 /**
@@ -310,14 +310,14 @@ boolean FM_GetFileInfoCmd(CFE_SB_MsgPtr_t MessagePtr);
 **  \param [in]  MessagePtr - Pointer to Software Bus command packet.
 **
 **  \returns
-**  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
-**  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
-**  \retstmt Boolean TRUE indicates command success  \endcode
+**  \retcode #true   \retdesc \copydoc true    \endcode
+**  \retcode #false  \retdesc \copydoc false   \endcode
+**  \retstmt Boolean true indicates command success  \endcode
 **  \endreturns
 **
 **  \sa #FM_GET_OPEN_FILES_CC, #FM_GetOpenFiles, #FM_GetOpenFilesCmd_t, #FM_OpenFilesPkt_t
 **/
-boolean FM_GetOpenFilesCmd(CFE_SB_MsgPtr_t MessagePtr);
+bool FM_GetOpenFilesCmd(CFE_MSG_Message_t* MessagePtr);
 
 
 /**
@@ -331,14 +331,14 @@ boolean FM_GetOpenFilesCmd(CFE_SB_MsgPtr_t MessagePtr);
 **  \param [in]  MessagePtr - Pointer to Software Bus command packet.
 **
 **  \returns
-**  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
-**  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
-**  \retstmt Boolean TRUE indicates command success  \endcode
+**  \retcode #true   \retdesc \copydoc true    \endcode
+**  \retcode #false  \retdesc \copydoc false   \endcode
+**  \retstmt Boolean true indicates command success  \endcode
 **  \endreturns
 **
 **  \sa #FM_CREATE_DIR_CC, #FM_CreateDir, #FM_CreateDirCmd_t
 **/
-boolean FM_CreateDirectoryCmd(CFE_SB_MsgPtr_t MessagePtr);
+bool FM_CreateDirectoryCmd(CFE_MSG_Message_t* MessagePtr);
 
 
 /**
@@ -352,14 +352,14 @@ boolean FM_CreateDirectoryCmd(CFE_SB_MsgPtr_t MessagePtr);
 **  \param [in]  MessagePtr - Pointer to Software Bus command packet.
 **
 **  \returns
-**  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
-**  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
-**  \retstmt Boolean TRUE indicates command success  \endcode
+**  \retcode #true   \retdesc \copydoc true    \endcode
+**  \retcode #false  \retdesc \copydoc false   \endcode
+**  \retstmt Boolean true indicates command success  \endcode
 **  \endreturns
 **
 **  \sa #FM_DELETE_DIR_CC, #FM_DeleteDir, #FM_DeleteDirCmd_t
 **/
-boolean FM_DeleteDirectoryCmd(CFE_SB_MsgPtr_t MessagePtr);
+bool FM_DeleteDirectoryCmd(CFE_MSG_Message_t* MessagePtr);
 
 
 /**
@@ -381,15 +381,15 @@ boolean FM_DeleteDirectoryCmd(CFE_SB_MsgPtr_t MessagePtr);
 **  \param [in]  MessagePtr - Pointer to Software Bus command packet.
 **
 **  \returns
-**  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
-**  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
-**  \retstmt Boolean TRUE indicates command success  \endcode
+**  \retcode #true   \retdesc \copydoc true    \endcode
+**  \retcode #false  \retdesc \copydoc false   \endcode
+**  \retstmt Boolean true indicates command success  \endcode
 **  \endreturns
 **
 **  \sa #FM_GET_DIR_FILE_CC, #FM_GetDirFile, #FM_GetDirFileCmd_t,
         #FM_DirListFileStats_t, FM_DirListEntry_t
 **/
-boolean FM_GetDirListFileCmd(CFE_SB_MsgPtr_t MessagePtr);
+bool FM_GetDirListFileCmd(CFE_MSG_Message_t* MessagePtr);
 
 
 /**
@@ -412,14 +412,14 @@ boolean FM_GetDirListFileCmd(CFE_SB_MsgPtr_t MessagePtr);
 **  \param [in]  MessagePtr - Pointer to Software Bus command packet.
 **
 **  \returns
-**  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
-**  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
-**  \retstmt Boolean TRUE indicates command success  \endcode
+**  \retcode #true   \retdesc \copydoc true    \endcode
+**  \retcode #false  \retdesc \copydoc false   \endcode
+**  \retstmt Boolean true indicates command success  \endcode
 **  \endreturns
 **
 **  \sa #FM_GET_DIR_PKT_CC, #FM_GetDirPkt, #FM_GetDirPktCmd_t, #FM_DirListPkt_t
 **/
-boolean FM_GetDirListPktCmd(CFE_SB_MsgPtr_t MessagePtr);
+bool FM_GetDirListPktCmd(CFE_MSG_Message_t* MessagePtr);
 
 
 /**
@@ -435,14 +435,14 @@ boolean FM_GetDirListPktCmd(CFE_SB_MsgPtr_t MessagePtr);
 **  \param [in]  MessagePtr - Pointer to Software Bus command packet.
 **
 **  \returns
-**  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
-**  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
-**  \retstmt Boolean TRUE indicates command success  \endcode
+**  \retcode #true   \retdesc \copydoc true    \endcode
+**  \retcode #false  \retdesc \copydoc false   \endcode
+**  \retstmt Boolean true indicates command success  \endcode
 **  \endreturns
 **
 **  \sa #FM_GET_FREE_SPACE_CC, #FM_GetFreeSpace, #FM_GetFreeSpaceCmd_t, #FM_FreeSpacePkt_t
 **/
-boolean FM_GetFreeSpaceCmd(CFE_SB_MsgPtr_t MessagePtr);
+bool FM_GetFreeSpaceCmd(CFE_MSG_Message_t* MessagePtr);
 
 
 /**
@@ -457,14 +457,14 @@ boolean FM_GetFreeSpaceCmd(CFE_SB_MsgPtr_t MessagePtr);
 **  \param [in]  MessagePtr - Pointer to Software Bus command packet.
 **
 **  \returns
-**  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
-**  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
-**  \retstmt Boolean TRUE indicates command success  \endcode
+**  \retcode #true   \retdesc \copydoc true    \endcode
+**  \retcode #false  \retdesc \copydoc false   \endcode
+**  \retstmt Boolean true indicates command success  \endcode
 **  \endreturns
 **
 **  \sa #FM_SET_TABLE_STATE_CC, #FM_SetTableState, #FM_SetTableStateCmd_t, #FM_TableEntry_t
 **/
-boolean FM_SetTableStateCmd(CFE_SB_MsgPtr_t MessagePtr);
+bool FM_SetTableStateCmd(CFE_MSG_Message_t* MessagePtr);
 
 
 /**
@@ -479,14 +479,14 @@ boolean FM_SetTableStateCmd(CFE_SB_MsgPtr_t MessagePtr);
 **  \param [in]  MessagePtr - Pointer to Software Bus command packet.
 **
 **  \returns
-**  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
-**  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
-**  \retstmt Boolean TRUE indicates command success  \endcode
+**  \retcode #true   \retdesc \copydoc true    \endcode
+**  \retcode #false  \retdesc \copydoc false   \endcode
+**  \retstmt Boolean true indicates command success  \endcode
 **  \endreturns
 **
 **  \sa #FM_SET_PERM_CC, #FM_SetPermCmd_t, #FM_SET_PERM_CMD_EID, #FM_SET_PERM_ERR_EID
 **/
-boolean FM_SetPermissionsCmd(CFE_SB_MsgPtr_t MessagePtr);
+bool FM_SetPermissionsCmd(CFE_MSG_Message_t* MessagePtr);
 
 #endif /* _fm_cmds_h_ */
 

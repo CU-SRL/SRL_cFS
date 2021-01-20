@@ -125,7 +125,7 @@ int32 FM_ValidateTable(FM_FreeSpaceTable_t *TablePtr)
                 /* Send event describing first error only*/
                 if (CountBad == 1)
                 {
-                    CFE_EVS_SendEvent(FM_TABLE_VERIFY_EMPTY_ERR_EID, CFE_EVS_ERROR,
+                    CFE_EVS_SendEvent(FM_TABLE_VERIFY_EMPTY_ERR_EID, CFE_EVS_EventType_ERROR,
                        "Free Space Table verify error: index = %d, empty name string", (int)i);
                 }
             }
@@ -137,7 +137,7 @@ int32 FM_ValidateTable(FM_FreeSpaceTable_t *TablePtr)
                 /* Send event describing first error only*/
                 if (CountBad == 1)
                 {
-                    CFE_EVS_SendEvent(FM_TABLE_VERIFY_TOOLONG_ERR_EID, CFE_EVS_ERROR,
+                    CFE_EVS_SendEvent(FM_TABLE_VERIFY_TOOLONG_ERR_EID, CFE_EVS_EventType_ERROR,
                        "Free Space Table verify error: index = %d, name too long", (int)i);
                 }
             }
@@ -149,7 +149,7 @@ int32 FM_ValidateTable(FM_FreeSpaceTable_t *TablePtr)
                 /* Send event describing first error only*/
                 if (CountBad == 1)
                 {
-                    CFE_EVS_SendEvent(FM_TABLE_VERIFY_INVALID_ERR_EID, CFE_EVS_ERROR,
+                    CFE_EVS_SendEvent(FM_TABLE_VERIFY_INVALID_ERR_EID, CFE_EVS_EventType_ERROR,
                        "Free Space Table verify error: index = %d, invalid name = %s",
                                       (int)i, TablePtr->FileSys[i].Name);
                 }
@@ -173,7 +173,7 @@ int32 FM_ValidateTable(FM_FreeSpaceTable_t *TablePtr)
             /* Send event describing first error only*/
             if (CountBad == 1)
             {
-                CFE_EVS_SendEvent(FM_TABLE_VERIFY_BAD_STATE_ERR_EID, CFE_EVS_ERROR,
+                CFE_EVS_SendEvent(FM_TABLE_VERIFY_BAD_STATE_ERR_EID, CFE_EVS_EventType_ERROR,
                    "Table verify error: index = %d, invalid state = %d",
                                   (int)i, (int)TablePtr->FileSys[i].State);
             }
@@ -181,7 +181,7 @@ int32 FM_ValidateTable(FM_FreeSpaceTable_t *TablePtr)
     }
 
     /* Display verify results */
-    CFE_EVS_SendEvent(FM_TABLE_VERIFY_EID, CFE_EVS_INFORMATION,
+    CFE_EVS_SendEvent(FM_TABLE_VERIFY_EID, CFE_EVS_EventType_INFORMATION,
        "Free Space Table verify results: good entries = %d, bad = %d, unused = %d",
                       (int)CountGood, (int)CountBad, (int)CountUnused);
 

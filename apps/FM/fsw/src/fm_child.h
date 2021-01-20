@@ -460,7 +460,7 @@ void FM_ChildSetPermissionsCmd(FM_ChildQueueEntry_t *CmdArgs);
 **
 **  \sa #FM_GetDirFile
 **/
-boolean FM_ChildDirListFileInit(int32 *FileHandlePtr, char *Directory, char *Filename);
+bool FM_ChildDirListFileInit(int32 *FileHandlePtr, char *Directory, char *Filename);
 
 
 /**
@@ -522,7 +522,7 @@ int32 FM_ChildSizeTimeMode(const char *Filename, uint32 *FileSize, uint32 *FileT
 **       each directory entry when processing either the Get Directory List to File
 **       or Get Directory List to Packet commands.
 **       However it only will sleep if FM_CHILD_STAT_SLEEP_FILECOUNT reaches zero and call FM_ChildSizeTimeMode if
-**       getSizeTimeMode is TRUE, otherwise this function has no effect
+**       getSizeTimeMode is true, otherwise this function has no effect
 **  
 **  \par Assumptions, External Events, and Notes:
 **
@@ -539,7 +539,7 @@ int32 FM_ChildSizeTimeMode(const char *Filename, uint32 *FileSize, uint32 *FileT
 **
 **  \sa #FM_GetDirFile, #FM_GetDirPkt
 **/
-void FM_ChildSleepStat(const char *Filename, FM_DirListEntry_t *DirListData, int32 *FilesTillSleep, boolean GetSizeTimeMode);
+void FM_ChildSleepStat(const char *Filename, FM_DirListEntry_t *DirListData, int32 *FilesTillSleep, bool GetSizeTimeMode);
 
 
 #endif /* _fm_child_h_ */

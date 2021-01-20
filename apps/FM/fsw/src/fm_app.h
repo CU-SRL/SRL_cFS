@@ -102,7 +102,7 @@ int32 FM_AppInit(void);
 **
 **  \sa #FM_ReportHK, #FM_ProcessCmd
 **/
-void FM_ProcessPkt(CFE_SB_MsgPtr_t MessagePtr);
+void FM_ProcessPkt(CFE_MSG_Message_t* MessagePtr);
 
 
 /**
@@ -121,7 +121,7 @@ void FM_ProcessPkt(CFE_SB_MsgPtr_t MessagePtr);
 **      #FM_GetOpenFiles, #FM_CreateDir, #FM_DeleteDir, #FM_GetDirFile,
 **      #FM_GetDirPkt, #FM_GetFreeSpace
 **/
-void FM_ProcessCmd(CFE_SB_MsgPtr_t MessagePtr);
+void FM_ProcessCmd(CFE_MSG_Message_t* MessagePtr);
 
 
 /**
@@ -141,7 +141,7 @@ void FM_ProcessCmd(CFE_SB_MsgPtr_t MessagePtr);
 **
 **  \sa #FM_HousekeepingCmd_t, #FM_HousekeepingPkt_t
 **/
-void FM_ReportHK(CFE_SB_MsgPtr_t MessagePtr);
+void FM_ReportHK(CFE_MSG_Message_t* MessagePtr);
 
 
 #endif /* _fm_app_h_ */

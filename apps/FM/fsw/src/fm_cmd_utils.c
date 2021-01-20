@@ -40,7 +40,7 @@
 #include <ctype.h>
 
 static uint32 OpenFileCount = 0;
-static boolean FileIsOpen = FALSE;
+static bool FileIsOpen = false;
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -48,10 +48,10 @@ static boolean FileIsOpen = FALSE;
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-boolean FM_IsValidCmdPktLength(CFE_SB_MsgPtr_t CmdPacket, uint16 ExpectedLength,
+bool FM_IsValidCmdPktLength(CFE_MSG_Message_t* CmdPacket, uint16 ExpectedLength,
                                 uint32 EventID, char *CmdText)
 {
-    boolean FunctionResult = TRUE;
+    bool FunctionResult = true;
     uint16 ActualLength = 0;
 
     ActualLength = CFE_SB_GetTotalMsgLength(CmdPacket);
@@ -59,9 +59,9 @@ boolean FM_IsValidCmdPktLength(CFE_SB_MsgPtr_t CmdPacket, uint16 ExpectedLength,
     /* Verify command packet length */
     if (ActualLength != ExpectedLength)
     {
-        FunctionResult = FALSE;
+        FunctionResult = false;
 
-        CFE_EVS_SendEvent(EventID, CFE_EVS_ERROR,
+        CFE_EVS_SendEvent(EventID, CFE_EVS_EventType_ERROR,
                          "%s error: invalid command packet length: expected = %d, actual = %d",
                           CmdText, ExpectedLength, ActualLength);
     }
@@ -77,17 +77,17 @@ boolean FM_IsValidCmdPktLength(CFE_SB_MsgPtr_t CmdPacket, uint16 ExpectedLength,
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-boolean FM_VerifyOverwrite(uint16 Overwrite, uint32 EventID, char *CmdText)
+bool FM_VerifyOverwrite(uint16 Overwrite, uint32 EventID, char *CmdText)
 {
-    boolean FunctionResult = TRUE;
+    bool FunctionResult = true;
 
-    /* Acceptable values are TRUE (one) and FALSE (zero) */
-    if ((Overwrite != TRUE) && (Overwrite != FALSE))
+    /* Acceptable values are true (one) and false (zero) */
+    if ((Overwrite != true) && (Overwrite != false))
     {
-        CFE_EVS_SendEvent(EventID, CFE_EVS_ERROR,
+        CFE_EVS_SendEvent(EventID, CFE_EVS_EventType_ERROR,
                          "%s error: invalid overwrite = %d", CmdText, Overwrite);
 
-        FunctionResult = FALSE;
+        FunctionResult = false;
     }
 
     return(FunctionResult);
@@ -172,7 +172,7 @@ static void SearchOpenFileData(uint32 ObjId, void* CallbackArg)
         {
             if (strcmp(Fname, FdProp.Path) == 0)
             {
-                FileIsOpen = TRUE;
+                FileIsOpen = true;
             }
         }
     }
@@ -180,11 +180,11 @@ static void SearchOpenFileData(uint32 ObjId, void* CallbackArg)
 } /* End SearchOpenFileData() */
 
 
-uint32 FM_GetFilenameState(char *Filename, uint32 BufferSize, boolean FileInfoCmd)
+uint32 FM_GetFilenameState(char *Filename, uint32 BufferSize, bool FileInfoCmd)
 {
     os_fstat_t FileStatus;
     uint32     FilenameState = FM_NAME_IS_INVALID;
-    boolean    FilenameIsValid = FALSE;
+    bool    FilenameIsValid = false;
     int32      StringLength = 0;
 
 
@@ -224,12 +224,12 @@ uint32 FM_GetFilenameState(char *Filename, uint32 BufferSize, boolean FileInfoCm
             {
                 /* Filename is a file, but is it open? */
                 FilenameState = FM_NAME_IS_FILE_CLOSED;
-                FileIsOpen = FALSE;
+                FileIsOpen = false;
                 
 
                 OS_ForEachObject(0, SearchOpenFileData, Filename);
 
-                if(FileIsOpen == TRUE)
+                if(FileIsOpen == true)
                 {
                     FilenameState = FM_NAME_IS_FILE_OPEN;
                 }
@@ -280,13 +280,13 @@ uint32 FM_VerifyNameValid(char *Name, uint32 BufferSize, uint32 EventID, char *C
     uint32 FilenameState = FM_NAME_IS_INVALID;
 
     /* Looking for filename state != FM_NAME_IS_INVALID */
-    FilenameState = FM_GetFilenameState(Name, BufferSize, TRUE);
+    FilenameState = FM_GetFilenameState(Name, BufferSize, true);
 
     if (FilenameState == FM_NAME_IS_INVALID)
     {
         /* Insert a terminator in case the invalid string did not have one */
         Name[BufferSize - 1] = '\0';
-        CFE_EVS_SendEvent(EventID, CFE_EVS_ERROR,
+        CFE_EVS_SendEvent(EventID, CFE_EVS_EventType_ERROR,
                          "%s error: invalid name: name = %s", CmdText, Name);
     }
 
@@ -301,43 +301,43 @@ uint32 FM_VerifyNameValid(char *Name, uint32 BufferSize, uint32 EventID, char *C
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-boolean FM_VerifyFileClosed(char *Filename, uint32 BufferSize, uint32 EventID, char *CmdText)
+bool FM_VerifyFileClosed(char *Filename, uint32 BufferSize, uint32 EventID, char *CmdText)
 {
-    boolean Result = FALSE;
+    bool Result = false;
     uint32 FilenameState = FM_NAME_IS_INVALID;
 
     /* Looking for filename state = file (closed) */
-    FilenameState = FM_GetFilenameState(Filename, BufferSize, FALSE);
+    FilenameState = FM_GetFilenameState(Filename, BufferSize, false);
 
     if (FilenameState == FM_NAME_IS_INVALID)
     {
         /* Insert a terminator in case the invalid string did not have one */
         Filename[BufferSize - 1] = '\0';
-        CFE_EVS_SendEvent((EventID + FM_FNAME_INVALID_EID_OFFSET), CFE_EVS_ERROR,
+        CFE_EVS_SendEvent((EventID + FM_FNAME_INVALID_EID_OFFSET), CFE_EVS_EventType_ERROR,
                          "%s error: filename is invalid: name = %s", CmdText, Filename);
     }
     else if (FilenameState == FM_NAME_IS_NOT_IN_USE)
     {
-        CFE_EVS_SendEvent((EventID + FM_FNAME_DNE_EID_OFFSET), CFE_EVS_ERROR,
+        CFE_EVS_SendEvent((EventID + FM_FNAME_DNE_EID_OFFSET), CFE_EVS_EventType_ERROR,
                          "%s error: file does not exist: name = %s", CmdText, Filename);
     }
     else if (FilenameState == FM_NAME_IS_FILE_OPEN)
     {
-        CFE_EVS_SendEvent((EventID + FM_FNAME_ISOPEN_EID_OFFSET), CFE_EVS_ERROR,
+        CFE_EVS_SendEvent((EventID + FM_FNAME_ISOPEN_EID_OFFSET), CFE_EVS_EventType_ERROR,
                          "%s error: file is already open: name = %s", CmdText, Filename);
     }
     else if (FilenameState == FM_NAME_IS_FILE_CLOSED)
     {
-        Result = TRUE;
+        Result = true;
     }
     else if (FilenameState == FM_NAME_IS_DIRECTORY)
     {
-        CFE_EVS_SendEvent((EventID + FM_FNAME_ISDIR_EID_OFFSET), CFE_EVS_ERROR,
+        CFE_EVS_SendEvent((EventID + FM_FNAME_ISDIR_EID_OFFSET), CFE_EVS_EventType_ERROR,
                          "%s error: filename is a directory: name = %s", CmdText, Filename);
     }
     else
     {
-        CFE_EVS_SendEvent((EventID + FM_FNAME_UNKNOWN_EID_OFFSET), CFE_EVS_ERROR,
+        CFE_EVS_SendEvent((EventID + FM_FNAME_UNKNOWN_EID_OFFSET), CFE_EVS_EventType_ERROR,
                           "%s error: filename has unknown state: name = %s, state = %d",
                           CmdText, Filename, FilenameState);
     }
@@ -353,39 +353,39 @@ boolean FM_VerifyFileClosed(char *Filename, uint32 BufferSize, uint32 EventID, c
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-boolean FM_VerifyFileExists(char *Filename, uint32 BufferSize, uint32 EventID, char *CmdText)
+bool FM_VerifyFileExists(char *Filename, uint32 BufferSize, uint32 EventID, char *CmdText)
 {
-    boolean Result = FALSE;
+    bool Result = false;
     uint32 FilenameState = FM_NAME_IS_INVALID;
 
     /* Looking for filename state = file (open or closed) */
-    FilenameState = FM_GetFilenameState(Filename, BufferSize, FALSE);
+    FilenameState = FM_GetFilenameState(Filename, BufferSize, false);
 
     if (FilenameState == FM_NAME_IS_INVALID)
     {
         /* Insert a terminator in case the invalid string did not have one */
         Filename[BufferSize - 1] = '\0';
-        CFE_EVS_SendEvent((EventID + FM_FNAME_INVALID_EID_OFFSET) , CFE_EVS_ERROR,
+        CFE_EVS_SendEvent((EventID + FM_FNAME_INVALID_EID_OFFSET) , CFE_EVS_EventType_ERROR,
                          "%s error: filename is invalid: name = %s", CmdText, Filename);
     }
     else if (FilenameState == FM_NAME_IS_NOT_IN_USE)
     {
-        CFE_EVS_SendEvent((EventID + FM_FNAME_DNE_EID_OFFSET), CFE_EVS_ERROR,
+        CFE_EVS_SendEvent((EventID + FM_FNAME_DNE_EID_OFFSET), CFE_EVS_EventType_ERROR,
                          "%s error: file does not exist: name = %s", CmdText, Filename);
     }
     else if ((FilenameState == FM_NAME_IS_FILE_OPEN) ||
              (FilenameState == FM_NAME_IS_FILE_CLOSED))
     {
-        Result = TRUE;
+        Result = true;
     }
     else if (FilenameState == FM_NAME_IS_DIRECTORY)
     {
-        CFE_EVS_SendEvent((EventID + FM_FNAME_ISDIR_EID_OFFSET), CFE_EVS_ERROR,
+        CFE_EVS_SendEvent((EventID + FM_FNAME_ISDIR_EID_OFFSET), CFE_EVS_EventType_ERROR,
                          "%s error: filename is a directory: name = %s", CmdText, Filename);
     }
     else
     {
-        CFE_EVS_SendEvent((EventID + FM_FNAME_UNKNOWN_EID_OFFSET), CFE_EVS_ERROR,
+        CFE_EVS_SendEvent((EventID + FM_FNAME_UNKNOWN_EID_OFFSET), CFE_EVS_EventType_ERROR,
                           "%s error: filename has unknown state: name = %s, state = %d",
                           CmdText, Filename, FilenameState);
     }
@@ -401,39 +401,39 @@ boolean FM_VerifyFileExists(char *Filename, uint32 BufferSize, uint32 EventID, c
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-boolean FM_VerifyFileNoExist(char *Filename, uint32 BufferSize, uint32 EventID, char *CmdText)
+bool FM_VerifyFileNoExist(char *Filename, uint32 BufferSize, uint32 EventID, char *CmdText)
 {
-    boolean Result = FALSE;
+    bool Result = false;
     uint32 FilenameState = FM_NAME_IS_INVALID;
  
     /* Looking for filename state = not in use */
-    FilenameState = FM_GetFilenameState(Filename, BufferSize, FALSE);
+    FilenameState = FM_GetFilenameState(Filename, BufferSize, false);
 
     if (FilenameState == FM_NAME_IS_INVALID)
     {
         /* Insert a terminator in case the invalid string did not have one */
         Filename[BufferSize - 1] = '\0';
-        CFE_EVS_SendEvent((EventID + FM_FNAME_INVALID_EID_OFFSET), CFE_EVS_ERROR,
+        CFE_EVS_SendEvent((EventID + FM_FNAME_INVALID_EID_OFFSET), CFE_EVS_EventType_ERROR,
                          "%s error: filename is invalid: name = %s", CmdText, Filename);
     }
     else if (FilenameState == FM_NAME_IS_NOT_IN_USE)
     {
-        Result = TRUE;
+        Result = true;
     }
     else if ((FilenameState == FM_NAME_IS_FILE_OPEN) ||
              (FilenameState == FM_NAME_IS_FILE_CLOSED))
     {
-        CFE_EVS_SendEvent((EventID + FM_FNAME_EXIST_EID_OFFSET), CFE_EVS_ERROR,
+        CFE_EVS_SendEvent((EventID + FM_FNAME_EXIST_EID_OFFSET), CFE_EVS_EventType_ERROR,
                          "%s error: file already exists: name = %s", CmdText, Filename);
     }
     else if (FilenameState == FM_NAME_IS_DIRECTORY)
     {
-        CFE_EVS_SendEvent((EventID + FM_FNAME_ISDIR_EID_OFFSET), CFE_EVS_ERROR,
+        CFE_EVS_SendEvent((EventID + FM_FNAME_ISDIR_EID_OFFSET), CFE_EVS_EventType_ERROR,
                          "%s error: filename is a directory: name = %s", CmdText, Filename);
     }
     else
     {
-        CFE_EVS_SendEvent((EventID + FM_FNAME_UNKNOWN_EID_OFFSET), CFE_EVS_ERROR,
+        CFE_EVS_SendEvent((EventID + FM_FNAME_UNKNOWN_EID_OFFSET), CFE_EVS_EventType_ERROR,
                           "%s error: directory name has unknown state: name = %s, state = %d",
                           CmdText, Filename, FilenameState);
     }
@@ -449,43 +449,43 @@ boolean FM_VerifyFileNoExist(char *Filename, uint32 BufferSize, uint32 EventID, 
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-boolean FM_VerifyFileNotOpen(char *Filename, uint32 BufferSize, uint32 EventID, char *CmdText)
+bool FM_VerifyFileNotOpen(char *Filename, uint32 BufferSize, uint32 EventID, char *CmdText)
 {
-    boolean Result = FALSE;
+    bool Result = false;
     uint32 FilenameState = FM_NAME_IS_INVALID;
 
     /* Looking for filename state = file (closed) or name not in use */
-    FilenameState = FM_GetFilenameState(Filename, BufferSize, FALSE);
+    FilenameState = FM_GetFilenameState(Filename, BufferSize, false);
 
     if (FilenameState == FM_NAME_IS_INVALID)
     {
         /* Insert a terminator in case the invalid string did not have one */
         Filename[BufferSize - 1] = '\0';
-        CFE_EVS_SendEvent((EventID + FM_FNAME_INVALID_EID_OFFSET), CFE_EVS_ERROR,
+        CFE_EVS_SendEvent((EventID + FM_FNAME_INVALID_EID_OFFSET), CFE_EVS_EventType_ERROR,
                          "%s error: filename is invalid: name = %s", CmdText, Filename);
     }
     else if (FilenameState == FM_NAME_IS_NOT_IN_USE)
     {
-        Result = TRUE;
+        Result = true;
     }
     else if (FilenameState == FM_NAME_IS_FILE_OPEN)
     {
-        CFE_EVS_SendEvent((EventID + FM_FNAME_ISOPEN_EID_OFFSET), CFE_EVS_ERROR,
+        CFE_EVS_SendEvent((EventID + FM_FNAME_ISOPEN_EID_OFFSET), CFE_EVS_EventType_ERROR,
                           "%s error: file exists as an open file: name = %s", 
                           CmdText, Filename);
     }
     else if (FilenameState == FM_NAME_IS_FILE_CLOSED)
     {
-        Result = TRUE;
+        Result = true;
     }
     else if (FilenameState == FM_NAME_IS_DIRECTORY)
     {
-        CFE_EVS_SendEvent((EventID + FM_FNAME_ISDIR_EID_OFFSET), CFE_EVS_ERROR,
+        CFE_EVS_SendEvent((EventID + FM_FNAME_ISDIR_EID_OFFSET), CFE_EVS_EventType_ERROR,
                          "%s error: filename is a directory: name = %s", CmdText, Filename);
     }
     else
     {
-        CFE_EVS_SendEvent((EventID + FM_FNAME_UNKNOWN_EID_OFFSET), CFE_EVS_ERROR,
+        CFE_EVS_SendEvent((EventID + FM_FNAME_UNKNOWN_EID_OFFSET), CFE_EVS_EventType_ERROR,
                           "%s error: filename has unknown state: name = %s, state = %d",
                           CmdText, Filename, FilenameState);
 
@@ -502,41 +502,41 @@ boolean FM_VerifyFileNotOpen(char *Filename, uint32 BufferSize, uint32 EventID, 
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-boolean FM_VerifyDirExists(char *Directory, uint32 BufferSize, uint32 EventID, char *CmdText)
+bool FM_VerifyDirExists(char *Directory, uint32 BufferSize, uint32 EventID, char *CmdText)
 {
-    boolean Result = FALSE;
+    bool Result = false;
     uint32 FilenameState = FM_NAME_IS_INVALID;
 
     /* Looking for filename state = directory */
-    FilenameState = FM_GetFilenameState(Directory, BufferSize, FALSE);
+    FilenameState = FM_GetFilenameState(Directory, BufferSize, false);
 
     if (FilenameState == FM_NAME_IS_INVALID)
     {
         /* Insert a terminator in case the invalid string did not have one */
         Directory[BufferSize - 1] = '\0';
-        CFE_EVS_SendEvent((EventID + FM_FNAME_INVALID_EID_OFFSET), CFE_EVS_ERROR,
+        CFE_EVS_SendEvent((EventID + FM_FNAME_INVALID_EID_OFFSET), CFE_EVS_EventType_ERROR,
                           "%s error: directory name is invalid: name = %s", 
                           CmdText, Directory);
     }
     else if (FilenameState == FM_NAME_IS_NOT_IN_USE)
     {
-        CFE_EVS_SendEvent((EventID + FM_FNAME_DNE_EID_OFFSET), CFE_EVS_ERROR,
+        CFE_EVS_SendEvent((EventID + FM_FNAME_DNE_EID_OFFSET), CFE_EVS_EventType_ERROR,
                            "%s error: directory does not exist: name = %s", 
                            CmdText, Directory);
     }
     else if ((FilenameState == FM_NAME_IS_FILE_OPEN) ||
              (FilenameState == FM_NAME_IS_FILE_CLOSED))
     {
-        CFE_EVS_SendEvent((EventID + FM_FNAME_ISFILE_EID_OFFSET), CFE_EVS_ERROR,
+        CFE_EVS_SendEvent((EventID + FM_FNAME_ISFILE_EID_OFFSET), CFE_EVS_EventType_ERROR,
                           "%s error: directory name exists as a file: name %s", 
                           CmdText, Directory);
     }
     else if (FilenameState == FM_NAME_IS_DIRECTORY)
     {
-        Result = TRUE;
+        Result = true;
     }
     else {
-        CFE_EVS_SendEvent((EventID + FM_FNAME_UNKNOWN_EID_OFFSET), CFE_EVS_ERROR,
+        CFE_EVS_SendEvent((EventID + FM_FNAME_UNKNOWN_EID_OFFSET), CFE_EVS_EventType_ERROR,
                           "%s error: directory name has unknown state: name = %s, state = %d",
                           CmdText, Directory, FilenameState);
     }
@@ -552,39 +552,39 @@ boolean FM_VerifyDirExists(char *Directory, uint32 BufferSize, uint32 EventID, c
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-boolean FM_VerifyDirNoExist(char *Name, uint32 BufferSize, uint32 EventID, char *CmdText)
+bool FM_VerifyDirNoExist(char *Name, uint32 BufferSize, uint32 EventID, char *CmdText)
 {
-    boolean Result = FALSE;
+    bool Result = false;
     uint32 FilenameState = FM_NAME_IS_INVALID;
 
     /* Looking for filename state = unused */
-    FilenameState = FM_GetFilenameState(Name, BufferSize, FALSE);
+    FilenameState = FM_GetFilenameState(Name, BufferSize, false);
 
     if (FilenameState == FM_NAME_IS_INVALID)
     {
         /* Insert a terminator in case the invalid string did not have one */
         Name[BufferSize - 1] = '\0';
-        CFE_EVS_SendEvent((EventID + FM_FNAME_INVALID_EID_OFFSET), CFE_EVS_ERROR,
+        CFE_EVS_SendEvent((EventID + FM_FNAME_INVALID_EID_OFFSET), CFE_EVS_EventType_ERROR,
                          "%s error: directory name is invalid: name = %s", CmdText, Name);
     }
     else if (FilenameState == FM_NAME_IS_NOT_IN_USE)
     {
-        Result = TRUE;
+        Result = true;
     }
     else if ((FilenameState == FM_NAME_IS_FILE_OPEN) ||
              (FilenameState == FM_NAME_IS_FILE_CLOSED))
     {
-        CFE_EVS_SendEvent((EventID + FM_FNAME_DNE_EID_OFFSET), CFE_EVS_ERROR,
+        CFE_EVS_SendEvent((EventID + FM_FNAME_DNE_EID_OFFSET), CFE_EVS_EventType_ERROR,
                          "%s error: directory name exists as a file: name = %s", CmdText, Name);
     }
     else if (FilenameState == FM_NAME_IS_DIRECTORY)
     {
-        CFE_EVS_SendEvent((EventID + FM_FNAME_ISDIR_EID_OFFSET), CFE_EVS_ERROR,
+        CFE_EVS_SendEvent((EventID + FM_FNAME_ISDIR_EID_OFFSET), CFE_EVS_EventType_ERROR,
                          "%s error: directory already exists: name = %s", CmdText, Name);
     }
     else
     {
-        CFE_EVS_SendEvent((EventID + FM_FNAME_UNKNOWN_EID_OFFSET), CFE_EVS_ERROR,
+        CFE_EVS_SendEvent((EventID + FM_FNAME_UNKNOWN_EID_OFFSET), CFE_EVS_EventType_ERROR,
                           "%s error: directory name has unknown state: name = %s, state = %d",
                           CmdText, Name, FilenameState);
     }
@@ -600,9 +600,9 @@ boolean FM_VerifyDirNoExist(char *Name, uint32 BufferSize, uint32 EventID, char 
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-boolean FM_VerifyChildTask(uint32 EventID, char *CmdText)
+bool FM_VerifyChildTask(uint32 EventID, char *CmdText)
 {
-    boolean Result = FALSE;
+    bool Result = false;
 
     /* Copy of child queue count that child task cannot change */
     uint8 LocalQueueCount = FM_GlobalData.ChildQueueCount;
@@ -610,29 +610,29 @@ boolean FM_VerifyChildTask(uint32 EventID, char *CmdText)
     /* Verify child task is active and queue interface is healthy */
     if (FM_GlobalData.ChildSemaphore == FM_CHILD_SEM_INVALID)
     {
-        CFE_EVS_SendEvent((EventID + FM_CHILD_DISABLED_EID_OFFSET), CFE_EVS_ERROR,
+        CFE_EVS_SendEvent((EventID + FM_CHILD_DISABLED_EID_OFFSET), CFE_EVS_EventType_ERROR,
                          "%s error: child task is disabled", CmdText);
 
         /* Child task disabled - cannot add another command */
-        Result = FALSE;
+        Result = false;
     }
     else if (LocalQueueCount == FM_CHILD_QUEUE_DEPTH)
     {
-        CFE_EVS_SendEvent((EventID + FM_CHILD_Q_FULL_EID_OFFSET), CFE_EVS_ERROR,
+        CFE_EVS_SendEvent((EventID + FM_CHILD_Q_FULL_EID_OFFSET), CFE_EVS_EventType_ERROR,
                          "%s error: child task queue is full", CmdText);
 
         /* Queue full - cannot add another command */
-        Result = FALSE;
+        Result = false;
     }
     else if ((LocalQueueCount > FM_CHILD_QUEUE_DEPTH) ||
              (FM_GlobalData.ChildWriteIndex >= FM_CHILD_QUEUE_DEPTH))
     {
-        CFE_EVS_SendEvent((EventID + FM_CHILD_BROKEN_EID_OFFSET), CFE_EVS_ERROR,
+        CFE_EVS_SendEvent((EventID + FM_CHILD_BROKEN_EID_OFFSET), CFE_EVS_EventType_ERROR,
                          "%s error: child task interface is broken: count = %d, index = %d",
                           CmdText, LocalQueueCount, FM_GlobalData.ChildWriteIndex);
 
         /* Queue broken - cannot add another command */
-        Result = FALSE;
+        Result = false;
     }
     else
     {
@@ -640,7 +640,7 @@ boolean FM_VerifyChildTask(uint32 EventID, char *CmdText)
                        0, sizeof(FM_ChildQueueEntry_t));
 
         /* OK to add another command to the queue */
-        Result = TRUE;
+        Result = true;
     }
 
     return(Result);

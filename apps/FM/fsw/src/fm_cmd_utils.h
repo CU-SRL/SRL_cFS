@@ -59,14 +59,14 @@
 **  \param [in]  CmdText - Error event text (command specific)
 **
 **  \returns
-**  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
-**  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
-**  \retstmt Boolean TRUE indicates a valid packet length  \endcode
+**  \retcode #true   \retdesc \copydoc true    \endcode
+**  \retcode #false  \retdesc \copydoc false   \endcode
+**  \retstmt Boolean true indicates a valid packet length  \endcode
 **  \endreturns
 **
 **  \sa #CFE_SB_GetTotalMsgLength
 **/
-boolean FM_IsValidCmdPktLength(CFE_SB_MsgPtr_t CmdPacket, uint16 ExpectedLength, uint32 EventID, char *CmdText);
+bool FM_IsValidCmdPktLength(CFE_MSG_Message_t* CmdPacket, uint16 ExpectedLength, uint32 EventID, char *CmdText);
 
 
 /**
@@ -75,7 +75,7 @@ boolean FM_IsValidCmdPktLength(CFE_SB_MsgPtr_t CmdPacket, uint16 ExpectedLength,
 **  \par Description
 **       This function is invoked from the copy and move file command handlers
 **       to verify the target file overwrite argument.  Acceptable values are
-**       TRUE (one) and FALSE (zero).
+**       true (one) and false (zero).
 **
 **  \par Assumptions, External Events, and Notes:
 **
@@ -84,14 +84,14 @@ boolean FM_IsValidCmdPktLength(CFE_SB_MsgPtr_t CmdPacket, uint16 ExpectedLength,
 **  \param [in]  CmdText - Error event text (command specific)
 **
 **  \returns
-**  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
-**  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
-**  \retstmt Boolean TRUE indicates a valid overwrite argument  \endcode
+**  \retcode #true   \retdesc \copydoc true    \endcode
+**  \retcode #false  \retdesc \copydoc false   \endcode
+**  \retstmt Boolean true indicates a valid overwrite argument  \endcode
 **  \endreturns
 **
 **  \sa #FM_COPY_CC, #FM_MOVE_CC
 **/
-boolean FM_VerifyOverwrite(uint16 Overwrite, uint32 EventID, char *CmdText);
+bool FM_VerifyOverwrite(uint16 Overwrite, uint32 EventID, char *CmdText);
 
 
 /**
@@ -141,7 +141,7 @@ uint32 FM_GetOpenFilesData(FM_OpenFilesEntry_t *OpenFilesData);
 **
 **  \sa #CFS_IsValidFilename, #OS_stat, #OS_FDGetInfo
 **/
-uint32 FM_GetFilenameState(char *Filename, uint32 BufferSize, boolean FileInfoCmd);
+uint32 FM_GetFilenameState(char *Filename, uint32 BufferSize, bool FileInfoCmd);
 
 
 /**
@@ -186,14 +186,14 @@ uint32 FM_VerifyNameValid(char *Name, uint32 BufferSize, uint32 EventID, char *C
 **  \param [in]  CmdText - Error event text (command specific)
 **
 **  \returns
-**  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
-**  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
-**  \retstmt Boolean TRUE indicates that filename is an open file  \endcode
+**  \retcode #true   \retdesc \copydoc true    \endcode
+**  \retcode #false  \retdesc \copydoc false   \endcode
+**  \retstmt Boolean true indicates that filename is an open file  \endcode
 **  \endreturns
 **
 **  \sa #FM_GetFilenameState
 **/
-boolean FM_VerifyFileClosed(char *Filename, uint32 BufferSize, uint32 EventID, char *CmdText);
+bool FM_VerifyFileClosed(char *Filename, uint32 BufferSize, uint32 EventID, char *CmdText);
 
 
 /**
@@ -212,14 +212,14 @@ boolean FM_VerifyFileClosed(char *Filename, uint32 BufferSize, uint32 EventID, c
 **  \param [in]  CmdText - Error event text (command specific)
 **
 **  \returns
-**  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
-**  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
-**  \retstmt Boolean TRUE indicates filename is an existing file  \endcode
+**  \retcode #true   \retdesc \copydoc true    \endcode
+**  \retcode #false  \retdesc \copydoc false   \endcode
+**  \retstmt Boolean true indicates filename is an existing file  \endcode
 **  \endreturns
 **
 **  \sa #FM_GetFilenameState
 **/
-boolean FM_VerifyFileExists(char *Filename, uint32 BufferSize, uint32 EventID, char *CmdText);
+bool FM_VerifyFileExists(char *Filename, uint32 BufferSize, uint32 EventID, char *CmdText);
 
 
 /**
@@ -238,14 +238,14 @@ boolean FM_VerifyFileExists(char *Filename, uint32 BufferSize, uint32 EventID, c
 **  \param [in]  CmdText - Error event text (command specific)
 **
 **  \returns
-**  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
-**  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
-**  \retstmt Boolean TRUE indicates the name is unused  \endcode
+**  \retcode #true   \retdesc \copydoc true    \endcode
+**  \retcode #false  \retdesc \copydoc false   \endcode
+**  \retstmt Boolean true indicates the name is unused  \endcode
 **  \endreturns
 **
 **  \sa #FM_GetFilenameState
 **/
-boolean FM_VerifyFileNoExist(char *Name, uint32 BufferSize, uint32 EventID, char *CmdText);
+bool FM_VerifyFileNoExist(char *Name, uint32 BufferSize, uint32 EventID, char *CmdText);
 
 
 /**
@@ -263,14 +263,14 @@ boolean FM_VerifyFileNoExist(char *Name, uint32 BufferSize, uint32 EventID, char
 **  \param [in]  CmdText - Error event text (command specific)
 **
 **  \returns
-**  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
-**  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
-**  \retstmt Boolean TRUE indicates the name is unused or a closed file  \endcode
+**  \retcode #true   \retdesc \copydoc true    \endcode
+**  \retcode #false  \retdesc \copydoc false   \endcode
+**  \retstmt Boolean true indicates the name is unused or a closed file  \endcode
 **  \endreturns
 **
 **  \sa #FM_GetFilenameState
 **/
-boolean FM_VerifyFileNotOpen(char *Name, uint32 BufferSize, uint32 EventID, char *CmdText);
+bool FM_VerifyFileNotOpen(char *Name, uint32 BufferSize, uint32 EventID, char *CmdText);
 
 
 /**
@@ -288,14 +288,14 @@ boolean FM_VerifyFileNotOpen(char *Name, uint32 BufferSize, uint32 EventID, char
 **  \param [in]  CmdText - Error event text (command specific)
 **
 **  \returns
-**  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
-**  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
-**  \retstmt Boolean TRUE indicates the directory exists  \endcode
+**  \retcode #true   \retdesc \copydoc true    \endcode
+**  \retcode #false  \retdesc \copydoc false   \endcode
+**  \retstmt Boolean true indicates the directory exists  \endcode
 **  \endreturns
 **
 **  \sa #FM_GetFilenameState
 **/
-boolean FM_VerifyDirExists(char *Directory, uint32 BufferSize, uint32 EventID, char *CmdText);
+bool FM_VerifyDirExists(char *Directory, uint32 BufferSize, uint32 EventID, char *CmdText);
 
 
 /**
@@ -313,14 +313,14 @@ boolean FM_VerifyDirExists(char *Directory, uint32 BufferSize, uint32 EventID, c
 **  \param [in]  CmdText - Error event text (command specific)
 **
 **  \returns
-**  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
-**  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
-**  \retstmt Boolean TRUE indicates the name is unused  \endcode
+**  \retcode #true   \retdesc \copydoc true    \endcode
+**  \retcode #false  \retdesc \copydoc false   \endcode
+**  \retstmt Boolean true indicates the name is unused  \endcode
 **  \endreturns
 **
 **  \sa #FM_GetFilenameState
 **/
-boolean FM_VerifyDirNoExist(char *Name, uint32 BufferSize, uint32 EventID, char *CmdText);
+bool FM_VerifyDirNoExist(char *Name, uint32 BufferSize, uint32 EventID, char *CmdText);
 
 
 /**
@@ -336,12 +336,12 @@ boolean FM_VerifyDirNoExist(char *Name, uint32 BufferSize, uint32 EventID, char 
 **  \param [in]  CmdText - Error event text (command specific)
 **
 **  \returns
-**  \retcode #TRUE   \retdesc \copydoc TRUE    \endcode
-**  \retcode #FALSE  \retdesc \copydoc FALSE   \endcode
-**  \retstmt Boolean TRUE indicates the child task queue is available  \endcode
+**  \retcode #true   \retdesc \copydoc true    \endcode
+**  \retcode #false  \retdesc \copydoc false   \endcode
+**  \retstmt Boolean true indicates the child task queue is available  \endcode
 **  \endreturns
 **/
-boolean FM_VerifyChildTask(uint32 EventID, char *CmdText);
+bool FM_VerifyChildTask(uint32 EventID, char *CmdText);
 
 
 /**

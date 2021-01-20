@@ -342,7 +342,7 @@
 **
 **  This event message is generated upon receipt of a /FM_Copy
 **  command packet with an invalid overwrite argument.  Overwrite
-**  must be set to TRUE (one) or FALSE (zero).
+**  must be set to true (one) or false (zero).
 */
 #define FM_COPY_OVR_ERR_EID                 18
 
@@ -404,7 +404,7 @@
 **
 **  This event message is generated upon receipt of a /FM_Move
 **  command packet with an invalid overwrite argument.  Overwrite
-**  must be set to TRUE (one) or FALSE (zero).
+**  must be set to true (one) or false (zero).
 */
 #define FM_MOVE_OVR_ERR_EID                 22
 

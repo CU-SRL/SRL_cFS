@@ -165,6 +165,16 @@ typedef enum
 /** @brief Access filename part of the dirent structure */
 #define OS_DIRENTRY_NAME(x) ((x).FileName)
 
+// Added for FM app
+typedef struct
+{
+    void*       OSfd;              /* The underlying OS's file descriptor */
+    uint8       IsValid;           /* Whether or not this entry is valid */
+    os_dirent_t DirEnt;
+} os_dir_t;
+
+typedef os_dir_t* os_dirp_t;
+
 /*
  * Exported Functions
  */

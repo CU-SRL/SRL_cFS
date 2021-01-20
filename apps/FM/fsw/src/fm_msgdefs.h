@@ -111,9 +111,9 @@
 **       This command copies the source file to the target file.
 **       The source must be an existing file and the target must not be a
 **       directory name.
-**       If the Overwrite command argument is TRUE, then the target may be
+**       If the Overwrite command argument is true, then the target may be
 **       an existing file, provided that the file is closed.
-**       If the Overwrite command argument is FALSE, then the target must not exist.
+**       If the Overwrite command argument is false, then the target must not exist.
 **       The source and target may be on different file systems.
 **       
 **       Because of the possibility that this command might take a very long time
@@ -135,7 +135,7 @@
 **
 **  \par Command Error Conditions
 **       - Invalid command packet length
-**       - Overwrite is not TRUE (one) or FALSE (zero)
+**       - Overwrite is not true (one) or false (zero)
 **       - Source filename is invalid
 **       - Source file does not exist
 **       - Source filename is a directory
@@ -180,9 +180,9 @@
 **       This command moves the source file to the target file.
 **       The source must be an existing file and the target must not be a
 **       directory name.
-**       If the Overwrite command argument is TRUE, then the target may be
+**       If the Overwrite command argument is true, then the target may be
 **       an existing file, provided that the file is closed.
-**       If the Overwrite command argument is FALSE, then the target must not exist.
+**       If the Overwrite command argument is false, then the target must not exist.
 **       Source and target must both be on the same file system.
 **       The move command does not actually move any file data.
 **       The command modifies the file system directory structure to
@@ -210,7 +210,7 @@
 **
 **  \par Command Error Conditions
 **       - Invalid command packet length
-**       - Overwrite is not TRUE (one) or FALSE (zero)
+**       - Overwrite is not true (one) or false (zero)
 **       - Source filename is invalid
 **       - Source file does not exist
 **       - Source filename is a directory
