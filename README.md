@@ -104,7 +104,7 @@ Second off, gcc-7.5.0 must be installed on said development machine with the sol
 	# Check gcc version
 	$ gcc --version
 
-If not running gcc-7.5.0, you can acquire gcc-7.5.0 from the [gcc mirrors](https://gcc.gnu.org/mirrors.html "gcc") while also following the following instructions with the version number in the ${GCC_VERSION} location:
+If not running gcc-7.5.0, you can acquire gcc-7.5.0 from the [gcc mirrors](https://gcc.gnu.org/mirrors.html "gcc") /mirrors/gcc/releases/gcc-7.5.0 while also following the following instructions with the version number in the ${GCC_VERSION} location:
 
 	# Unpack gcc directory that was acquired
 	tar -xf gcc-${GCC_VERSION}.tar.bz2
