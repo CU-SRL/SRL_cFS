@@ -53,16 +53,12 @@ static TO_subscription_t  TO_SubTable[] =
             {TO_LAB_HK_TLM_MID,     {0,0},  4},
             {TO_LAB_DATA_TYPES_MID, {0,0},  4},
             {CI_LAB_HK_TLM_MID,     {0,0},  4},
-            {SAMPLE_APP_HK_TLM_MID, {0,0},  4},
-
-#if 0
-            /* Add these if needed */
+            {SC_HK_TLM_MID,         {0,0},  4},
             {HS_HK_TLM_MID,         {0,0},  4},
             {FM_HK_TLM_MID,         {0,0},  4},
-            {SC_HK_TLM_MID,         {0,0},  4},
+            {CS_HK_TLM_MID,         {0,0},  4},
             {DS_HK_TLM_MID,         {0,0},  4},
-            {LC_HK_TLM_MID,         {0,0},  4},
-#endif
+            {HK_HK_TLM_MID,         {0,0},  4},
 
             /* cFE Core subscriptions */
             {CFE_ES_HK_TLM_MID,          {0,0},  4},
