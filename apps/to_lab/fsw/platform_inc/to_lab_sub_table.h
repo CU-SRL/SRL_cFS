@@ -35,17 +35,19 @@
 /*
 ** Common CFS app includes below are commented out
 */
+
 #include "ci_lab_msgids.h"
 
 #include "sample_app_msgids.h"
 
-#if 0
 #include "hs_msgids.h"
 #include "fm_msgids.h"
 #include "sc_msgids.h"
 #include "ds_msgids.h"
-#include "lc_msgids.h"
-#endif
+#include "cs_msgids.h"
+#include "hk_msgids.h"
+/* #include "lc_msgids.h" */
+
 
 static TO_subscription_t  TO_SubTable[] =
 {
@@ -53,11 +55,13 @@ static TO_subscription_t  TO_SubTable[] =
             {TO_LAB_HK_TLM_MID,     {0,0},  4},
             {TO_LAB_DATA_TYPES_MID, {0,0},  4},
             {CI_LAB_HK_TLM_MID,     {0,0},  4},
-            {SC_HK_TLM_MID,         {0,0},  4},
-            {HS_HK_TLM_MID,         {0,0},  4},
+            {SAMPLE_APP_HK_TLM_MID, {0,0},  4},
+
+	    {HS_HK_TLM_MID,         {0,0},  4},
             {FM_HK_TLM_MID,         {0,0},  4},
-            {CS_HK_TLM_MID,         {0,0},  4},
+            {SC_HK_TLM_MID,         {0,0},  4},
             {DS_HK_TLM_MID,         {0,0},  4},
+            {CS_HK_TLM_MID,         {0,0},  4},
             {HK_HK_TLM_MID,         {0,0},  4},
 
             /* cFE Core subscriptions */
@@ -74,9 +78,12 @@ static TO_subscription_t  TO_SubTable[] =
             {CFE_ES_APP_TLM_MID,         {0,0},  4},
             {CFE_ES_MEMSTATS_TLM_MID,    {0,0},  4},
 
-            {TO_UNUSED,              {0,0},  0},
-            {TO_UNUSED,              {0,0},  0},
-            {TO_UNUSED,              {0,0},  0}
+	    /* cFS Extra Telemetry */
+            {DS_DIAG_TLM_MID,        {0,0},  4},
+            {FM_FILE_INFO_TLM_MID,   {0,0},  4},
+            {FM_DIR_LIST_TLM_MID,    {0,0},  4},
+	    {FM_OPEN_FILES_TLM_MID,  {0,0},  4},
+	    {FM_FREE_SPACE_TLM_MID,  {0,0},  4}
 };
 
 /************************
