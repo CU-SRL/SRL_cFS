@@ -40,19 +40,18 @@
 
 #include "sample_app_msgids.h"
 
-#if 0
 #include "sc_msgids.h"
 #include "hs_msgids.h"
 #include "fm_msgids.h"
 #include "ds_msgids.h"
-#include "lc_msgids.h"
-#endif
+#include "cs_msgids.h"
+#include "hk_msgids.h"
 
 /*
 ** Defines
 */
 #define SCH_LAB_END_OF_TABLE          0
-#define SCH_LAB_MAX_SCHEDULE_ENTRIES  32
+#define SCH_LAB_MAX_SCHEDULE_ENTRIES  36
 
 /*
 ** Typedefs
@@ -84,17 +83,15 @@ SCH_LAB_ScheduleTable_t SCH_LAB_ScheduleTable[SCH_LAB_MAX_SCHEDULE_ENTRIES] =
      
      { CI_LAB_SEND_HK_MID,   4, 0 },
      { TO_LAB_SEND_HK_MID,   4, 0 },
-     { SAMPLE_APP_SEND_HK_MID,   4, 0 },
 
-#if 0
-     { SC_SEND_HK_MID,       4, 0 },
-     { SC_1HZ_WAKEUP_MID,    1, 0 },  /* Example of a 1hz packet */
+
+     /* cfs hk request */
+     { DS_SEND_HK_MID,       4, 0 },
+     { HK_SEND_HK_MID,       4, 0 },
      { HS_SEND_HK_MID,       4, 0 },
      { FM_SEND_HK_MID,       4, 0 },
-     { DS_SEND_HK_MID,       4, 0 },
-     { LC_SEND_HK_MID,       4, 0 },
-
-#endif
+     { CS_SEND_HK_MID,       4, 0 },
+  /* { SC_SEND_HK_MID,       4, 0 }, */ /* Commented out because causing a seg fault */
 
      { SCH_LAB_END_OF_TABLE, 0, 0 }
 };
