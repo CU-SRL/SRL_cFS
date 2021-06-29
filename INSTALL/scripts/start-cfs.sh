@@ -30,6 +30,13 @@ cp -r /mnt/extsd/arm-bbb /boot/SRL/
 # Change permissions
 chmod -R 777 /boot/SRL/arm-bbb
 
-# Execute cFS
+# Move to cFS
 cd /boot/SRL/arm-bbb
+
+# Make ram directory if it doesn't exist
+if [ ! -d "ram" ]; then
+	mkdir ram
+fi
+
+# Execute cFS
 ./core-arm-bbb

@@ -99,12 +99,12 @@ DS_DestFileTable_t DS_DestFileTable =
 #if (DS_MOVE_FILES == TRUE)
       /* .Movename      = */ DS_EMPTY_STRING,
 #endif
-      /* .Pathname      = */ "set_by_cmd_b4_enable",
+      /* .Pathname      = */ "/ram/",
       /* .Basename      = */ "app",
       /* .Extension     = */ ".hk",
 
       /* .FileNameType  = */ DS_BY_TIME,
-      /* .EnableState   = */ DS_DISABLED,
+      /* .EnableState   = */ DS_ENABLED,
       /* .MaxFileSize   = */ (1024 * 1024 * 2),         /* 2 M-bytes */
       /* .MaxFileAge    = */ (60 * 60 * 2),             /* 2 hours */
       /* .SequenceCount = */ DS_UNUSED,
