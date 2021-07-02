@@ -53,8 +53,10 @@ typedef struct
 typedef struct 
 {
     uint8              TlmHeader[CFE_SB_TLM_HDR_SIZE];
-    uint8              sample_command_error_count;
-    uint8              sample_command_count;
+    uint8              i2c_command_error_count;
+    uint8              i2c_command_count;
+    uint8              i2c_active_device_count;
+    uint8              i2c_error_count;
     uint8              spare[2];
 
 }   OS_PACK i2c_hk_tlm_t  ;

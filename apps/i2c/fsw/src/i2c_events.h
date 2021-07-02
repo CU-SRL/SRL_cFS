@@ -39,6 +39,14 @@
 #define I2C_INVALID_MSGID_ERR_EID     5 
 #define I2C_LEN_ERR_EID               6 
 
+#define I2C_OPEN_I2C_BUS_ERR_EID      7
+#define I2C_OPEN_SLAVE_EID            8
+#define I2C_WRITE_REGISTER_ERR_EID    9
+#define I2C_REGISTER_READ_ERR_EID     10
+
+/* DEVICE EVENTS */
+
+
 #endif /* _i2c_events_h_ */
 
 /************************/

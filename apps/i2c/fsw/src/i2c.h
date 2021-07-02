@@ -42,9 +42,21 @@
 #include <errno.h>
 #include <unistd.h>
 
+#include <stdlib.h>
+#include <fcntl.h>
+#include <linux/i2c.h>
+#include <linux/i2c-dev.h>
+#include <sys/ioctl.h>
+#include <stropts.h>
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <math.h>
+
 /***********************************************************************/
 
 #define I2C_PIPE_DEPTH                     32
+#define MAX_BUS 64
 
 /************************************************************************
 ** Type Definitions
@@ -65,5 +77,24 @@ void I2C_ReportHousekeeping(void);
 void I2C_ResetCounters(void);
 
 bool I2C_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength);
+
+/****************************************************************************/
+/*
+** I2C function prototypes.
+**
+*/
+int I2C_open(int I2CBus, uint8_t addr);
+void I2C_close(int file);
+bool I2C_write(int file, uint8_t reg, uint8_t val);
+bool I2C_read(int file, uint8_t reg, unsigned int byte_count, uint8_t *buffer);
+
+/****************************************************************************/
+/*
+** Device function prototypes.
+**
+*/
+
+/* MPL3115A2 Barometer */
+bool INIT_MPL3115A2(int I2CBus);
 
 #endif /* _i2c_h_ */
