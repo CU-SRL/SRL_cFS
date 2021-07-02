@@ -270,7 +270,7 @@ bool I2C_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength)
 /****************************************/
 /*        SINGLE-BYTE I2C DRIVER        */
 /****************************************/
-// Assuming Linux OS - For a RTOS (RTEMS) we need a different implementation.
+// Assuming Linux OS - For a RTOS (RTEMS) we need a different implementation that is RTOS compliant.
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 /*                                                                            */
@@ -301,7 +301,7 @@ int I2C_open(int I2CBus, uint8_t addr)
 	// Open IO operation
 	if(ioctl(file, I2C_SLAVE, addr) < 0)
 	{
-        CFE_EVS_SendEvent(I2C_OPEN_SLAVE_EID, CFE_EVS_EventType_ERROR,
+        CFE_EVS_SendEvent(I2C_OPEN_SLAVE_ERR_EID, CFE_EVS_EventType_ERROR,
            "I2C_SLAVE address %X failed... ", addr);
         I2C_HkTelemetryPkt.i2c_error_count++;
         

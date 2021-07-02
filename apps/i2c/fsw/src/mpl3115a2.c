@@ -22,28 +22,39 @@ bool INIT_MPL3115A2(int I2CBus)
 	// Place MPL3115A2 into standby mode
 	if(!I2C_write(file, MPL3115_CTRL_REG1, 0))
 	{
-		printf("Failed to place MPL3115A2 into Standby Mode... \n");
+		CFE_EVS_SendEvent(I2C_MPL3115A2_FAILED_CHANGE_TO_STANDBY_MODE_ERR_EID, CFE_EVS_EventType_ERROR,
+           "Failed to place MPL3115A2 into Standby Mode... ");
+        I2C_HkTelemetryPkt.i2c_device_error_count++;
 		return false;
 	}
 
 	// Set the MPL3115A2 sample rate to 34ms
 	if(!I2C_write(file, MPL3115_CTRL_REG1, 0x98))
 	{
-		printf("Failed to switch output on MPL3115A2 to 34ms... \n");
+		CFE_EVS_SendEvent(I2C_MPL3115A2_RATE_SWITCH_ERR_EID, CFE_EVS_EventType_ERROR,
+           "Failed to switch output on MPL3115A2 to 34ms...  ");
+        I2C_HkTelemetryPkt.i2c_device_error_count++;
+
 		return false;
 	}
 
 	// Switch the MPL3115A2 to active, set altimeter mode, set polling mode
 	if(!I2C_write(file, MPL3115_CTRL_REG1, 0xB9))
 	{
-		printf("Failed to switch MPL3115A2 to active...");
+		CFE_EVS_SendEvent(I2C_MPL3115A2_FAILED_CHANGE_TO_ACTIVE_MODE_ERR_EID, CFE_EVS_EventType_ERROR,
+           "Failed to switch MPL3115A2 to active...  ");
+        I2C_HkTelemetryPkt.i2c_device_error_count++;
+
 		return false;
 	}
 
 	// Enable Events on the MPL3115A2
 	if(!I2C_write(file, MPL3115_PT_DATA_CFG, 0x07))
 	{
-		printf("Failed to enable events on the MPL3115A2...");
+		CFE_EVS_SendEvent(I2C_MPL3115A2_ENABLE_EVENTS_ERR_EID, CFE_EVS_EventType_ERROR,
+           "Failed to enable events on the MPL3115A2...  ");
+        I2C_HkTelemetryPkt.i2c_device_error_count++;
+
 		return false;
 	}
 
@@ -53,78 +64,66 @@ bool INIT_MPL3115A2(int I2CBus)
 	return true;
 }
 
-/*int main()
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
+/*                                                                            */
+/* PROCESS_MPL3115A2() -- This function process the MPL3115A2 data according  */
+/*					to the datasheet.										  */
+/*                                                                            */
+/*  NOTE: Realistically the data acquistion and processing should happen in   */
+/*			different functions. For now it was paired in one for quick		  */
+/*			turn around...		                                              */
+/*                                                                            */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
+void PROCESS_MPL3115A(int i2cbus)
 {
-	// Set the I2C bus
-	int i2cbus = 1;
-	
-	// Initialize the MPL3115A2
-	//init_mpl3115a2_old(i2cbus);
-	//init_mpl3115a2(i2cbus);
+	// Open the I2C Device
+	int file = I2C_open(i2cbus, MPL3115_I2C_ADDR);
 
-	// Initialize LOOP
-	// Ctrl-C to quit
-	while(true)
+	// Check for data in the STATUS register
+	I2C_read(file, MPL3115_STATUS, 1, mpl3115a2.status);
+	if (mpl3115a2.status[0] != 0)
 	{
-		// Open the I2C Device
-		int file = i2c_open(i2cbus, MPL3115_I2C_ADDR);
-
-		// Check for data in the STATUS register
-		i2c_read(file, MPL3115_STATUS, 1, mpl3115a2.status);
-		if (mpl3115a2.status[0] != 0)
+		// Read the Data Buffer
+		if(!I2C_read(file, MPL3115_OUT_P_MSB, 5, mpl3115a2.buffer))
 		{
-			// Read the Data Buffer
-			if(!i2c_read(file, MPL3115_OUT_P_MSB, 5, mpl3115a2.buffer))
-			{
-				printf("Failed to read data buffers... \n");
-				return;
-			}
+			CFE_EVS_SendEvent(I2C_MPL3115A2_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read data buffers... ");
+        	I2C_HkTelemetryPkt.i2c_device_error_count++;
 
-			for (int i = 0; i < 5; i++)
-			{
-				printf("Buffer: %X ", i);
-				printf("Data: %X \n", mpl3115a2.buffer[i]);
-			}
-
-			// Process the Data Buffer
-			
-			// Altitude
-			int32_t alt;
-
-			alt = ((uint32_t)mpl3115a2.buffer[0]) << 24;
-			alt |= ((uint32_t)mpl3115a2.buffer[1]) << 16;
-			alt |= ((uint32_t)mpl3115a2.buffer[2]) << 8;
-
-			float altitude = alt;
-			altitude /= 65536.0;		
-
-			// Temperature
-			int16_t t;
-
-			t = mpl3115a2.buffer[3];
-			t <<= 8;
-			t |= mpl3115a2.buffer[4];
-			t >>= 4;
-
-			if(t & 0x800)
-			{
-				t |= 0xF000;
-			}
-
-			float temp = t;
-			temp /= 16.0;
-
-			// Print Processed Values
-			printf("Altitude: %F \n", altitude);
-			printf("Temperature: %F \n\n", temp);
-		} else
-		{
-			// printf("Data not ready... %X \n", mpl3115a2.status[0]);
+			return;
 		}
-		// Close the I2C Buffer
-		i2c_close(file);
+
+		/* Process the Data Buffer */
+			
+		// Altitude
+		int32_t alt;
+
+		alt = ((uint32_t)mpl3115a2.buffer[0]) << 24;
+		alt |= ((uint32_t)mpl3115a2.buffer[1]) << 16;
+		alt |= ((uint32_t)mpl3115a2.buffer[2]) << 8;
+
+		float altitude = alt;
+		altitude /= 65536.0;		
+
+		// Temperature
+		int16_t t;
+
+		t = mpl3115a2.buffer[3];
+		t <<= 8;
+		t |= mpl3115a2.buffer[4];
+		t >>= 4;
+
+		if(t & 0x800)
+		{
+			t |= 0xF000;
+		}
+
+		float temp = t;
+		temp /= 16.0;
+
+		// Print Processed Values if the debug flag is enabled for this app
+		CFE_EVS_SendEvent(I2C_MPL3115A2_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Altitude: %F Temperature: %F ", altitude, temp);
 	}
-	
-	// Return program
-	return;
-}*/
+
+	// Close the I2C Buffer
+	I2C_close(file);
+}
