@@ -53,6 +53,8 @@
 #include <stdint.h>
 #include <math.h>
 
+#include "i2c_msg.h"
+
 /***********************************************************************/
 
 #define I2C_PIPE_DEPTH                     32
@@ -95,6 +97,7 @@ bool I2C_read(int file, uint8_t reg, unsigned int byte_count, uint8_t *buffer);
 */
 
 /* MPL3115A2 Barometer */
-bool INIT_MPL3115A2(int I2CBus);
+bool INIT_MPL3115A2(int I2CBus, i2c_hk_tlm_t* I2C_HkTelemetryPkt);
+void PROCESS_MPL3115A(int i2cbus, i2c_hk_tlm_t* I2C_HkTelemetryPkt);
 
 #endif /* _i2c_h_ */

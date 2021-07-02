@@ -40,7 +40,7 @@
 ** global data
 */
 
-i2c_hk_tlm_t    I2C_HkTelemetryPkt;
+i2c_hk_tlm_t       I2C_HkTelemetryPkt;
 CFE_SB_PipeId_t    I2C_CommandPipe;
 CFE_SB_MsgPtr_t    I2CMsgPtr;
 
