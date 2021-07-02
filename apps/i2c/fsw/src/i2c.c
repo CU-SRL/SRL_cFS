@@ -61,7 +61,7 @@ void I2C_AppMain( void )
     int32  status;
     uint32 RunStatus = CFE_ES_RunStatus_APP_RUN;
 
-    CFE_ES_PerfLogEntry(I2C_APP_PERF_ID);
+    CFE_ES_PerfLogEntry(I2C_PERF_ID);
 
     I2C_AppInit();
 

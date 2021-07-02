@@ -30,10 +30,10 @@
 #ifndef _i2c_version_h_
 #define _i2c_version_h_
 
-#define I2C_APP_MAJOR_VERSION    0
-#define I2C_APP_MINOR_VERSION    1
-#define I2C_APP_REVISION         0
-#define I2C_APP_MISSION_REV      0
+#define I2C_MAJOR_VERSION    0
+#define I2C_MINOR_VERSION    1
+#define I2C_REVISION         0
+#define I2C_MISSION_REV      0
       
 #endif /* _i2c_version_h_ */
 

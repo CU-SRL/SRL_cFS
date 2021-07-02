@@ -87,7 +87,7 @@ SET(FT_INSTALL_SUBDIR "host/functional-test")
 SET(TGT1_NAME cpu1)
 #SET(TGT1_NAME arm-bbb)
 #SET(TGT1_NAME arm-rtems)
-SET(TGT1_APPLIST sample_app sample_lib cfs_lib ci_lab to_lab sch_lab fm ds cs hs hk sc)
+SET(TGT1_APPLIST sample_app sample_lib cfs_lib ci_lab to_lab sch_lab fm ds cs hs hk sc i2c)
 SET(TGT1_FILELIST cfe_es_startup.scr)
 
 # CPU2/3 are duplicates of CPU1.  These are not built by default anymore but are
