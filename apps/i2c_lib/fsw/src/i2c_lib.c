@@ -40,7 +40,7 @@
 /*************************************************************************
 ** Private Function Prototypes
 *************************************************************************/
-int32 I2C_LibInit(void);
+int I2C_LibInit(void);
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -48,7 +48,7 @@ int32 I2C_LibInit(void);
 /* cFE requires that a library have an initialization routine      */ 
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-int32 I2C_LibInit(void)
+int I2C_LibInit(void)
 {
     
     OS_printf ("I2C Lib Initialized.  Version %d.%d.%d.%d\n",
@@ -66,7 +66,7 @@ int32 I2C_LibInit(void)
 /* I2C Lib function                                                */ 
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-int32 I2C_Sample_Function( void ) 
+int I2C_Sample_Function( void ) 
 {
    OS_printf ("I2C_Sample_Function called\n");
 

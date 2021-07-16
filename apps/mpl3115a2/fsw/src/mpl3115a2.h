@@ -105,6 +105,6 @@ bool MPL3115A2_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength);
 
 /* MPL3115A2 Barometer */
 bool INIT_MPL3115A2(int I2CBus, mpl3115a2_hk_tlm_t* MPL3115A2_HkTelemetryPkt);
-void PROCESS_MPL3115A(int i2cbus, mpl3115a2_hk_tlm_t* MPL3115A2_HkTelemetryPkt, mpl3115a2_data_tlm_t* MPL3115A2_DataTelemetryPkt);
+void PROCESS_MPL3115A2(int i2cbus, mpl3115a2_hk_tlm_t* MPL3115A2_HkTelemetryPkt, mpl3115a2_data_tlm_t* MPL3115A2_DataTelemetryPkt);
 
 #endif /* _mpl3115a2_h_ */

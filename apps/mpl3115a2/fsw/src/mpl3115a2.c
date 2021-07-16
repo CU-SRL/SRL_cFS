@@ -218,7 +218,7 @@ void MPL3115A2_ProcessGroundCommand(void)
 } /* End of MPL3115A2_ProcessGroundCommand() */
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
-/*  Name:  MPL3115A2_ReportHousekeeping                                              */
+/*  Name:  MPL3115A2_ReportHousekeeping                                       */
 /*                                                                            */
 /*  Purpose:                                                                  */
 /*         This function is triggered in response to a task telemetry request */
@@ -352,7 +352,7 @@ bool INIT_MPL3115A2(int I2CBus, mpl3115a2_hk_tlm_t* MPL3115A2_HkTelemetryPkt)
 /*			turn around...		                                              */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
-void PROCESS_MPL3115A(int i2cbus, mpl3115a2_hk_tlm_t* MPL3115A2_HkTelemetryPkt, mpl3115a2_data_tlm_t* MPL3115A2_DataTelemetryPkt)
+void PROCESS_MPL3115A2(int i2cbus, mpl3115a2_hk_tlm_t* MPL3115A2_HkTelemetryPkt, mpl3115a2_data_tlm_t* MPL3115A2_DataTelemetryPkt)
 {
 	// Open the I2C Device
 	int file = I2C_open(i2cbus, MPL3115_I2C_ADDR);
