@@ -18,21 +18,24 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: i2c_perfids.h
+** File: mpl3115a2_version.h
 **
 ** Purpose: 
-**  Define I2C App Performance IDs
+**  The MPL3115A2 Application header file containing version number
 **
 ** Notes:
 **
+**
 *************************************************************************/
-#ifndef _i2c_perfids_h_
-#define _i2c_perfids_h_
+#ifndef _mpl3115a2_version_h_
+#define _mpl3115a2_version_h_
 
-
-#define I2C_PERF_ID              92
-
-#endif /* _i2c_perfids_h_ */
+#define MPL3115A2_MAJOR_VERSION    0
+#define MPL3115A2_MINOR_VERSION    1
+#define MPL3115A2_REVISION         0
+#define MPL3115A2_MISSION_REV      0
+      
+#endif /* _mpl3115a2_version_h_ */
 
 /************************/
 /*  End of File Comment */

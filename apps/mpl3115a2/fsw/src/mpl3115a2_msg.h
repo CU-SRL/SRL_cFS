@@ -18,29 +18,29 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: i2c_msg.h 
+** File: mpl3115a2_msg.h 
 **
 ** Purpose: 
-**  Define I2C App Messages and info
+**  Define MPL3115A2 App Messages and info
 **
 ** Notes:
 **
 **
 *******************************************************************************/
-#ifndef _i2c_msg_h_
-#define _i2c_msg_h_
+#ifndef _mpl3115a2_msg_h_
+#define _mpl3115a2_msg_h_
 
 /*
-** I2C App command codes
+** MPL3115A2 App command codes
 */
-#define I2C_NOOP_CC                 0
-#define I2C_RESET_COUNTERS_CC       1
+#define MPL3115A2_NOOP_CC                 0
+#define MPL3115A2_RESET_COUNTERS_CC       1
 
 // Device Command Codes
-#define I2C_MPL3115A2_INIT          10 // Should also be able to be down automatically when flight ready
-#define I2C_MPL3115A2_SHUTDOWN      11
-#define I2C_MPL3115A2_RESET         12
-#define I2C_MPL3115A2_PROCESS       13 // Should also be able to be down automatically when flight ready
+#define MPL3115A2_INIT          10 // Should also be able to be down automatically when flight ready
+#define MPL3115A2_SHUTDOWN      11
+#define MPL3115A2_RESET         12
+#define MPL3115A2_PROCESS       13 // Should also be able to be down automatically when flight ready
 
 /*************************************************************************/
 /*
@@ -50,22 +50,22 @@ typedef struct
 {
    uint8    CmdHeader[CFE_SB_CMD_HDR_SIZE];
 
-} I2C_NoArgsCmd_t;
+} mpl3115a2_NoArgsCmd_t;
 
 /*************************************************************************/
 /*
-** Type definition (I2C App housekeeping)
+** Type definition (MPL3115A2 App housekeeping)
 */
 typedef struct 
 {
     uint8               TlmHeader[CFE_SB_TLM_HDR_SIZE];
-    uint8               i2c_command_error_count;
-    uint8               i2c_command_count;
-    uint8               i2c_error_count;
-    uint8               i2c_active_device_count;
-    uint8               i2c_device_error_count;
+    uint8               mpl3115a2_command_error_count;
+    uint8               mpl3115a2_command_count;
+    uint8               mpl3115a2_error_count;
+    uint8               mpl3115a2_device_count;
+    uint8               mpl3115a2_device_error_count;
 
-}   OS_PACK i2c_hk_tlm_t  ;
+}   OS_PACK mpl3115a2_hk_tlm_t  ;
 
 typedef struct 
 {
@@ -73,12 +73,12 @@ typedef struct
     float               MPL3115A2_ALTITUDE;
     float               MPL3115A2_TEMPERATURE;
 
-}   OS_PACK i2c_data_tlm_t  ;
+}   OS_PACK mpl3115a2_data_tlm_t  ;
 
-#define I2C_HK_TLM_LNGTH   sizeof ( i2c_hk_tlm_t )
-#define I2C_DATA_TLM_LNGTH   sizeof ( i2c_data_tlm_t )
+#define MPL3115A2_HK_TLM_LNGTH   sizeof ( mpl3115a2_hk_tlm_t )
+#define MPL3115A2_DATA_TLM_LNGTH   sizeof ( mpl3115a2_data_tlm_t )
 
-#endif /* _i2c_msg_h_ */
+#endif /* _mpl3115a2_msg_h_ */
 
 /************************/
 /*  End of File Comment */

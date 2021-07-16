@@ -18,24 +18,21 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: i2c_msgids.h
+** File: mpl3115a2_perfids.h
 **
 ** Purpose: 
-**  Define I2C Message IDs
+**  Define MPL3115A2 App Performance IDs
 **
 ** Notes:
 **
-**
 *************************************************************************/
-#ifndef _I2C_msgids_h_
-#define _I2Cmsgids_h_
+#ifndef _mpl3115a2_perfids_h_
+#define _mpl3115a2_perfids_h_
 
-#define I2C_CMD_MID            	0x18D7
-#define I2C_SEND_HK_MID        	0x18D8
-#define I2C_HK_TLM_MID		    0x08D6
-#define I2C_DATA_TLM_MID		0x08D7
 
-#endif /* _I2C_msgids_h_ */
+#define MPL3115A2_PERF_ID              92
+
+#endif /* _mpl3115a2_perfids_h_ */
 
 /************************/
 /*  End of File Comment */

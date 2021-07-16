@@ -18,24 +18,39 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: i2c_version.h
+** File: mpl3115a2_events.h 
 **
 ** Purpose: 
-**  The I2C Application header file containing version number
+**  Define MPL3115A2 App Events IDs
 **
 ** Notes:
 **
 **
 *************************************************************************/
-#ifndef _i2c_version_h_
-#define _i2c_version_h_
+#ifndef _mpl3115a2_events_h_
+#define _mpl3115a2_events_h_
 
-#define I2C_MAJOR_VERSION    0
-#define I2C_MINOR_VERSION    1
-#define I2C_REVISION         0
-#define I2C_MISSION_REV      0
-      
-#endif /* _i2c_version_h_ */
+
+#define MPL3115A2_RESERVED_EID              0
+#define MPL3115A2_STARTUP_INF_EID           1 
+#define MPL3115A2_COMMAND_ERR_EID           2
+#define MPL3115A2_COMMANDNOP_INF_EID        3 
+#define MPL3115A2_COMMANDRST_INF_EID        4
+#define MPL3115A2_INVALID_MSGID_ERR_EID     5 
+#define MPL3115A2_LEN_ERR_EID               6 
+
+/* DEVICE SPECFIC EVENTS */
+
+#define MPL3115A2_DEVICE_INIT_ERR_EID                        20
+#define MPL3115A2_FAILED_CHANGE_TO_STANDBY_MODE_ERR_EID      21
+#define MPL3115A2_RATE_SWITCH_ERR_EID                        22
+#define MPL3115A2_FAILED_CHANGE_TO_ACTIVE_MODE_ERR_EID       23
+#define MPL3115A2_ENABLE_EVENTS_ERR_EID                      24
+#define MPL3115A2_REGISTERS_READ_ERR_EID                     25
+#define MPL3115A2_DATA_DBG_EID                               26
+
+
+#endif /* _mpl3115a2_events_h_ */
 
 /************************/
 /*  End of File Comment */
