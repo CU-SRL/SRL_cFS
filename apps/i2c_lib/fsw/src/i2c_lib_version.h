@@ -18,24 +18,25 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: i2c_msgids.h
+** File: i2c_lib_version.h
 **
 ** Purpose: 
-**  Define I2C Message IDs
+**  The i2c Lib header file containing version number
 **
 ** Notes:
 **
-**
 *************************************************************************/
-#ifndef _I2C_msgids_h_
-#define _I2Cmsgids_h_
+#ifndef _i2c_lib_version_h_
+#define _i2c_lib_version_h_
 
-#define I2C_CMD_MID            	0x18D7
-#define I2C_SEND_HK_MID        	0x18D8
-#define I2C_HK_TLM_MID		    0x08D6
-#define I2C_DATA_TLM_MID		0x08D7
 
-#endif /* _I2C_msgids_h_ */
+#define I2C_LIB_MAJOR_VERSION    0
+#define I2C_LIB_MINOR_VERSION    0
+#define I2C_LIB_REVISION         1
+#define I2C_LIB_MISSION_REV      0
+
+      
+#endif /* _i2c_lib_version_h_ */
 
 /************************/
 /*  End of File Comment */

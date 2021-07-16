@@ -50,7 +50,7 @@ int32 SAMPLE_LibInit(void);
 int32 SAMPLE_LibInit(void)
 {
     
-    OS_printf ("SAMPLE Lib Initialized.  Version %d.%d.%d.%d",
+    OS_printf ("SAMPLE Lib Initialized.  Version %d.%d.%d.%d\n",
                 SAMPLE_LIB_MAJOR_VERSION,
                 SAMPLE_LIB_MINOR_VERSION, 
                 SAMPLE_LIB_REVISION, 

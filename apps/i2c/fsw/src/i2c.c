@@ -41,6 +41,7 @@
 */
 
 i2c_hk_tlm_t       I2C_HkTelemetryPkt;
+i2c_data_tlm_t     I2C_DataTelemetryPkt;
 CFE_SB_PipeId_t    I2C_CommandPipe;
 CFE_SB_MsgPtr_t    I2CMsgPtr;
 
@@ -127,6 +128,12 @@ void I2C_AppInit(void)
                 I2C_MINOR_VERSION, 
                 I2C_REVISION, 
                 I2C_MISSION_REV);
+
+    /**********************/
+    /*    DEVICE INIT     */
+    /**********************/
+    
+    /* WHEN FLIGHT READY, PUT THE I2C DEVICE INITIALIZATIONS IN HERE */
 				
 } /* End of I2C_AppInit() */
 
@@ -189,6 +196,15 @@ void I2C_ProcessGroundCommand(void)
 
         case I2C_RESET_COUNTERS_CC:
             I2C_ResetCounters();
+            break;
+
+        // DEVICE COMMANDS
+        case I2C_MPL3115A2_INIT:
+            INIT_MPL3115A2(1, &I2C_HkTelemetryPkt);
+            break;
+        
+        case I2C_MPL3115A2_PROCESS:
+            PROCESS_MPL3115A2(1, &I2C_HkTelemetryPkt, &I2C_DataTelemetryPkt);
             break;
 
         /* default case already found during FC vs length test */

@@ -2,7 +2,7 @@
 ** File:
 **   $Id: cfs_utils.c 1.14 2015/03/02 18:30:05EST sstrege Exp  $
 **
-**   Copyright © 2007-2014 United States Government as represented by the 
+**   Copyright ï¿½ 2007-2014 United States Government as represented by the 
 **   Administrator of the National Aeronautics and Space Administration. 
 **   All Other Rights Reserved.  
 **
@@ -97,7 +97,7 @@ int32 CFS_LibInit(void);
 int32 CFS_LibInit(void)
 {
     
-    OS_printf ("CFS Lib Initialized.  Version %d.%d.%d.%d",
+    OS_printf ("CFS Lib Initialized.  Version %d.%d.%d.%d\n",
                 CFS_LIB_MAJOR_VERSION,
                 CFS_LIB_MINOR_VERSION, 
                 CFS_LIB_REVISION, 

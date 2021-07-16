@@ -1,4 +1,4 @@
-/*******************************************************************************
+/*************************************************************************
 **
 **      GSC-18128-1, "Core Flight Executive Version 6.7"
 **
@@ -18,26 +18,19 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: i2c.h
+** File: i2c_lib.h
 **
-** Purpose:
-**   This file is main hdr file for the I2C application.
+** Purpose: 
+**   Specification for the i2c library functions.
 **
-**
-*******************************************************************************/
+*************************************************************************/
+#ifndef _i2c_lib_h_
+#define _i2c_lib_h_
 
-#ifndef _i2c_h_
-#define _i2c_h_
-
-/*
-** Required header files.
-*/
+/************************************************************************
+** Includes
+*************************************************************************/
 #include "cfe.h"
-#include "cfe_error.h"
-#include "cfe_evs.h"
-#include "cfe_sb.h"
-#include "cfe_es.h"
-
 #include <string.h>
 #include <errno.h>
 #include <unistd.h>
@@ -52,52 +45,38 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <math.h>
-
-#include "i2c_msg.h"
-
-/***********************************************************************/
-
-#define I2C_PIPE_DEPTH                     32
-#define MAX_BUS 64
+#include <ctype.h>
 
 /************************************************************************
 ** Type Definitions
 *************************************************************************/
 
-/****************************************************************************/
-/*
-** Local function prototypes.
+/*************************************************************************
+** Exported Functions
+*************************************************************************/
+/************************************************************************/
+/** \brief i2c Sample Lib Function 
+**  
+**  \par Description
+**        This is a i2c sample function
 **
-** Note: Except for the entry point (I2C_AppMain), these
-**       functions are not called from any other source module.
-*/
-void I2C_AppMain(void);
-void I2C_AppInit(void);
-void I2C_ProcessCommandPacket(void);
-void I2C_ProcessGroundCommand(void);
-void I2C_ReportHousekeeping(void);
-void I2C_ResetCounters(void);
+**  \par Assumptions, External Events, and Notes:
+**        None
+**       
+**  \returns
+**  \retstmt Returns #CFE_SUCCESS \endcode
+**  \endreturns
+** 
+*************************************************************************/
+int32 I2C_sample_Function( void ); 
 
-bool I2C_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength);
-
-/****************************************************************************/
-/*
-** I2C function prototypes.
-**
-*/
 int I2C_open(int I2CBus, uint8_t addr);
 void I2C_close(int file);
 bool I2C_write(int file, uint8_t reg, uint8_t val);
 bool I2C_read(int file, uint8_t reg, unsigned int byte_count, uint8_t *buffer);
 
-/****************************************************************************/
-/*
-** Device function prototypes.
-**
-*/
+#endif /* _i2c_lib_h_ */
 
-/* MPL3115A2 Barometer */
-bool INIT_MPL3115A2(int I2CBus, i2c_hk_tlm_t* I2C_HkTelemetryPkt);
-void PROCESS_MPL3115A(int i2cbus, i2c_hk_tlm_t* I2C_HkTelemetryPkt, i2c_data_tlm_t* I2C_DataTelemetryPkt);
-
-#endif /* _i2c_h_ */
+/************************/
+/*  End of File Comment */
+/************************/

@@ -36,6 +36,12 @@
 #define I2C_NOOP_CC                 0
 #define I2C_RESET_COUNTERS_CC       1
 
+// Device Command Codes
+#define I2C_MPL3115A2_INIT          10 // Should also be able to be down automatically when flight ready
+#define I2C_MPL3115A2_SHUTDOWN      11
+#define I2C_MPL3115A2_RESET         12
+#define I2C_MPL3115A2_PROCESS       13 // Should also be able to be down automatically when flight ready
+
 /*************************************************************************/
 /*
 ** Type definition (generic "no arguments" command)
@@ -52,17 +58,25 @@ typedef struct
 */
 typedef struct 
 {
-    uint8              TlmHeader[CFE_SB_TLM_HDR_SIZE];
-    uint8              i2c_command_error_count;
-    uint8              i2c_command_count;
-    uint8              i2c_error_count;
-    uint8              i2c_active_device_count;
-    uint8              i2c_device_error_count;
-    uint8              spare[2];
+    uint8               TlmHeader[CFE_SB_TLM_HDR_SIZE];
+    uint8               i2c_command_error_count;
+    uint8               i2c_command_count;
+    uint8               i2c_error_count;
+    uint8               i2c_active_device_count;
+    uint8               i2c_device_error_count;
 
 }   OS_PACK i2c_hk_tlm_t  ;
 
+typedef struct 
+{
+    uint8               TlmHeader[CFE_SB_TLM_HDR_SIZE];
+    float               MPL3115A2_ALTITUDE;
+    float               MPL3115A2_TEMPERATURE;
+
+}   OS_PACK i2c_data_tlm_t  ;
+
 #define I2C_HK_TLM_LNGTH   sizeof ( i2c_hk_tlm_t )
+#define I2C_DATA_TLM_LNGTH   sizeof ( i2c_data_tlm_t )
 
 #endif /* _i2c_msg_h_ */
 

@@ -74,7 +74,7 @@ bool INIT_MPL3115A2(int I2CBus, i2c_hk_tlm_t* I2C_HkTelemetryPkt)
 /*			turn around...		                                              */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
-void PROCESS_MPL3115A(int i2cbus, i2c_hk_tlm_t* I2C_HkTelemetryPkt)
+void PROCESS_MPL3115A(int i2cbus, i2c_hk_tlm_t* I2C_HkTelemetryPkt, i2c_data_tlm_t* I2C_DataTelemetryPkt)
 {
 	// Open the I2C Device
 	int file = I2C_open(i2cbus, MPL3115_I2C_ADDR);
@@ -119,6 +119,10 @@ void PROCESS_MPL3115A(int i2cbus, i2c_hk_tlm_t* I2C_HkTelemetryPkt)
 
 		float temp = t;
 		temp /= 16.0;
+
+		// Store into packet
+		I2C_DataTelemetryPkt->MPL3115A2_ALTITUDE = altitude;
+		I2C_DataTelemetryPkt->MPL3115A2_TEMPERATURE = temp;
 
 		// Print Processed Values if the debug flag is enabled for this app
 		CFE_EVS_SendEvent(I2C_MPL3115A2_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Altitude: %F Temperature: %F ", altitude, temp);
