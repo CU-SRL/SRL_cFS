@@ -80,6 +80,9 @@ void MPL3115A2_AppMain( void )
         
         CFE_ES_PerfLogEntry(MPL3115A2_PERF_ID);
 
+        // Process Data
+        // PROCESS_MPL3115A2(1, &MPL3115A2_HkTelemetryPkt, &MPL3115A2_DataTelemetryPkt);
+
         if (status == CFE_SUCCESS)
         {
             MPL3115A2_ProcessCommandPacket();

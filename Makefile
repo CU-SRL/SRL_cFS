@@ -122,6 +122,7 @@ all:
 install:
 	$(MAKE) --no-print-directory -C "$(O)" DESTDIR="$(DESTDIR)" mission-install
 	mkdir -p build/exe/cpu1/ram
+	mkdir -p build/exe/arm-bbb/ram
 
 prep $(O)/.prep:
 	mkdir -p "$(O)"
