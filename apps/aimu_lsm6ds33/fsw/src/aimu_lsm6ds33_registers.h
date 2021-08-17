@@ -34,7 +34,7 @@
 #define AIMU_LSM6DS33_CTRL7_G              0x16 /*! Angular rate sensor control register 7 */
 #define AIMU_LSM6DS33_CTRL8_XL             0x17 /*! Linear acceleration sensor control register 8 */
 #define AIMU_LSM6DS33_CTRL9_XL             0x18 /*! Linear acceleration sensor control register 9 */
-#define AIMU_LSM6DS33_CTRL9_C              0x19 /*! Control register 10 */
+#define AIMU_LSM6DS33_CTRL10_C             0x19 /*! Control register 10 */
 #define AIMU_LSM6DS33_WAKE_UP_SRC          0x1B /*! Wake up interrupt source register */
 #define AIMU_LSM6DS33_TAP_SRC              0x1C /*! Tap source register */
 #define AIMU_LSM6DS33_D6D_SRC              0x1D /*! Portrait, landscape, face-up and face-down source register */

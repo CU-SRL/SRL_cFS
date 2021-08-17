@@ -18,10 +18,10 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: mpl3115a2.c
+** File: aimu_lsm6ds33.c
 **
 ** Purpose:
-**   This file contains the source code for the MPL3115A2 App.
+**   This file contains the source code for the AIMU_LSM6DS33 App.
 **
 *******************************************************************************/
 
@@ -69,7 +69,7 @@ void AIMU_LSM6DS33_AppMain( void )
     AIMU_LSM6DS33_AppInit();
 
     /*
-    ** MPL3115A2 Runloop
+    ** AIMU_LSM6DS33 Runloop
     */
     while (CFE_ES_RunLoop(&RunStatus) == true)
     {
@@ -96,7 +96,7 @@ void AIMU_LSM6DS33_AppMain( void )
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
 /*                                                                            */
-/* MPL3115A2_AppInit() --  initialization                                     */
+/* AIMU_LSM6DS33_AppInit() --  initialization                                     */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 void AIMU_LSM6DS33_AppInit(void)
@@ -128,7 +128,7 @@ void AIMU_LSM6DS33_AppInit(void)
                    AIMU_LSM6DS33_HK_TLM_LNGTH, true);
 
     CFE_EVS_SendEvent (AIMU_LSM6DS33_STARTUP_INF_EID, CFE_EVS_EventType_INFORMATION,
-               "MPL3115A2 App Initialized. Version %d.%d.%d.%d\n",
+               "AIMU_LSM6DS33 App Initialized. Version %d.%d.%d.%d\n",
                 AIMU_LSM6DS33_MAJOR_VERSION,
                 AIMU_LSM6DS33_MINOR_VERSION, 
                 AIMU_LSM6DS33_REVISION, 
@@ -179,7 +179,7 @@ void AIMU_LSM6DS33_ProcessCommandPacket(void)
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 /*                                                                            */
-/* MPL3115A2_ProcessGroundCommand() -- MPL3115A2 ground commands              */
+/* AIMU_LSM6DS33_ProcessGroundCommand() -- AIMU_LSM6DS33 ground commands              */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 
@@ -193,7 +193,7 @@ void AIMU_LSM6DS33_ProcessGroundCommand(void)
     switch (CommandCode)
     {
         case AIMU_LSM6DS33_NOOP_CC:
-            AIMU_LSM6DS33_HkTelemetryPkt.mpl3115a2_command_count++;
+            AIMU_LSM6DS33_HkTelemetryPkt.aimu_lsm6ds33_command_count++;
             CFE_EVS_SendEvent(AIMU_LSM6DS33_COMMANDNOP_INF_EID,
                         CFE_EVS_EventType_INFORMATION,
 			"AIMU_LSM6DS33: NOOP command");
@@ -245,11 +245,11 @@ void AIMU_LSM6DS33_ReportHousekeeping(void)
 /*         part of the task telemetry.                                        */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * *  * * * * * * *  * *  * * * * */
-void MPL3115A2_ResetCounters(void)
+void AIMU_LSM6DS33_ResetCounters(void)
 {
-    /* Status of commands processed by the MPL3115A2 App */
-    AIMU_LSM6DS33_HkTelemetryPkt.mpl3115a2_command_count       = 0;
-    AIMU_LSM6DS33_HkTelemetryPkt.mpl3115a2_command_error_count = 0;
+    /* Status of commands processed by the AIMU_LSM6DS33 App */
+    AIMU_LSM6DS33_HkTelemetryPkt.aimu_lsm6ds33_command_count       = 0;
+    AIMU_LSM6DS33_HkTelemetryPkt.aimu_lsm6ds33_command_error_count = 0;
 
     CFE_EVS_SendEvent(AIMU_LSM6DS33_COMMANDRST_INF_EID, CFE_EVS_EventType_INFORMATION,
 		"AIMU_LSM6DS33: RESET command");
@@ -280,7 +280,7 @@ bool AIMU_LSM6DS33_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength)
            "Invalid msg length: ID = 0x%X,  CC = %d, Len = %d, Expected = %d",
               MessageID, CommandCode, ActualLength, ExpectedLength);
         result = false;
-        AIMU_LSM6DS33_HkTelemetryPkt.mpl3115a2_command_error_count++;
+        AIMU_LSM6DS33_HkTelemetryPkt.aimu_lsm6ds33_command_error_count++;
     }
 
     return(result);
@@ -295,49 +295,52 @@ bool AIMU_LSM6DS33_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength)
 /*					to the datasheet.										  */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
-bool INIT_AIMU_LSM6DS33(int I2CBus, mpl3115a2_hk_tlm_t* AIMU_LSM6DS33_HkTelemetryPkt)
+bool INIT_AIMU_LSM6DS33(int I2CBus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkTelemetryPkt)
 {
 	// Open I2C for the device address
 	int file = I2C_open(I2CBus, AIMU_LSM6DS33_I2C_ADDR);
 	
-	// Place LSM6DS33 into standby mode
-	if(!I2C_write(file, AIMU_LSM6DS33_CTRL_REG1, 0))
+	// Accelerometer Axes Enabled
+	if(!I2C_write(file, AIMU_LSM6DS33_CTRL9_XL, 0x38))
+	{
+		CFE_EVS_SendEvent(AIMU_LSM6DS33_FAILED_ENABLE_AXES, CFE_EVS_EventType_ERROR,
+           "Failed to enable AIMU_LSM6DS33 Accel Axes... ");
+        AIMU_LSM6DS33_HkTelemetryPkt->aimu_lsm6ds33_device_error_count++;
+		return false;
+	}
+
+    // Switch the Accel to active, set mode to High performance (416 Hz)
+	if(!I2C_write(file, AIMU_LSM6DS33_CTRL1_XL, 0x60))
+	{
+		CFE_EVS_SendEvent(AIMU_LSM6DS33_FAILED_CHANGE_TO_ACTIVE_MODE_ERR_EID, CFE_EVS_EventType_ERROR,
+           "Failed to switch Accel to active...  ");
+        AIMU_LSM6DS33_HkTelemetryPkt->aimu_lsm6ds33_device_error_count++;
+
+		return false;
+	}
+
+	// Gyro Axes Enabled
+	if(!I2C_write(file, AIMU_LSM6DS33_CTRL10_C, 0x38))
 	{
 		CFE_EVS_SendEvent(AIMU_LSM6DS33_FAILED_CHANGE_TO_STANDBY_MODE_ERR_EID, CFE_EVS_EventType_ERROR,
-           "Failed to place MPL3115A2 into Standby Mode... ");
-        AIMU_LSM6DS33_HkTelemetryPkt->mpl3115a2_device_error_count++;
+           "Failed to enable AIMU_LSM6DS33 Gyro Axes... ");
+        AIMU_LSM6DS33_HkTelemetryPkt->aimu_lsm6ds33_device_error_count++;
 		return false;
 	}
 
-	// Set the MPL3115A2 sample rate to 34ms
-	if(!I2C_write(file, MPL3115_CTRL_REG1, 0x98))
+    // Switch the Gyro to active, set mode to High performance (416 Hz)
+	if(!I2C_write(file, AIMU_LSM6DS33_CTRL2_G, 0x60))
 	{
-		CFE_EVS_SendEvent(MPL3115A2_RATE_SWITCH_ERR_EID, CFE_EVS_EventType_ERROR,
-           "Failed to switch output on MPL3115A2 to 34ms...  ");
-        MPL3115A2_HkTelemetryPkt->mpl3115a2_device_error_count++;
+		CFE_EVS_SendEvent(AIMU_LSM6DS33_FAILED_CHANGE_TO_ACTIVE_MODE_ERR_EID, CFE_EVS_EventType_ERROR,
+           "Failed to switch Gyro to active...  ");
+        AIMU_LSM6DS33_HkTelemetryPkt->aimu_lsm6ds33_device_error_count++;
 
 		return false;
 	}
 
-	// Switch the MPL3115A2 to active, set altimeter mode, set polling mode
-	if(!I2C_write(file, MPL3115_CTRL_REG1, 0xB9))
-	{
-		CFE_EVS_SendEvent(MPL3115A2_FAILED_CHANGE_TO_ACTIVE_MODE_ERR_EID, CFE_EVS_EventType_ERROR,
-           "Failed to switch MPL3115A2 to active...  ");
-        MPL3115A2_HkTelemetryPkt->mpl3115a2_device_error_count++;
-
 		return false;
 	}
-
-	// Enable Events on the MPL3115A2
-	if(!I2C_write(file, MPL3115_PT_DATA_CFG, 0x07))
-	{
-		CFE_EVS_SendEvent(MPL3115A2_ENABLE_EVENTS_ERR_EID, CFE_EVS_EventType_ERROR,
-           "Failed to enable events on the MPL3115A2...  ");
-        MPL3115A2_HkTelemetryPkt->mpl3115a2_device_error_count++;
-
-		return false;
-	}
+    
 
 	// Close the I2C file
 	I2C_close(file);
@@ -347,7 +350,7 @@ bool INIT_AIMU_LSM6DS33(int I2CBus, mpl3115a2_hk_tlm_t* AIMU_LSM6DS33_HkTelemetr
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 /*                                                                            */
-/* PROCESS_MPL3115A2() -- This function process the MPL3115A2 data according  */
+/* PROCESS_AIMU_LSM6DS33() -- This function process the AIMU_LSM6DS33 data according  */
 /*					to the datasheet.										  */
 /*                                                                            */
 /*  NOTE: Realistically the data acquistion and processing should happen in   */
@@ -355,20 +358,20 @@ bool INIT_AIMU_LSM6DS33(int I2CBus, mpl3115a2_hk_tlm_t* AIMU_LSM6DS33_HkTelemetr
 /*			turn around...		                                              */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
-void PROCESS_MPL3115A2(int i2cbus, mpl3115a2_hk_tlm_t* MPL3115A2_HkTelemetryPkt, mpl3115a2_data_tlm_t* MPL3115A2_DataTelemetryPkt)
+void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkTelemetryPkt, aimu_lsm6ds33_data_tlm_t* AIMU_LSM6DS33_DataTelemetryPkt)
 {
 	// Open the I2C Device
-	int file = I2C_open(i2cbus, MPL3115_I2C_ADDR);
+	int file = I2C_open(i2cbus, AIMU_LSM6DS33_I2C_ADDR);
 
 	// Check for data in the STATUS register
-	I2C_read(file, MPL3115_STATUS, 1, MPL3115A2.status);
-	if (MPL3115A2.status[0] != 0)
+	I2C_read(file, AIMU_LSM6DS33_STATUS_REG, 1, AIMU_LSM6DS33.status);
+	if (AIMU_LSM6DS33.status[0] != 0)
 	{
 		// Read the Data Buffer
-		if(!I2C_read(file, MPL3115_OUT_P_MSB, 5, MPL3115A2.buffer))
+		if(!I2C_read(file, AIMU_LSM6DS33_OUTX_L_G, 12, AIMU_LSM6DS33.buffer))
 		{
-			CFE_EVS_SendEvent(MPL3115A2_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read data buffers... ");
-        	MPL3115A2_HkTelemetryPkt->mpl3115a2_device_error_count++;
+			CFE_EVS_SendEvent(AIMU_LSM6DS33_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read data buffers... ");
+        	AIMU_LSM6DS33_HkTelemetryPkt->aimu_lsm6ds33_device_error_count++;
 
 			return;
 		}
@@ -376,37 +379,45 @@ void PROCESS_MPL3115A2(int i2cbus, mpl3115a2_hk_tlm_t* MPL3115A2_HkTelemetryPkt,
 		/* Process the Data Buffer */
 			
 		// Altitude
-		int32_t alt;
+		uint8_t xla, xha, yla, yha, zla, zha;
+        uint16_t accx, accy, accz
 
-		alt = ((uint32_t)MPL3115A2.buffer[0]) << 24;
-		alt |= ((uint32_t)MPL3115A2.buffer[1]) << 16;
-		alt |= ((uint32_t)MPL3115A2.buffer[2]) << 8;
+		xla = AIMU_LSM6DS33.buffer[0];
+		xha = AIMU_LSM6DS33.buffer[1];
+		yla = AIMU_LSM6DS33.buffer[2];
+        yha = AIMU_LSM6DS33.buffer[3];
+		zla = AIMU_LSM6DS33.buffer[4];
+		zha = AIMU_LSM6DS33.buffer[5];	
 
-		float altitude = alt;
-		altitude /= 65536.0;		
+        accx = (xha << 8 | xla);
+        accy = (yha << 8 | yla);
+        accz = (zha << 8 | zla);
 
-		// Temperature
-		int16_t t;
+		// Gyro
+		uint8_t xlg, xhg, ylg, yhg, zlg, zhg;
+        uint16_t gyx, gyy, gyz;
 
-		t = MPL3115A2.buffer[3];
-		t <<= 8;
-		t |= MPL3115A2.buffer[4];
-		t >>= 4;
+		xlg = AIMU_LSM6DS33.buffer[6];
+		xhg = AIMU_LSM6DS33.buffer[7];
+		ylg = AIMU_LSM6DS33.buffer[8];
+        yhg = AIMU_LSM6DS33.buffer[9];
+		zlg = AIMU_LSM6DS33.buffer[10];
+		zhg = AIMU_LSM6DS33.buffer[11];	
 
-		if(t & 0x800)
-		{
-			t |= 0xF000;
-		}
-
-		float temp = t;
-		temp /= 16.0;
+        gyx = (xhg << 8 | xlg);
+        gyy = (yhg << 8 | ylg);
+        gyz = (zhg << 8 | zlg);
 
 		// Store into packet
-		MPL3115A2_DataTelemetryPkt->MPL3115A2_ALTITUDE = altitude;
-		MPL3115A2_DataTelemetryPkt->MPL3115A2_TEMPERATURE = temp;
+		AIMU_LSM6DS33_DataTelemetryPkt->AIMU_LSM6DS33_ACCELERATIONX = accx;
+        AIMU_LSM6DS33_DataTelemetryPkt->AIMU_LSM6DS33_ACCELERATIONY = accy;
+        AIMU_LSM6DS33_DataTelemetryPkt->AIMU_LSM6DS33_ACCELERATIONZ = accz;
+		AIMU_LSM6DS33_DataTelemetryPkt->AIMU_LSM6DS33_ANGULAR_RATEX = gyx;
+        AIMU_LSM6DS33_DataTelemetryPkt->AIMU_LSM6DS33_ANGULAR_RATEY = gyy;
+        AIMU_LSM6DS33_DataTelemetryPkt->AIMU_LSM6DS33_ANGULAR_RATEZ = gyz;
 
 		// Print Processed Values if the debug flag is enabled for this app
-		CFE_EVS_SendEvent(MPL3115A2_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Altitude: %F Temperature: %F ", altitude, temp);
+		CFE_EVS_SendEvent(AIMU_LSM6DS33_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Acceleration: %d, %d, %d Angular Rate: %d, %d, %d ", accx, accy, accz, gyx, gyy, gyz);
 	}
 
 	// Close the I2C Buffer

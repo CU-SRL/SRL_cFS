@@ -18,24 +18,24 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: mpl3115a2_version.h
+** File: aimu_lsm6ds33_version.h
 **
 ** Purpose: 
-**  The MPL3115A2 Application header file containing version number
+**  The LSM6DS33 Application header file containing version number
 **
 ** Notes:
 **
 **
 *************************************************************************/
-#ifndef _mpl3115a2_version_h_
-#define _mpl3115a2_version_h_
+#ifndef _aimu_lsm6ds33_version_h_
+#define _aimu_lsm6ds33_version_h_
 
-#define MPL3115A2_MAJOR_VERSION    0
-#define MPL3115A2_MINOR_VERSION    1
-#define MPL3115A2_REVISION         0
-#define MPL3115A2_MISSION_REV      0
+#define AIMU_LSM6DS33_MAJOR_VERSION    0
+#define AIMU_LSM6DS33_MINOR_VERSION    1
+#define AIMU_LSM6DS33_REVISION         0
+#define AIMU_LSM6DS33_MISSION_REV      0
       
-#endif /* _mpl3115a2_version_h_ */
+#endif /* _aimu_lsm6ds33_version_h_ */
 
 /************************/
 /*  End of File Comment */
