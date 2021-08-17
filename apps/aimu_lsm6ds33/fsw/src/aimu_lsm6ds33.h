@@ -76,9 +76,9 @@ struct AIMU_LSM6DS33_data {
 	// Data Buffer
 	uint8_t buffer[AIMU_LSM6DS33_I2C_BUFFER];
 	
-	// Data Variables
+	/* Data Variables
 	double acceleration;
-	double angular_rate;
+	double angular_rate; */
 } AIMU_LSM6DS33;
 
 /****************************************************************************/
