@@ -322,7 +322,7 @@ bool INIT_AIMU_LSM6DS33(int I2CBus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkTele
 	// Gyro Axes Enabled
 	if(!I2C_write(file, AIMU_LSM6DS33_CTRL10_C, 0x38))
 	{
-		CFE_EVS_SendEvent(AIMU_LSM6DS33_FAILED_CHANGE_TO_STANDBY_MODE_ERR_EID, CFE_EVS_EventType_ERROR,
+		CFE_EVS_SendEvent(AIMU_LSM6DS33_FAILED_ENABLE_AXES, CFE_EVS_EventType_ERROR,
            "Failed to enable AIMU_LSM6DS33 Gyro Axes... ");
         AIMU_LSM6DS33_HkTelemetryPkt->aimu_lsm6ds33_device_error_count++;
 		return false;

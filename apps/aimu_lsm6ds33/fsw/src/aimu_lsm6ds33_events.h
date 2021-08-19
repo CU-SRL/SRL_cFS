@@ -39,16 +39,14 @@
 #define AIMU_LSM6DS33_INVALID_MSGID_ERR_EID     5 
 #define AIMU_LSM6DS33_LEN_ERR_EID               6 
 
-/* DEVICE SPECFIC EVENTS --> Need to update for device
+/* DEVICE SPECFIC EVENTS */
 
-#define MPL3115A2_DEVICE_INIT_ERR_EID                        20
-#define MPL3115A2_FAILED_CHANGE_TO_STANDBY_MODE_ERR_EID      21
-#define MPL3115A2_RATE_SWITCH_ERR_EID                        22
-#define MPL3115A2_FAILED_CHANGE_TO_ACTIVE_MODE_ERR_EID       23
-#define MPL3115A2_ENABLE_EVENTS_ERR_EID                      24
-#define MPL3115A2_REGISTERS_READ_ERR_EID                     25
-#define MPL3115A2_DATA_DBG_EID                               26
-*/
+#define AIMU_LSM6DS33_DEVICE_INIT_ERR_EID                        20
+#define AIMU_LSM6DS33_FAILED_ENABLE_AXES                         21
+#define AIMU_LSM6DS33_FAILED_CHANGE_TO_ACTIVE_MODE_ERR_EID       22
+#define AIMU_LSM6DS33_REGISTERS_READ_ERR_EID                     23
+#define AIMU_LSM6DS33_DATA_DBG_EID                               24
+
 
 #endif /* _aimu_lsm6ds33_events_h_ */
 
