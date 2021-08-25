@@ -59,10 +59,10 @@
 /***********************************************************************/
 
 #define AIMU_LPS25H_PIPE_DEPTH           32
-#define MAX_BUS                            64
+#define MAX_BUS                          64
 
-// Define the Data Buffer Size using the Datasheet (96 buffers because going to 5f)
-#define AIMU_LPS25H_I2C_BUFFER 0x60
+// Define the Data Buffer Size using the Datasheet (59 buffers because going to 3a)
+#define AIMU_LPS25H_I2C_BUFFER 0x3B
 
 /************************************************************************
 ** Type Definitions
@@ -76,9 +76,9 @@ struct AIMU_LPS25H_data {
 	// Data Buffer
 	uint8_t buffer[AIMU_LPS25H_I2C_BUFFER];
 	
-	// Data Variables
+	/* Data Variables
 	double acceleration;
-	double angular_rate;
+	double angular_rate; */
 } AIMU_LPS25H;
 
 /****************************************************************************/

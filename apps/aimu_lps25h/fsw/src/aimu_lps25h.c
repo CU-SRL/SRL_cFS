@@ -42,8 +42,8 @@
 ** global data
 */
 
-aimu_lps25h_hk_tlm_t       AIMU_LPS25H_HkTelemetryPkt;
-aimu_lps25h_data_tlm_t     AIMU_LPS25H_DataTelemetryPkt;
+aimu_lps25h_hk_tlm_t         AIMU_LPS25H_HkTelemetryPkt;
+aimu_lps25h_data_tlm_t       AIMU_LPS25H_DataTelemetryPkt;
 CFE_SB_PipeId_t              AIMU_LPS25H_CommandPipe;
 CFE_SB_MsgPtr_t              AIMU_LPS25HMsgPtr;
 
@@ -69,7 +69,7 @@ void AIMU_LPS25H_AppMain( void )
     AIMU_LPS25H_AppInit();
 
     /*
-    ** MPL3115A2 Runloop
+    ** LPS25H Runloop
     */
     while (CFE_ES_RunLoop(&RunStatus) == true)
     {
@@ -96,7 +96,7 @@ void AIMU_LPS25H_AppMain( void )
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
 /*                                                                            */
-/* MPL3115A2_AppInit() --  initialization                                     */
+/* LPS25H_AppInit() --  initialization                                     */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 void AIMU_LPS25H_AppInit(void)
@@ -128,7 +128,7 @@ void AIMU_LPS25H_AppInit(void)
                    AIMU_LPS25H_HK_TLM_LNGTH, true);
 
     CFE_EVS_SendEvent (AIMU_LPS25H_STARTUP_INF_EID, CFE_EVS_EventType_INFORMATION,
-               "MPL3115A2 App Initialized. Version %d.%d.%d.%d\n",
+               "LPS25H App Initialized. Version %d.%d.%d.%d\n",
                 AIMU_LPS25H_MAJOR_VERSION,
                 AIMU_LPS25H_MINOR_VERSION, 
                 AIMU_LPS25H_REVISION, 
@@ -179,7 +179,7 @@ void AIMU_LPS25H_ProcessCommandPacket(void)
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 /*                                                                            */
-/* MPL3115A2_ProcessGroundCommand() -- MPL3115A2 ground commands              */
+/* LPS25H_ProcessGroundCommand() -- LPS25H ground commands              */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 
@@ -193,7 +193,7 @@ void AIMU_LPS25H_ProcessGroundCommand(void)
     switch (CommandCode)
     {
         case AIMU_LPS25H_NOOP_CC:
-            AIMU_LPS25H_HkTelemetryPkt.mpl3115a2_command_count++;
+            AIMU_LPS25H_HkTelemetryPkt.aimu_lps25h_command_count++;
             CFE_EVS_SendEvent(AIMU_LPS25H_COMMANDNOP_INF_EID,
                         CFE_EVS_EventType_INFORMATION,
 			"AIMU_LPS25H: NOOP command");
@@ -245,11 +245,11 @@ void AIMU_LPS25H_ReportHousekeeping(void)
 /*         part of the task telemetry.                                        */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * *  * * * * * * *  * *  * * * * */
-void MPL3115A2_ResetCounters(void)
+void LPS25H_ResetCounters(void)
 {
-    /* Status of commands processed by the MPL3115A2 App */
-    AIMU_LPS25H_HkTelemetryPkt.mpl3115a2_command_count       = 0;
-    AIMU_LPS25H_HkTelemetryPkt.mpl3115a2_command_error_count = 0;
+    /* Status of commands processed by the LPS25H App */
+    AIMU_LPS25H_HkTelemetryPkt.aimu_lps25h_command_count       = 0;
+    AIMU_LPS25H_HkTelemetryPkt.aimu_lps25h_command_error_count = 0;
 
     CFE_EVS_SendEvent(AIMU_LPS25H_COMMANDRST_INF_EID, CFE_EVS_EventType_INFORMATION,
 		"AIMU_LPS25H: RESET command");
@@ -280,7 +280,7 @@ bool AIMU_LPS25H_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength)
            "Invalid msg length: ID = 0x%X,  CC = %d, Len = %d, Expected = %d",
               MessageID, CommandCode, ActualLength, ExpectedLength);
         result = false;
-        AIMU_LPS25H_HkTelemetryPkt.mpl3115a2_command_error_count++;
+        AIMU_LPS25H_HkTelemetryPkt.aimu_lps25h_command_error_count++;
     }
 
     return(result);
@@ -295,46 +295,56 @@ bool AIMU_LPS25H_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength)
 /*					to the datasheet.										  */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
-bool INIT_AIMU_LPS25H(int I2CBus, mpl3115a2_hk_tlm_t* AIMU_LPS25H_HkTelemetryPkt)
+bool INIT_AIMU_LPS25H(int I2CBus, lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemetryPkt)
 {
 	// Open I2C for the device address
 	int file = I2C_open(I2CBus, AIMU_LPS25H_I2C_ADDR);
 	
-	// Place LPS25H into standby mode
-	if(!I2C_write(file, AIMU_LPS25H_CTRL_REG1, 0))
+	// Place Full Scale +-12 Hz
+	if(!I2C_write(file, AIMU_LPS25H_CTRL_REG2, 0x40))
 	{
-		CFE_EVS_SendEvent(AIMU_LPS25H_FAILED_CHANGE_TO_STANDBY_MODE_ERR_EID, CFE_EVS_EventType_ERROR,
-           "Failed to place MPL3115A2 into Standby Mode... ");
-        AIMU_LPS25H_HkTelemetryPkt->mpl3115a2_device_error_count++;
+		CFE_EVS_SendEvent(AIMU_LPS25H_FAILED_FULL_SCALE_CHANGE CFE_EVS_EventType_ERROR,
+           "Failed to place Full Scale +-12 Hz... ");
+        AIMU_LPS25H_HkTelemetryPkt->aimu_lps25h_device_error_count++;
 		return false;
 	}
 
-	// Set the MPL3115A2 sample rate to 34ms
-	if(!I2C_write(file, MPL3115_CTRL_REG1, 0x98))
+	//  Sets UHP mode on the X/Y axes, ODR at 80 Hz and activates temperature sensor
+	if(!I2C_write(file, AIMU_LPS25H_CTRL_REG1, 0xFC))
 	{
-		CFE_EVS_SendEvent(MPL3115A2_RATE_SWITCH_ERR_EID, CFE_EVS_EventType_ERROR,
-           "Failed to switch output on MPL3115A2 to 34ms...  ");
-        MPL3115A2_HkTelemetryPkt->mpl3115a2_device_error_count++;
-
-		return false;
-	}
-
-	// Switch the MPL3115A2 to active, set altimeter mode, set polling mode
-	if(!I2C_write(file, MPL3115_CTRL_REG1, 0xB9))
-	{
-		CFE_EVS_SendEvent(MPL3115A2_FAILED_CHANGE_TO_ACTIVE_MODE_ERR_EID, CFE_EVS_EventType_ERROR,
-           "Failed to switch MPL3115A2 to active...  ");
-        MPL3115A2_HkTelemetryPkt->mpl3115a2_device_error_count++;
+		CFE_EVS_SendEvent(AIMU_LPS25H_FAIL_ACTIVATE_TEMP_EID, CFE_EVS_EventType_ERROR,
+           "Failed to activate the temperature sensor...  ");
+        LPS25H_HkTelemetryPkt->aimu_lps25h_device_error_count++;
 
 		return false;
 	}
 
-	// Enable Events on the MPL3115A2
-	if(!I2C_write(file, MPL3115_PT_DATA_CFG, 0x07))
+	// Switch the LPS25H to active, set altimeter mode, set polling mode
+	if(!I2C_write(file, AIMU_LPS25H_CTRL_REG1, 0xB9))
 	{
-		CFE_EVS_SendEvent(MPL3115A2_ENABLE_EVENTS_ERR_EID, CFE_EVS_EventType_ERROR,
-           "Failed to enable events on the MPL3115A2...  ");
-        MPL3115A2_HkTelemetryPkt->mpl3115a2_device_error_count++;
+		CFE_EVS_SendEvent(LPS25H_FAILED_CHANGE_TO_ACTIVE_MODE_ERR_EID, CFE_EVS_EventType_ERROR,
+           "Failed to switch LPS25H to active...  ");
+        LPS25H_HkTelemetryPkt->aimu_lps25h_device_error_count++;
+
+		return false;
+	}
+
+	// Sets UHP mode on the Z-axis
+	if(!I2C_write(file, AIMU_LPS25H_CTRL_REG4, 0x0C))
+	{
+		CFE_EVS_SendEvent(LPS25H_ACTIVE_ZUHP_EID, CFE_EVS_EventType_ERROR,
+           "Failed to enable events on the LPS25H...  ");
+        LPS25H_HkTelemetryPkt->aimu_lps25h_device_error_count++;
+
+		return false;
+	}
+
+    // Sets continuous-measurement mode
+	if(!I2C_write(file, AIMU_LPS25H_CTRL_REG3, 0x00))
+	{
+		CFE_EVS_SendEvent(LPS25H_NONCONTINUOUS_MODE_EID, CFE_EVS_EventType_ERROR,
+           "Failed to enable events on the LPS25H...  ");
+        LPS25H_HkTelemetryPkt->aimu_lps25h_device_error_count++;
 
 		return false;
 	}
@@ -347,7 +357,7 @@ bool INIT_AIMU_LPS25H(int I2CBus, mpl3115a2_hk_tlm_t* AIMU_LPS25H_HkTelemetryPkt
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 /*                                                                            */
-/* PROCESS_MPL3115A2() -- This function process the MPL3115A2 data according  */
+/* PROCESS_LPS25H() -- This function process the LPS25H data according  */
 /*					to the datasheet.										  */
 /*                                                                            */
 /*  NOTE: Realistically the data acquistion and processing should happen in   */
@@ -355,20 +365,20 @@ bool INIT_AIMU_LPS25H(int I2CBus, mpl3115a2_hk_tlm_t* AIMU_LPS25H_HkTelemetryPkt
 /*			turn around...		                                              */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
-void PROCESS_MPL3115A2(int i2cbus, mpl3115a2_hk_tlm_t* MPL3115A2_HkTelemetryPkt, mpl3115a2_data_tlm_t* MPL3115A2_DataTelemetryPkt)
+void PROCESS_LPS25H(int i2cbus, lps25h_hk_tlm_t* LPS25H_HkTelemetryPkt, lps25h_data_tlm_t* LPS25H_DataTelemetryPkt)
 {
 	// Open the I2C Device
 	int file = I2C_open(i2cbus, MPL3115_I2C_ADDR);
 
 	// Check for data in the STATUS register
-	I2C_read(file, MPL3115_STATUS, 1, MPL3115A2.status);
-	if (MPL3115A2.status[0] != 0)
+	I2C_read(file, MPL3115_STATUS, 1, LPS25H.status);
+	if (LPS25H.status[0] != 0)
 	{
 		// Read the Data Buffer
-		if(!I2C_read(file, MPL3115_OUT_P_MSB, 5, MPL3115A2.buffer))
+		if(!I2C_read(file, MPL3115_OUT_P_MSB, 5, LPS25H.buffer))
 		{
-			CFE_EVS_SendEvent(MPL3115A2_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read data buffers... ");
-        	MPL3115A2_HkTelemetryPkt->mpl3115a2_device_error_count++;
+			CFE_EVS_SendEvent(LPS25H_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read data buffers... ");
+        	LPS25H_HkTelemetryPkt->aimu_lps25h_device_error_count++;
 
 			return;
 		}
@@ -378,9 +388,9 @@ void PROCESS_MPL3115A2(int i2cbus, mpl3115a2_hk_tlm_t* MPL3115A2_HkTelemetryPkt,
 		// Altitude
 		int32_t alt;
 
-		alt = ((uint32_t)MPL3115A2.buffer[0]) << 24;
-		alt |= ((uint32_t)MPL3115A2.buffer[1]) << 16;
-		alt |= ((uint32_t)MPL3115A2.buffer[2]) << 8;
+		alt = ((uint32_t)LPS25H.buffer[0]) << 24;
+		alt |= ((uint32_t)LPS25H.buffer[1]) << 16;
+		alt |= ((uint32_t)LPS25H.buffer[2]) << 8;
 
 		float altitude = alt;
 		altitude /= 65536.0;		
@@ -388,9 +398,9 @@ void PROCESS_MPL3115A2(int i2cbus, mpl3115a2_hk_tlm_t* MPL3115A2_HkTelemetryPkt,
 		// Temperature
 		int16_t t;
 
-		t = MPL3115A2.buffer[3];
+		t = LPS25H.buffer[3];
 		t <<= 8;
-		t |= MPL3115A2.buffer[4];
+		t |= LPS25H.buffer[4];
 		t >>= 4;
 
 		if(t & 0x800)
@@ -402,11 +412,11 @@ void PROCESS_MPL3115A2(int i2cbus, mpl3115a2_hk_tlm_t* MPL3115A2_HkTelemetryPkt,
 		temp /= 16.0;
 
 		// Store into packet
-		MPL3115A2_DataTelemetryPkt->MPL3115A2_ALTITUDE = altitude;
-		MPL3115A2_DataTelemetryPkt->MPL3115A2_TEMPERATURE = temp;
+		LPS25H_DataTelemetryPkt->LPS25H_ALTITUDE = altitude;
+		LPS25H_DataTelemetryPkt->LPS25H_TEMPERATURE = temp;
 
 		// Print Processed Values if the debug flag is enabled for this app
-		CFE_EVS_SendEvent(MPL3115A2_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Altitude: %F Temperature: %F ", altitude, temp);
+		CFE_EVS_SendEvent(LPS25H_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Altitude: %F Temperature: %F ", altitude, temp);
 	}
 
 	// Close the I2C Buffer

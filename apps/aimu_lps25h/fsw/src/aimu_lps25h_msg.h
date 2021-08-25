@@ -69,9 +69,10 @@ typedef struct
 
 typedef struct 
 {
-    uint8               TlmHeader[CFE_SB_TLM_HDR_SIZE];
-    float               AIMU_LPS25H_ACCELERATION;
-    float               AIMU_LPS25H_ANGULAR_RATE;
+    uint8                TlmHeader[CFE_SB_TLM_HDR_SIZE];
+    uint16               AIMU_LPS25H_MAGSIGX;
+    uint16               AIMU_LPS25H_MAGSIGY;
+    uint16               AIMU_LPS25H_MAGSIGZ;
 
 }   OS_PACK aimu_lps25h_data_tlm_t  ;
 

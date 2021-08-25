@@ -33,7 +33,7 @@
 #define AIMU_LPS25H_CMD_MID            	0x18D9
 #define AIMU_LPS25H_SEND_HK_MID        	0x18DA
 #define AIMU_LPS25H_HK_TLM_MID		    0x08D8
-#define AIMU_LPS25H_DATA_TLM_MID		    0x08D9
+#define AIMU_LPS25H_DATA_TLM_MID		0x08D9
 
 #endif /* _aimu_lps25h_msgids_h_ */
 
