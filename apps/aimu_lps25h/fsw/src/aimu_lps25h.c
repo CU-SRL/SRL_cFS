@@ -382,11 +382,11 @@ void PROCESS_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemetryPkt
 		temp /= 16.0;
 
 		// Store into packet
-		AIMU_LPS25H_DataTelemetryPkt->AIMU_LPS25H_ALTITUDE = pressure;
+		AIMU_LPS25H_DataTelemetryPkt->AIMU_LPS25H_PRESSURE = pressure;
 		AIMU_LPS25H_DataTelemetryPkt->AIMU_LPS25H_TEMPERATURE = temperature;
 
 		// Print Processed Values if the debug flag is enabled for this app
-		CFE_EVS_SendEvent(LPS25H_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Altitude: %F Temperature: %F ", altitude, temp);
+		CFE_EVS_SendEvent(AIMU_LPS25H_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Altitude: %F Temperature: %F ", altitude, temp);
 	}
 
 	// Close the I2C Buffer
