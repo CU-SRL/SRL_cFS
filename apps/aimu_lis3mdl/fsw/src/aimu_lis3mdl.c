@@ -18,7 +18,7 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: lis3mdl.c
+** File: aimu_lis3mdl.c
 **
 ** Purpose:
 **   This file contains the source code for the LIS3MDL App.
@@ -295,49 +295,49 @@ bool AIMU_LIS3MDL_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength)
 /*					to the datasheet.										  */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
-bool INIT_AIMU_LIS3MDL(int I2CBus, mpl3115a2_hk_tlm_t* AIMU_LIS3MDL_HkTelemetryPkt)
+bool INIT_AIMU_LIS3MDL(int I2CBus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTelemetryPkt)
 {
 	// Open I2C for the device address
 	int file = I2C_open(I2CBus, AIMU_LIS3MDL_I2C_ADDR);
 	
-	// Place LIS3MDL into standby mode
-	if(!I2C_write(file, AIMU_LIS3MDL_CTRL_REG1, 0))
-	{
-		CFE_EVS_SendEvent(AIMU_LIS3MDL_FAILED_CHANGE_TO_STANDBY_MODE_ERR_EID, CFE_EVS_EventType_ERROR,
-           "Failed to place MPL3115A2 into Standby Mode... ");
-        AIMU_LIS3MDL_HkTelemetryPkt->mpl3115a2_device_error_count++;
-		return false;
-	}
+	// Place Full Scale +-12 Hz
+    if(!I2C_write(file, AIMU_LIS3MDL_CTRL_REG2, 0x40))
+    {
+        CFE_EVS_SendEvent(AIMU_LIS3MDL_FAILED_FULL_SCALE_CHANGE, CFE_EVS_EventType_ERROR,
+           "Failed to place Full Scale +-12 Hz... ");
+        AIMU_LIS3MDL_HkTelemetryPkt->aimu_lis3mdl_device_error_count++;
+        return false;
+    }
 
-	// Set the MPL3115A2 sample rate to 34ms
-	if(!I2C_write(file, MPL3115_CTRL_REG1, 0x98))
-	{
-		CFE_EVS_SendEvent(MPL3115A2_RATE_SWITCH_ERR_EID, CFE_EVS_EventType_ERROR,
-           "Failed to switch output on MPL3115A2 to 34ms...  ");
-        MPL3115A2_HkTelemetryPkt->mpl3115a2_device_error_count++;
+    //  Sets UHP mode on the X/Y axes, ODR at 80 Hz and activates temperature sensor
+    if(!I2C_write(file, AIMU_LIS3MDL_CTRL_REG1, 0xFC))
+    {
+        CFE_EVS_SendEvent(AIMU_LIS3MDL_FAIL_ACTIVATE_TEMP_EID, CFE_EVS_EventType_ERROR,
+           "Failed to activate the temperature sensor...  ");
+        AIMU_LIS3MDL_HkTelemetryPkt->aimu_lis3mdl_device_error_count++;
 
-		return false;
-	}
+        return false;
+    }
 
-	// Switch the MPL3115A2 to active, set altimeter mode, set polling mode
-	if(!I2C_write(file, MPL3115_CTRL_REG1, 0xB9))
-	{
-		CFE_EVS_SendEvent(MPL3115A2_FAILED_CHANGE_TO_ACTIVE_MODE_ERR_EID, CFE_EVS_EventType_ERROR,
-           "Failed to switch MPL3115A2 to active...  ");
-        MPL3115A2_HkTelemetryPkt->mpl3115a2_device_error_count++;
+    // Switch the LPS25H to active, set altimeter mode, set polling mode
+    if(!I2C_write(file, AIMU_LIS3MDL_CTRL_REG1, 0xB9))
+    {
+        CFE_EVS_SendEvent(AIMU_LIS3MDL_FAILED_CHANGE_TO_ACTIVE_MODE_ERR_EID, CFE_EVS_EventType_ERROR,
+           "Failed to switch LPS25H to active...  ");
+        AIMU_LIS3MDL_HkTelemetryPkt->aimu_lis3mdl_device_error_count++;
 
-		return false;
-	}
+        return false;
+    }
 
-	// Enable Events on the MPL3115A2
-	if(!I2C_write(file, MPL3115_PT_DATA_CFG, 0x07))
-	{
-		CFE_EVS_SendEvent(MPL3115A2_ENABLE_EVENTS_ERR_EID, CFE_EVS_EventType_ERROR,
-           "Failed to enable events on the MPL3115A2...  ");
-        MPL3115A2_HkTelemetryPkt->mpl3115a2_device_error_count++;
+    // Sets UHP mode on the Z-axis
+    if(!I2C_write(file, AIMU_LIS3MDL_CTRL_REG4, 0x0C))
+    {
+        CFE_EVS_SendEvent(AIMU_LIS3MDL_ACTIVE_ZUHP_EID, CFE_EVS_EventType_ERROR,
+           "Failed to enable events on the LPS25H...  ");
+        AIMU_LIS3MDL_HkTelemetryPkt->aimu_lis3mdl_device_error_count++;
 
-		return false;
-	}
+        return false;
+    }
 
 	// Close the I2C file
 	I2C_close(file);
@@ -355,58 +355,48 @@ bool INIT_AIMU_LIS3MDL(int I2CBus, mpl3115a2_hk_tlm_t* AIMU_LIS3MDL_HkTelemetryP
 /*			turn around...		                                              */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
-void PROCESS_MPL3115A2(int i2cbus, mpl3115a2_hk_tlm_t* MPL3115A2_HkTelemetryPkt, mpl3115a2_data_tlm_t* MPL3115A2_DataTelemetryPkt)
+void PROCESS_AIMU_LIS3MDL(int i2cbus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTelemetryPkt, mpl3115a2_data_tlm_t* MPL3115A2_DataTelemetryPkt)
 {
 	// Open the I2C Device
-	int file = I2C_open(i2cbus, MPL3115_I2C_ADDR);
+	int file = I2C_open(i2cbus, AIMU_LIS3MDL_I2C_ADDR);
 
 	// Check for data in the STATUS register
-	I2C_read(file, MPL3115_STATUS, 1, MPL3115A2.status);
-	if (MPL3115A2.status[0] != 0)
+	I2C_read(file, AIMU_LIS3MDL_STATUS_REG, 1, AIMU_LIS3MDL.status);
+	if (AIMU_LIS3MDL.status[0] != 0) //double check this
 	{
 		// Read the Data Buffer
-		if(!I2C_read(file, MPL3115_OUT_P_MSB, 5, MPL3115A2.buffer))
+		if(!I2C_read(file, AIMU_LIS3MDL_OUT_X_L, 6, AIMU_LIS3MDL.buffer))
 		{
-			CFE_EVS_SendEvent(MPL3115A2_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read data buffers... ");
-        	MPL3115A2_HkTelemetryPkt->mpl3115a2_device_error_count++;
+			CFE_EVS_SendEvent(AIMU_LIS3MDL_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read data buffers... ");
+        	AIMU_LIS3MDL_HkTelemetryPkt->aimu_lis3mdl_device_error_count++;
 
 			return;
 		}
 
 		/* Process the Data Buffer */
 			
-		// Altitude
-		int32_t alt;
+		// Magnetic readings
+		uint8_t xlm, xhm, ylm, yhm, zlm, zhm;
+        uint16_t magx, magy, magz
 
-		alt = ((uint32_t)MPL3115A2.buffer[0]) << 24;
-		alt |= ((uint32_t)MPL3115A2.buffer[1]) << 16;
-		alt |= ((uint32_t)MPL3115A2.buffer[2]) << 8;
+		xlm = AIMU_LIS3MDL.buffer[0];
+		xhm = AIMU_LIS3MDL.buffer[1];
+		ylm = AIMU_LIS3MDL.buffer[2];
+        yhm = AIMU_LIS3MDL.buffer[3];
+		zlm = AIMU_LIS3MDL.buffer[4];
+		zhm = AIMU_LIS3MDL.buffer[5];	
 
-		float altitude = alt;
-		altitude /= 65536.0;		
-
-		// Temperature
-		int16_t t;
-
-		t = MPL3115A2.buffer[3];
-		t <<= 8;
-		t |= MPL3115A2.buffer[4];
-		t >>= 4;
-
-		if(t & 0x800)
-		{
-			t |= 0xF000;
-		}
-
-		float temp = t;
-		temp /= 16.0;
+        magx = (xhm << 8 | xlm);
+        magy = (yhm << 8 | ylm);
+        magz = (zhm << 8 | zlm);
 
 		// Store into packet
-		MPL3115A2_DataTelemetryPkt->MPL3115A2_ALTITUDE = altitude;
-		MPL3115A2_DataTelemetryPkt->MPL3115A2_TEMPERATURE = temp;
+		AIMU_LSM6DS33_DataTelemetryPkt->AIMU_LSM6DS33_MAGSIGX = magx;
+        AIMU_LSM6DS33_DataTelemetryPkt->AIMU_LSM6DS33_MAGSIGY = magy;
+        AIMU_LSM6DS33_DataTelemetryPkt->AIMU_LSM6DS33_MAGSIGZ = magz;
 
 		// Print Processed Values if the debug flag is enabled for this app
-		CFE_EVS_SendEvent(MPL3115A2_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Altitude: %F Temperature: %F ", altitude, temp);
+		CFE_EVS_SendEvent(AIMU_LIS3MDL_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Mag-x: %F Mag-y: %F  Mag-z: %F ", magx, magy, magz);
 	}
 
 	// Close the I2C Buffer

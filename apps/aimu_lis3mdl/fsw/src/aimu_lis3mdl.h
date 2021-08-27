@@ -76,9 +76,6 @@ struct AIMU_LIS3MDL_data {
 	// Data Buffer
 	uint8_t buffer[AIMU_LIS3MDL_I2C_BUFFER];
 	
-	// Data Variables
-	double acceleration;
-	double angular_rate;
 } AIMU_LIS3MDL;
 
 /****************************************************************************/
