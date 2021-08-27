@@ -18,7 +18,7 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: lps25h.c
+** File: aimu_lps25h.c
 **
 ** Purpose:
 **   This file contains the source code for the LPS25H App.
@@ -96,7 +96,7 @@ void AIMU_LPS25H_AppMain( void )
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
 /*                                                                            */
-/* LPS25H_AppInit() --  initialization                                     */
+/*AIMU_LPS25H_AppInit() --  initialization                                     */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 void AIMU_LPS25H_AppInit(void)
@@ -179,7 +179,7 @@ void AIMU_LPS25H_ProcessCommandPacket(void)
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 /*                                                                            */
-/* LPS25H_ProcessGroundCommand() -- LPS25H ground commands              */
+/*AIMU_LPS25H_ProcessGroundCommand() -- LPS25H ground commands              */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 
@@ -245,7 +245,7 @@ void AIMU_LPS25H_ReportHousekeeping(void)
 /*         part of the task telemetry.                                        */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * *  * * * * * * *  * *  * * * * */
-void LPS25H_ResetCounters(void)
+void AIMU_LPS25H_ResetCounters(void)
 {
     /* Status of commands processed by the LPS25H App */
     AIMU_LPS25H_HkTelemetryPkt.aimu_lps25h_command_count       = 0;
@@ -295,56 +295,26 @@ bool AIMU_LPS25H_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength)
 /*					to the datasheet.										  */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
-bool INIT_AIMU_LPS25H(int I2CBus, lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemetryPkt)
+bool INIT_AIMU_LPS25H(int I2CBus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemetryPkt)
 {
 	// Open I2C for the device address
 	int file = I2C_open(I2CBus, AIMU_LPS25H_I2C_ADDR);
 	
-	// Place Full Scale +-12 Hz
-	if(!I2C_write(file, AIMU_LPS25H_CTRL_REG2, 0x40))
+	// Set Device to Continuous mode and to 12.5 Hz
+	if(!I2C_write(file, AIMU_LPS25H_CTRL_REG1, 0x58))
 	{
-		CFE_EVS_SendEvent(AIMU_LPS25H_FAILED_FULL_SCALE_CHANGE CFE_EVS_EventType_ERROR,
-           "Failed to place Full Scale +-12 Hz... ");
+		CFE_EVS_SendEvent(AIMU_LPS25H_FAILED_TO_ACTIVATE_EID, CFE_EVS_EventType_ERROR,
+           "Failed to activate the sensor properly... ");
         AIMU_LPS25H_HkTelemetryPkt->aimu_lps25h_device_error_count++;
 		return false;
 	}
 
-	//  Sets UHP mode on the X/Y axes, ODR at 80 Hz and activates temperature sensor
-	if(!I2C_write(file, AIMU_LPS25H_CTRL_REG1, 0xFC))
+	// Sets sample rate per measurement cycle to 8
+	if(!I2C_write(file, AIMU_LPS25H_RES_CONF, 0x00))
 	{
-		CFE_EVS_SendEvent(AIMU_LPS25H_FAIL_ACTIVATE_TEMP_EID, CFE_EVS_EventType_ERROR,
-           "Failed to activate the temperature sensor...  ");
-        LPS25H_HkTelemetryPkt->aimu_lps25h_device_error_count++;
-
-		return false;
-	}
-
-	// Switch the LPS25H to active, set altimeter mode, set polling mode
-	if(!I2C_write(file, AIMU_LPS25H_CTRL_REG1, 0xB9))
-	{
-		CFE_EVS_SendEvent(LPS25H_FAILED_CHANGE_TO_ACTIVE_MODE_ERR_EID, CFE_EVS_EventType_ERROR,
-           "Failed to switch LPS25H to active...  ");
-        LPS25H_HkTelemetryPkt->aimu_lps25h_device_error_count++;
-
-		return false;
-	}
-
-	// Sets UHP mode on the Z-axis
-	if(!I2C_write(file, AIMU_LPS25H_CTRL_REG4, 0x0C))
-	{
-		CFE_EVS_SendEvent(LPS25H_ACTIVE_ZUHP_EID, CFE_EVS_EventType_ERROR,
-           "Failed to enable events on the LPS25H...  ");
-        LPS25H_HkTelemetryPkt->aimu_lps25h_device_error_count++;
-
-		return false;
-	}
-
-    // Sets continuous-measurement mode
-	if(!I2C_write(file, AIMU_LPS25H_CTRL_REG3, 0x00))
-	{
-		CFE_EVS_SendEvent(LPS25H_NONCONTINUOUS_MODE_EID, CFE_EVS_EventType_ERROR,
-           "Failed to enable events on the LPS25H...  ");
-        LPS25H_HkTelemetryPkt->aimu_lps25h_device_error_count++;
+		CFE_EVS_SendEvent(AIMU_LPS25H_SAMPLE_RATE_EID, CFE_EVS_EventType_ERROR,
+           "Failed to set sample rate correctly...  ");
+        AIMU_LPS25H_HkTelemetryPkt->aimu_lps25h_device_error_count++;
 
 		return false;
 	}
@@ -365,42 +335,42 @@ bool INIT_AIMU_LPS25H(int I2CBus, lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemetryPkt)
 /*			turn around...		                                              */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
-void PROCESS_LPS25H(int i2cbus, lps25h_hk_tlm_t* LPS25H_HkTelemetryPkt, lps25h_data_tlm_t* LPS25H_DataTelemetryPkt)
+void PROCESS_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemetryPkt, aimu_lps25h_data_tlm_t* AIMU_LPS25H_DataTelemetryPkt)
 {
 	// Open the I2C Device
-	int file = I2C_open(i2cbus, MPL3115_I2C_ADDR);
+	int file = I2C_open(i2cbus, AIMU_LPS25H_I2C_ADDR);
 
 	// Check for data in the STATUS register
-	I2C_read(file, MPL3115_STATUS, 1, LPS25H.status);
+	I2C_read(file, AIMU_LPS25H_STATUS_REG, 1, LPS25H.status);
 	if (LPS25H.status[0] != 0)
 	{
 		// Read the Data Buffer
-		if(!I2C_read(file, MPL3115_OUT_P_MSB, 5, LPS25H.buffer))
+		if(!I2C_read(file, AIMU_LPS25H_PRESS_POUT_XL, 5, LPS25H.buffer))
 		{
-			CFE_EVS_SendEvent(LPS25H_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read data buffers... ");
-        	LPS25H_HkTelemetryPkt->aimu_lps25h_device_error_count++;
+			CFE_EVS_SendEvent(AIMU_LPS25H_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read data buffers... ");
+        	AIMU_LPS25H_HkTelemetryPkt->aimu_lps25h_device_error_count++;
 
 			return;
 		}
 
 		/* Process the Data Buffer */
 			
-		// Altitude
-		int32_t alt;
+		// Pressure
+		int32_t press;
 
-		alt = ((uint32_t)LPS25H.buffer[0]) << 24;
-		alt |= ((uint32_t)LPS25H.buffer[1]) << 16;
-		alt |= ((uint32_t)LPS25H.buffer[2]) << 8;
+		press = ((uint32_t)LPS25H.buffer[0]) << 24;
+		press |= ((uint32_t)LPS25H.buffer[1]) << 16;
+		press |= ((uint32_t)LPS25H.buffer[2]) << 8;
 
-		float altitude = alt;
+		float pressure = press;
 		altitude /= 65536.0;		
 
 		// Temperature
 		int16_t t;
 
-		t = LPS25H.buffer[3];
+		t =LPS25H.buffer[3];
 		t <<= 8;
-		t |= LPS25H.buffer[4];
+		t |=LPS25H.buffer[4];
 		t >>= 4;
 
 		if(t & 0x800)
@@ -412,8 +382,8 @@ void PROCESS_LPS25H(int i2cbus, lps25h_hk_tlm_t* LPS25H_HkTelemetryPkt, lps25h_d
 		temp /= 16.0;
 
 		// Store into packet
-		LPS25H_DataTelemetryPkt->LPS25H_ALTITUDE = altitude;
-		LPS25H_DataTelemetryPkt->LPS25H_TEMPERATURE = temp;
+		AIMU_LPS25H_DataTelemetryPkt->AIMU_LPS25H_ALTITUDE = pressure;
+		AIMU_LPS25H_DataTelemetryPkt->AIMU_LPS25H_TEMPERATURE = temperature;
 
 		// Print Processed Values if the debug flag is enabled for this app
 		CFE_EVS_SendEvent(LPS25H_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Altitude: %F Temperature: %F ", altitude, temp);
