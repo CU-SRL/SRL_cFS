@@ -75,7 +75,7 @@ typedef struct
 */
 SCH_LAB_ScheduleTable_t SCH_LAB_ScheduleTable[SCH_LAB_MAX_SCHEDULE_ENTRIES] = 
 { 
-     {MPL3115A2_SEND_HK_MID, 4, 0}, /* Housekeeping request for Sensor */
+     //{MPL3115A2_SEND_HK_MID, 4, 0}, /* Housekeeping request for Sensor */
 
      /* Uncomment to stop sending HK requests for other apps*/
      /* { SCH_LAB_END_OF_TABLE, 0, 0 } */

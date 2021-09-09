@@ -36,12 +36,12 @@
 #define AIMU_LSM6DS33_NOOP_CC                 0
 #define AIMU_LSM6DS33_RESET_COUNTERS_CC       1
 
-/* Device Command Codes  --> These codes need to be checked
+//Device Command Codes 
 #define AIMU_LSM6DS33_INIT          10 // Should also be able to be down automatically when flight ready
 #define AIMU_LSM6DS33_SHUTDOWN      11
 #define AIMU_LSM6DS33_RESET         12
 #define AIMU_LSM6DS33_PROCESS       13 // Should also be able to be down automatically when flight ready
-*/
+
 /*************************************************************************/
 /*
 ** Type definition (generic "no arguments" command)

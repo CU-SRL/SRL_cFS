@@ -85,8 +85,8 @@ static TO_subscription_t  TO_SubTable[] =
 	        {FM_OPEN_FILES_TLM_MID,  {0,0},  4},
 	        {FM_FREE_SPACE_TLM_MID,  {0,0},  4},
             {FM_FREE_SPACE_TLM_MID,  {0,0},  4},
-            {MPL3115A2_HK_TLM_MID,   {0,0},  4},
-            {MPL3115A2_DATA_TLM_MID, {0,0},  4},
+            //{MPL3115A2_HK_TLM_MID,   {0,0},  4},
+            //{MPL3115A2_DATA_TLM_MID, {0,0},  4},
             {TO_UNUSED,              {0, 0}, 0} //end of valid MIDs
 };
 

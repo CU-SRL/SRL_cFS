@@ -36,12 +36,12 @@
 #define AIMU_LPS25H_NOOP_CC                 0
 #define AIMU_LPS25H_RESET_COUNTERS_CC       1
 
-/* Device Command Codes  --> These codes need to be checked
+/* Device Command Codes*/
 #define AIMU_LPS25H_INIT          10 // Should also be able to be down automatically when flight ready
 #define AIMU_LPS25H_SHUTDOWN      11
 #define AIMU_LPS25H_RESET         12
 #define AIMU_LPS25H_PROCESS       13 // Should also be able to be down automatically when flight ready
-*/
+
 /*************************************************************************/
 /*
 ** Type definition (generic "no arguments" command)
@@ -70,9 +70,8 @@ typedef struct
 typedef struct 
 {
     uint8                TlmHeader[CFE_SB_TLM_HDR_SIZE];
-    uint16               AIMU_LPS25H_MAGSIGX;
-    uint16               AIMU_LPS25H_MAGSIGY;
-    uint16               AIMU_LPS25H_MAGSIGZ;
+    uint16               AIMU_LPS25H_PRESSURE
+    uint16               AIMU_LPS25H_TEMPERATURE;
 
 }   OS_PACK aimu_lps25h_data_tlm_t  ;
 

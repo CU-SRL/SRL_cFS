@@ -36,12 +36,12 @@
 #define AIMU_LIS3MDL_NOOP_CC                 0
 #define AIMU_LIS3MDL_RESET_COUNTERS_CC       1
 
-/* Device Command Codes  --> These codes need to be checked
+/* Device Command Codes */
 #define AIMU_LIS3MDL_INIT          10 // Should also be able to be down automatically when flight ready
 #define AIMU_LIS3MDL_SHUTDOWN      11
 #define AIMU_LIS3MDL_RESET         12
 #define AIMU_LIS3MDL_PROCESS       13 // Should also be able to be down automatically when flight ready
-*/
+
 /*************************************************************************/
 /*
 ** Type definition (generic "no arguments" command)
@@ -70,8 +70,9 @@ typedef struct
 typedef struct 
 {
     uint8               TlmHeader[CFE_SB_TLM_HDR_SIZE];
-    float               AIMU_LIS3MDL_ACCELERATION;
-    float               AIMU_LIS3MDL_ANGULAR_RATE;
+    uint16              AIMU_LIS3MDL_MAGSIGX;
+    uint16              AIMU_LIS3MDL_MAGSIGY;
+    uint16              AIMU_LIS3MDL_MAGSIGZ;
 
 }   OS_PACK aimu_lis3mdl_data_tlm_t  ;
 

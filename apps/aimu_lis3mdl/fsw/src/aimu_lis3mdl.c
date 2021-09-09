@@ -280,7 +280,7 @@ bool AIMU_LIS3MDL_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength)
            "Invalid msg length: ID = 0x%X,  CC = %d, Len = %d, Expected = %d",
               MessageID, CommandCode, ActualLength, ExpectedLength);
         result = false;
-        AIMU_LIS3MDL_HkTelemetryPkt.mpl3115a2_command_error_count++;
+        AIMU_LIS3MDL_HkTelemetryPkt.aimu_lis3mdl_command_error_count++;
     }
 
     return(result);
@@ -391,9 +391,9 @@ void PROCESS_AIMU_LIS3MDL(int i2cbus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTele
         magz = (zhm << 8 | zlm);
 
 		// Store into packet
-		AIMU_LSM6DS33_DataTelemetryPkt->AIMU_LSM6DS33_MAGSIGX = magx;
-        AIMU_LSM6DS33_DataTelemetryPkt->AIMU_LSM6DS33_MAGSIGY = magy;
-        AIMU_LSM6DS33_DataTelemetryPkt->AIMU_LSM6DS33_MAGSIGZ = magz;
+		AIMU_LIS3MDL_DataTelemetryPkt->AIMU_LIS3MDL_MAGSIGX = magx;
+        AIMU_LIS3MDL_DataTelemetryPkt->AIMU_LIS3MDL_MAGSIGY = magy;
+        AIMU_LIS3MDL_DataTelemetryPkt->AIMU_LIS3MDL_MAGSIGZ = magz;
 
 		// Print Processed Values if the debug flag is enabled for this app
 		CFE_EVS_SendEvent(AIMU_LIS3MDL_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Mag-x: %F Mag-y: %F  Mag-z: %F ", magx, magy, magz);
