@@ -257,7 +257,29 @@ And your BeagleBone Black is now setup and ready to be used with cFS.
 
 #### BeagleBone Black core Flight System Compilation and loading.
 
-** TO DO **
+Compiling the core Flight System for use on the BeagleBone Black ( BB ) is very straight forward assuming you have correctly setup the BBB according to the earlier guide. The first thing you need to do is let cmake know to compile for the ARM processor not x86-x64 processor. In order to do that you have to change the target definitions in the yonix_defs folder.
+
+	# Go to the yonix_defs folder
+	cd yonix_defs
+	
+Open the targets.cmake file, comment out SET(TGT1_NAME cpu1) and uncomment #SET(TGT1_NAME arm-bbb) such that your file now looks like the following:
+	
+	#SET(TGT1_NAME cpu1)
+	SET(TGT1_NAME arm-bbb)
+	
+Then save, exit, and compile cFS like you normally would. Afterwhich you know need to attach the SD card you were using to setup the BBB to your computer again. Then just drag and drop the arm-bbb folder from build/exe/ into your SD card root folder. Finally eject that SD card, place into BBB, and power on the BBB. cFS should now automatically start and you can check that by executing the following command on the BBB:
+
+	sudo systemctl status start-cfs.service
+	
+If you want a realtime log of the cFS instance running, (i.e. you want to see the terminal output of cFS while it's running in real-time), execute the following:
+
+	sudo journalctl -f -u start-cfs.service
+	
+If you want to stop the cFS instance, execute the following:
+
+	sudo systemctl stop start-cfs.service
+	
+And if you need to do anything else, google it because cFS is running as a regular process under a service so there is nothing special required.
 
 ---
 ## Code Version Notes
