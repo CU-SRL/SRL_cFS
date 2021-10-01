@@ -264,23 +264,9 @@ And your BeagleBone Black is now setup and ready to be used with cFS.
 
 #### BeagleBone Black core Flight System Compilation and loading.
 
-Compiling the core Flight System for use on the BeagleBone Black ( BB ) is very straight forward assuming you have correctly setup the BBB according to the earlier guide. The first thing you need to do is let cmake know to compile for the ARM processor not x86-x64 processor. In order to do that you have to change the target definitions in the yonix_defs folder.
+Compiling the core Flight System for use on the BeagleBone Black ( BB ) is very straight forward assuming you have correctly setup the BBB according to the earlier guide. You just compile cFS like you normally would. It really is that easy because the targets.cmake file in yonix_defs builds for both the Linux Development machine and the BBB at the same time.
 
-	# Go to the yonix_defs folder
-	cd yonix_defs
-	
-Open the targets.cmake file, comment out SET(TGT1_NAME cpu1) and uncomment #SET(TGT1_NAME arm-bbb) such that your file now looks like the following:
-	
-	#SET(TGT1_NAME cpu1)
-	SET(TGT1_NAME arm-bbb)
-	
-Then Repeat for the toolchains such that it looks like:
-
-	#SET(TGT1_SYSTEM cpu1)
-	SET(TGT1_SYSTEM arm-bbb)
-	
-Then save, exit, and compile cFS like you normally would. 
-Verify that it is indeed compiled for ARM by executing the following on the core-arm-bbb executable:
+You can verify that it indeed compiled for ARM by executing the following on the core-arm-bbb executable:
 
 	file core-arm-bbb
 	
