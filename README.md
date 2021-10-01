@@ -159,13 +159,16 @@ If not running gcc-7.5.0, you can acquire gcc-7.5.0 from the [gcc mirrors](https
 
 #### BeagleBone Black ARM Compiler
 Once the GCC is setup for the environment the ARM compiler must also be setup in order to cross-compile onto the BeagleBone Black. Installation is relatively easy.
-You must first get the Linaro toolchain from [here](https://www.linaro.org/downloads/ linaro). **MAKE SURE YOU GET THE arm-linux-gnueabihf**
+You must first get the Linaro toolchain from [here](https://snapshots.linaro.org/gnu-toolchain/). **MAKE SURE YOU GET THE arm-linux-gnueabihf for x86_64** The snapshot is ordered by version. Download the highest version.
+
+	# Verify Toolchain is correct, the download should look like the following where x.x.x is the version and yyyy.mm is the year and month:
+	gcc-linaro-x.x.x-yyyy.mm-x86_64_arm-linux-gnueabihf.tar.xz
 
 	# After you have downloaded the toolchain unzip it
 	$ tar -xvf <TOOLCHAIN DOWNLOAD>
 	
 	# Then move the extracted output to the /opt/ folder.
-	$ mv -r <EXTRACTED OUTPUT> /opt/gcc-arm-linux/
+	$ mv <EXTRACTED OUTPUT> /opt/gcc-arm-linux/
 	
 	# Add it to the path
 	$ sudo vim /etc/profile.d/env.sh
@@ -173,6 +176,10 @@ You must first get the Linaro toolchain from [here](https://www.linaro.org/downl
 	
 	# Check to make sure it was added and if a version comes up it works.
 	$ arm-linux-gnueabihf-gcc --version
+	
+	# Install GLIBC because we need it for compilation
+	sudo zypper install glibc
+	sudo zypper install glibc-devel
 
 ---
 ### Instructions for cFS compiliation
@@ -257,7 +264,28 @@ And your BeagleBone Black is now setup and ready to be used with cFS.
 
 #### BeagleBone Black core Flight System Compilation and loading.
 
-** TO DO **
+Compiling the core Flight System for use on the BeagleBone Black ( BB ) is very straight forward assuming you have correctly setup the BBB according to the earlier guide. You just compile cFS like you normally would. It really is that easy because the targets.cmake file in yonix_defs builds for both the Linux Development machine and the BBB at the same time.
+
+You can verify that it indeed compiled for ARM by executing the following on the core-arm-bbb executable:
+
+	file core-arm-bbb
+	
+	# You should see an output of something like the following
+	FILL THIS IN
+
+Afterwhich you know need to attach the SD card you were using to setup the BBB to your computer again. Then just drag and drop the arm-bbb folder from build/exe/ into your SD card root folder. Finally eject that SD card, place into BBB, and power on the BBB. cFS should now automatically start and you can check that by executing the following command on the BBB:
+
+	sudo systemctl status start-cfs.service
+	
+If you want a realtime log of the cFS instance running, (i.e. you want to see the terminal output of cFS while it's running in real-time), execute the following:
+
+	sudo journalctl -f -u start-cfs.service
+	
+If you want to stop the cFS instance, execute the following:
+
+	sudo systemctl stop start-cfs.service
+	
+And if you need to do anything else, google it because cFS is running as a regular process under a service so there is nothing special required.
 
 ---
 ## Code Version Notes

@@ -84,19 +84,22 @@ SET(UI_INSTALL_SUBDIR "host/ui")
 SET(FT_INSTALL_SUBDIR "host/functional-test")
 
 # Each target board can have its own HW arch selection and set of included apps
+
+# Linux Development Machine
 SET(TGT1_NAME cpu1)
-#SET(TGT1_NAME arm-bbb)
-#SET(TGT1_NAME arm-rtems)
-SET(TGT1_APPLIST sample_app sample_lib cfs_lib ci_lab to_lab sch_lab fm ds cs hs hk sc i2c_lib mpl3115a2)
+SET(TGT1_SYSTEM cpu1)
+SET(TGT1_APPLIST sample_app sample_lib cfs_lib ci_lab to_lab sch_lab fm ds cs hs hk sc)
 SET(TGT1_FILELIST cfe_es_startup.scr)
 
-# CPU2/3 are duplicates of CPU1.  These are not built by default anymore but are
-# commented out to serve as an example of how one would configure multiple cpus.
-#SET(TGT2_NAME cpu2)
-#SET(TGT2_APPLIST sample_app ci_lab to_lab sch_lab)
-#SET(TGT2_FILELIST cfe_es_startup.scr)
+# BeagleBone Black
+SET(TGT2_NAME arm-bbb)
+SET(TGT2_SYSTEM arm-bbb)
+SET(TGT2_APPLIST sample_app sample_lib cfs_lib ci_lab to_lab sch_lab fm ds cs hs hk sc)
+SET(TGT2_FILELIST arm-bbb_cfe_es_startup.scr)
 
+# Template
 #SET(TGT3_NAME cpu3)
+#SET(TGT3_SYSTEM cpu3)
 #SET(TGT3_APPLIST sample_app ci_lab to_lab sch_lab)
 #SET(TGT3_FILELIST cfe_es_startup.scr)
 
