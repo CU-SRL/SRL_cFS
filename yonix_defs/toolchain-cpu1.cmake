@@ -4,7 +4,7 @@
 # Basic cross system configuration
 SET(CMAKE_SYSTEM_NAME           Linux)
 SET(CMAKE_SYSTEM_VERSION        1)
-SET(CMAKE_SYSTEM_PROCESSOR      arm)
+SET(CMAKE_SYSTEM_PROCESSOR      i686)
 
 # Specify the cross compiler executables
 # Typically these would be installed in a home directory or somewhere
