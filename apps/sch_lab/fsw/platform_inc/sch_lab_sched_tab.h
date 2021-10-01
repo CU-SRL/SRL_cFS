@@ -75,24 +75,29 @@ typedef struct
 */
 SCH_LAB_ScheduleTable_t SCH_LAB_ScheduleTable[SCH_LAB_MAX_SCHEDULE_ENTRIES] = 
 { 
-     { CFE_ES_SEND_HK_MID,   4, 0 },  /* Housekeeping requests go out every 4 seconds */
-     { CFE_EVS_SEND_HK_MID,  4, 0 },
-     { CFE_TIME_SEND_HK_MID, 4, 0 },
-     { CFE_SB_SEND_HK_MID,   4, 0 },
-     { CFE_TBL_SEND_HK_MID,  4, 0 },
+     //{MPL3115A2_SEND_HK_MID, 4, 0}, /* Housekeeping request for Sensor */
+
+     /* Uncomment to stop sending HK requests for other apps*/
+     /* { SCH_LAB_END_OF_TABLE, 0, 0 } */
      
-     { CI_LAB_SEND_HK_MID,   4, 0 },
-     { TO_LAB_SEND_HK_MID,   4, 0 },
+     {CFE_ES_SEND_HK_MID,    4, 0},  /* Housekeeping requests go out every 4 seconds */
+     {CFE_EVS_SEND_HK_MID,   4, 0},
+     {CFE_TIME_SEND_HK_MID,  4, 0},
+     {CFE_SB_SEND_HK_MID,    4, 0},
+     {CFE_TBL_SEND_HK_MID,   4, 0},
+     
+     {CI_LAB_SEND_HK_MID,    4, 0},
+     {TO_LAB_SEND_HK_MID,    4, 0},
 
 
      /* cfs hk request */
-     { DS_SEND_HK_MID,       4, 0 },
-     { HK_SEND_HK_MID,       4, 0 },
-     { HS_SEND_HK_MID,       4, 0 },
-     { FM_SEND_HK_MID,       4, 0 },
-     { CS_SEND_HK_MID,       4, 0 },
-  /* { SC_SEND_HK_MID,       4, 0 }, */ /* Commented out because causing a seg fault */
+     {DS_SEND_HK_MID,        4, 0},
+     {HK_SEND_HK_MID,        4, 0},
+     {HS_SEND_HK_MID,        4, 0},
+     {FM_SEND_HK_MID,        4, 0},
+     {CS_SEND_HK_MID,        4, 0},
+  /* {SC_SEND_HK_MID,        4, 0}, */ /* Commented out because causing a seg fault */
 
-     { SCH_LAB_END_OF_TABLE, 0, 0 }
+     {SCH_LAB_END_OF_TABLE,  0, 0}
 };
 

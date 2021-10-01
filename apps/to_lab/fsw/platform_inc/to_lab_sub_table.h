@@ -57,7 +57,7 @@ static TO_subscription_t  TO_SubTable[] =
             {CI_LAB_HK_TLM_MID,     {0,0},  4},
             {SAMPLE_APP_HK_TLM_MID, {0,0},  4},
 
-	    {HS_HK_TLM_MID,         {0,0},  4},
+	        {HS_HK_TLM_MID,         {0,0},  4},
             {FM_HK_TLM_MID,         {0,0},  4},
             {SC_HK_TLM_MID,         {0,0},  4},
             {DS_HK_TLM_MID,         {0,0},  4},
@@ -82,8 +82,12 @@ static TO_subscription_t  TO_SubTable[] =
             {DS_DIAG_TLM_MID,        {0,0},  4},
             {FM_FILE_INFO_TLM_MID,   {0,0},  4},
             {FM_DIR_LIST_TLM_MID,    {0,0},  4},
-	    {FM_OPEN_FILES_TLM_MID,  {0,0},  4},
-	    {FM_FREE_SPACE_TLM_MID,  {0,0},  4}
+	        {FM_OPEN_FILES_TLM_MID,  {0,0},  4},
+	        {FM_FREE_SPACE_TLM_MID,  {0,0},  4},
+            {FM_FREE_SPACE_TLM_MID,  {0,0},  4},
+            //{MPL3115A2_HK_TLM_MID,   {0,0},  4},
+            //{MPL3115A2_DATA_TLM_MID, {0,0},  4},
+            {TO_UNUSED,              {0, 0}, 0} //end of valid MIDs
 };
 
 /************************
