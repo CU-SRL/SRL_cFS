@@ -159,7 +159,7 @@ If not running gcc-7.5.0, you can acquire gcc-7.5.0 from the [gcc mirrors](https
 
 #### BeagleBone Black ARM Compiler
 Once the GCC is setup for the environment the ARM compiler must also be setup in order to cross-compile onto the BeagleBone Black. Installation is relatively easy.
-You must first get the Linaro toolchain from [here](https://snapshots.linaro.org/gnu-toolchain/). **MAKE SURE YOU GET THE arm-linux-gnueabihf for x86_64** The snapshot is ordered by version. Download the highest version.
+The ARM compiler lives on the SRL storage server in the Avionics folder, or you can just download it from [here](https://releases.linaro.org/components/toolchain/binaries/7.5-2019.12/arm-linux-gnueabihf/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf.tar.xz)
 
 	# Verify Toolchain is correct, the download should look like the following where x.x.x is the version and yyyy.mm is the year and month:
 	gcc-linaro-x.x.x-yyyy.mm-x86_64_arm-linux-gnueabihf.tar.xz
