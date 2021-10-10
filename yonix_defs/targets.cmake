@@ -95,7 +95,7 @@ SET(TGT1_FILELIST cfe_es_startup.scr)
 SET(TGT2_NAME arm-bbb)
 SET(TGT2_SYSTEM arm-bbb)
 SET(TGT2_APPLIST sample_app sample_lib cfs_lib ci_lab to_lab sch_lab fm ds cs hs hk sc)
-SET(TGT2_FILELIST arm-bbb_cfe_es_startup.scr)
+SET(TGT2_FILELIST cfe_es_startup.scr)
 
 # Template
 #SET(TGT3_NAME cpu3)
