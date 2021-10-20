@@ -30,10 +30,10 @@
 #ifndef lis3mdl_version_h_
 #define lis3mdl_version_h_
 
-#define LIS3MDL_MAJOR_VERSION    0
-#define LIS3MDL_MINOR_VERSION    1
-#define LIS3MDL_REVISION         0
-#define LIS3MDL_MISSION_REV      0
+#define AIMU_LIS3MDL_MAJOR_VERSION    0
+#define AIMU_LIS3MDL_MINOR_VERSION    1
+#define AIMU_LIS3MDL_REVISION         0
+#define AIMU_LIS3MDL_MISSION_REV      0
       
 #endif /* lis3mdl_version_h_ */
 

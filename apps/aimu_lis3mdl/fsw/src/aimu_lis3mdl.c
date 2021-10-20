@@ -52,7 +52,7 @@ static CFE_EVS_BinFilter_t  AIMU_LIS3MDL_EventFilters[] =
           {AIMU_LIS3MDL_STARTUP_INF_EID,       0x0000},
           {AIMU_LIS3MDL_COMMAND_ERR_EID,       0x0000},
           {AIMU_LIS3MDL_COMMANDNOP_INF_EID,    0x0000},
-          {AIMU_LIS3MDL2_COMMANDRST_INF_EID,    0x0000},
+          {AIMU_LIS3MDL_COMMANDRST_INF_EID,    0x0000},
        };
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -69,7 +69,7 @@ void AIMU_LIS3MDL_AppMain( void )
     AIMU_LIS3MDL_AppInit();
 
     /*
-    ** MPL3115A2 Runloop
+    ** AIMU_LIS3MDL Runloop
     */
     while (CFE_ES_RunLoop(&RunStatus) == true)
     {
@@ -96,7 +96,7 @@ void AIMU_LIS3MDL_AppMain( void )
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
 /*                                                                            */
-/* MPL3115A2_AppInit() --  initialization                                     */
+/* AIMU_LIS3MDL_AppInit() --  initialization                                     */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 void AIMU_LIS3MDL_AppInit(void)
@@ -117,7 +117,7 @@ void AIMU_LIS3MDL_AppInit(void)
     ** Create the Software Bus command pipe and subscribe to housekeeping
     **  messages
     */
-    CFE_SB_CreatePipe(&AIMU_LIS3MDL_CommandPipe, AIMU_LIS3MDL_PIPE_DEPTH,"AIMU_LIS3MDL_CMD_PIPE");
+    CFE_SB_CreatePipe(&AIMU_LIS3MDL_CommandPipe, AIMU_LIS3MDL_PIPE_DEPTH, "LIS3MDL_CMD_PIPE");
     CFE_SB_Subscribe(AIMU_LIS3MDL_CMD_MID, AIMU_LIS3MDL_CommandPipe);
     CFE_SB_Subscribe(AIMU_LIS3MDL_SEND_HK_MID, AIMU_LIS3MDL_CommandPipe);
 
@@ -128,7 +128,7 @@ void AIMU_LIS3MDL_AppInit(void)
                    AIMU_LIS3MDL_HK_TLM_LNGTH, true);
 
     CFE_EVS_SendEvent (AIMU_LIS3MDL_STARTUP_INF_EID, CFE_EVS_EventType_INFORMATION,
-               "MPL3115A2 App Initialized. Version %d.%d.%d.%d\n",
+               "AIMU_LIS3MDL App Initialized. Version %d.%d.%d.%d\n",
                 AIMU_LIS3MDL_MAJOR_VERSION,
                 AIMU_LIS3MDL_MINOR_VERSION, 
                 AIMU_LIS3MDL_REVISION, 
@@ -179,7 +179,7 @@ void AIMU_LIS3MDL_ProcessCommandPacket(void)
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 /*                                                                            */
-/* MPL3115A2_ProcessGroundCommand() -- MPL3115A2 ground commands              */
+/* AIMU_LIS3MDL_ProcessGroundCommand() -- AIMU_LIS3MDL ground commands              */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 
@@ -193,7 +193,7 @@ void AIMU_LIS3MDL_ProcessGroundCommand(void)
     switch (CommandCode)
     {
         case AIMU_LIS3MDL_NOOP_CC:
-            AIMU_LIS3MDL_HkTelemetryPkt.mpl3115a2_command_count++;
+            AIMU_LIS3MDL_HkTelemetryPkt.aimu_lis3mdl_command_count++;
             CFE_EVS_SendEvent(AIMU_LIS3MDL_COMMANDNOP_INF_EID,
                         CFE_EVS_EventType_INFORMATION,
 			"AIMU_LIS3MDL: NOOP command");
@@ -245,11 +245,11 @@ void AIMU_LIS3MDL_ReportHousekeeping(void)
 /*         part of the task telemetry.                                        */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * *  * * * * * * *  * *  * * * * */
-void MPL3115A2_ResetCounters(void)
+void AIMU_LIS3MDL_ResetCounters(void)
 {
-    /* Status of commands processed by the MPL3115A2 App */
-    AIMU_LIS3MDL_HkTelemetryPkt.mpl3115a2_command_count       = 0;
-    AIMU_LIS3MDL_HkTelemetryPkt.mpl3115a2_command_error_count = 0;
+    /* Status of commands processed by the AIMU_LIS3MDL App */
+    AIMU_LIS3MDL_HkTelemetryPkt.aimu_lis3mdl_command_count       = 0;
+    AIMU_LIS3MDL_HkTelemetryPkt.aimu_lis3mdl_command_error_count = 0;
 
     CFE_EVS_SendEvent(AIMU_LIS3MDL_COMMANDRST_INF_EID, CFE_EVS_EventType_INFORMATION,
 		"AIMU_LIS3MDL: RESET command");
@@ -347,7 +347,7 @@ bool INIT_AIMU_LIS3MDL(int I2CBus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTelemet
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 /*                                                                            */
-/* PROCESS_MPL3115A2() -- This function process the MPL3115A2 data according  */
+/* PROCESS_AIMU_LIS3MDL() -- This function process the AIMU_LIS3MDL data according  */
 /*					to the datasheet.										  */
 /*                                                                            */
 /*  NOTE: Realistically the data acquistion and processing should happen in   */
@@ -355,7 +355,7 @@ bool INIT_AIMU_LIS3MDL(int I2CBus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTelemet
 /*			turn around...		                                              */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
-void PROCESS_AIMU_LIS3MDL(int i2cbus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTelemetryPkt, mpl3115a2_data_tlm_t* MPL3115A2_DataTelemetryPkt)
+void PROCESS_AIMU_LIS3MDL(int i2cbus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTelemetryPkt, aimu_lis3mdl_data_tlm_t* AIMU_LIS3MDL_DataTelemetryPkt)
 {
 	// Open the I2C Device
 	int file = I2C_open(i2cbus, AIMU_LIS3MDL_I2C_ADDR);
@@ -377,7 +377,7 @@ void PROCESS_AIMU_LIS3MDL(int i2cbus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTele
 			
 		// Magnetic readings
 		uint8_t xlm, xhm, ylm, yhm, zlm, zhm;
-        uint16_t magx, magy, magz
+        float magx, magy, magz;
 
 		xlm = AIMU_LIS3MDL.buffer[0];
 		xhm = AIMU_LIS3MDL.buffer[1];
@@ -389,6 +389,7 @@ void PROCESS_AIMU_LIS3MDL(int i2cbus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTele
         magx = (xhm << 8 | xlm);
         magy = (yhm << 8 | ylm);
         magz = (zhm << 8 | zlm);
+
 
 		// Store into packet
 		AIMU_LIS3MDL_DataTelemetryPkt->AIMU_LIS3MDL_MAGSIGX = magx;

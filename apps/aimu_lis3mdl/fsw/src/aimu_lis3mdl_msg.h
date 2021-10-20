@@ -70,9 +70,9 @@ typedef struct
 typedef struct 
 {
     uint8               TlmHeader[CFE_SB_TLM_HDR_SIZE];
-    uint16              AIMU_LIS3MDL_MAGSIGX;
-    uint16              AIMU_LIS3MDL_MAGSIGY;
-    uint16              AIMU_LIS3MDL_MAGSIGZ;
+    float              AIMU_LIS3MDL_MAGSIGX;
+    float              AIMU_LIS3MDL_MAGSIGY;
+    float              AIMU_LIS3MDL_MAGSIGZ;
 
 }   OS_PACK aimu_lis3mdl_data_tlm_t  ;
 
