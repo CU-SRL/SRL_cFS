@@ -70,8 +70,8 @@ typedef struct
 typedef struct 
 {
     uint8                TlmHeader[CFE_SB_TLM_HDR_SIZE];
-    uint16               AIMU_LPS25H_PRESSURE
-    uint16               AIMU_LPS25H_TEMPERATURE;
+    float               AIMU_LPS25H_PRESSURE;
+    float               AIMU_LPS25H_TEMPERATURE;
 
 }   OS_PACK aimu_lps25h_data_tlm_t  ;
 

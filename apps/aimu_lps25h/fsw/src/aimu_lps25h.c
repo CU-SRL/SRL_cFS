@@ -52,7 +52,7 @@ static CFE_EVS_BinFilter_t  AIMU_LPS25H_EventFilters[] =
           {AIMU_LPS25H_STARTUP_INF_EID,       0x0000},
           {AIMU_LPS25H_COMMAND_ERR_EID,       0x0000},
           {AIMU_LPS25H_COMMANDNOP_INF_EID,    0x0000},
-          {AIMU_LPS25H2_COMMANDRST_INF_EID,    0x0000},
+          {AIMU_LPS25H_COMMANDRST_INF_EID,    0x0000},
        };
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -117,7 +117,7 @@ void AIMU_LPS25H_AppInit(void)
     ** Create the Software Bus command pipe and subscribe to housekeeping
     **  messages
     */
-    CFE_SB_CreatePipe(&AIMU_LPS25H_CommandPipe, AIMU_LPS25H_PIPE_DEPTH,"AIMU_LPS25H_CMD_PIPE");
+    CFE_SB_CreatePipe(&AIMU_LPS25H_CommandPipe, AIMU_LPS25H_PIPE_DEPTH,"LPS25H_CMD_PIPE");
     CFE_SB_Subscribe(AIMU_LPS25H_CMD_MID, AIMU_LPS25H_CommandPipe);
     CFE_SB_Subscribe(AIMU_LPS25H_SEND_HK_MID, AIMU_LPS25H_CommandPipe);
 
@@ -341,11 +341,11 @@ void PROCESS_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemetryPkt
 	int file = I2C_open(i2cbus, AIMU_LPS25H_I2C_ADDR);
 
 	// Check for data in the STATUS register
-	I2C_read(file, AIMU_LPS25H_STATUS_REG, 1, LPS25H.status);
-	if (LPS25H.status[0] != 0)
+	I2C_read(file, AIMU_LPS25H_STATUS_REG, 1, AIMU_LPS25H.status);
+	if (AIMU_LPS25H.status[0] != 0)
 	{
 		// Read the Data Buffer
-		if(!I2C_read(file, AIMU_LPS25H_PRESS_POUT_XL, 5, LPS25H.buffer))
+		if(!I2C_read(file, AIMU_LPS25H_PRESS_POUT_XL, 5, AIMU_LPS25H.buffer))
 		{
 			CFE_EVS_SendEvent(AIMU_LPS25H_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read data buffers... ");
         	AIMU_LPS25H_HkTelemetryPkt->aimu_lps25h_device_error_count++;
@@ -358,19 +358,18 @@ void PROCESS_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemetryPkt
 		// Pressure
 		int32_t press;
 
-		press = ((uint32_t)LPS25H.buffer[0]) << 24;
-		press |= ((uint32_t)LPS25H.buffer[1]) << 16;
-		press |= ((uint32_t)LPS25H.buffer[2]) << 8;
+		press = AIMU_LPS25H.buffer[0] << 24;
+		press |= AIMU_LPS25H.buffer[1] << 16;
+		press |= AIMU_LPS25H.buffer[2] << 8;
 
-		float pressure = press;
-		altitude /= 65536.0;		
+		float pressure = press;		
 
 		// Temperature
 		int16_t t;
 
-		t =LPS25H.buffer[3];
+		t = AIMU_LPS25H.buffer[3];
 		t <<= 8;
-		t |=LPS25H.buffer[4];
+		t |= AIMU_LPS25H.buffer[4];
 		t >>= 4;
 
 		if(t & 0x800)

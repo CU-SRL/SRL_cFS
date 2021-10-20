@@ -20,10 +20,10 @@
 #define AIMU_LPS25H_REF_P_H              0x0A /*! The REF_P_H register contains the highest part of the reference pressure value that is sum to the sensor output pressure. */
 #define AIMU_LPS25H_WHO_AM_I             0x0F /*! Contains the device ID */
 #define AIMU_LPS25H_RES_CONF             0x10 /*! Pressure and Temperature internal average configuration. */
-#define AIMU_LPS25H_CTL_REG1             0x20 /*! Control Register */
-#define AIMU_LPS25H_CTL_REG2             0x21 /*! Control register. */
-#define AIMU_LPS25H_CTL_REG3             0x22 /*! Control register. */
-#define AIMU_LPS25H_CTL_REG4             0x23 /*! Control register. */
+#define AIMU_LPS25H_CTRL_REG1            0x20 /*! Control Register */
+#define AIMU_LPS25H_CTRL_REG2            0x21 /*! Control register. */
+#define AIMU_LPS25H_CTRL_REG3            0x22 /*! Control register. */
+#define AIMU_LPS25H_CTRL_REG4            0x23 /*! Control register. */
 #define AIMU_LPS25H_INT_CFG              0x24 /*! Interrupt differential configuration register. */
 #define AIMU_LPS25H_INT_SOURCE           0x25 /*! INT_SOURCE register is cleared by reading it */
 #define AIMU_LPS25H_STATUS_REG           0x27 /*! Status register */

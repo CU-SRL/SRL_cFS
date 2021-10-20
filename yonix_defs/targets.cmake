@@ -88,13 +88,13 @@ SET(FT_INSTALL_SUBDIR "host/functional-test")
 # Linux Development Machine
 SET(TGT1_NAME cpu1)
 SET(TGT1_SYSTEM cpu1)
-SET(TGT1_APPLIST sample_app sample_lib cfs_lib ci_lab to_lab sch_lab fm ds cs hs hk sc aimu_lis3mdl i2c_lib)
+SET(TGT1_APPLIST sample_app sample_lib cfs_lib ci_lab to_lab sch_lab fm ds cs hs hk sc aimu_lis3mdl aimu_lps25h i2c_lib)
 SET(TGT1_FILELIST cfe_es_startup.scr)
 
 # BeagleBone Black
 SET(TGT2_NAME arm-bbb)
 SET(TGT2_SYSTEM arm-bbb)
-SET(TGT2_APPLIST sample_app sample_lib cfs_lib ci_lab to_lab sch_lab fm ds cs hs hk sc aimu_lis3mdl i2c_lib)
+SET(TGT2_APPLIST sample_app sample_lib cfs_lib ci_lab to_lab sch_lab fm ds cs hs hk sc aimu_lis3mdl aimu_lps25h i2c_lib)
 SET(TGT2_FILELIST cfe_es_startup.scr)
 
 # Template

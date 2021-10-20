@@ -30,10 +30,10 @@
 #ifndef lps25h_version_h_
 #define lps25h_version_h_
 
-#define LPS25H_MAJOR_VERSION    0
-#define LPS25H_MINOR_VERSION    1
-#define LPS25H_REVISION         0
-#define LPS25H_MISSION_REV      0
+#define AIMU_LPS25H_MAJOR_VERSION    0
+#define AIMU_LPS25H_MINOR_VERSION    1
+#define AIMU_LPS25H_REVISION         0
+#define AIMU_LPS25H_MISSION_REV      0
       
 #endif /* lps25h_version_h_ */
 
