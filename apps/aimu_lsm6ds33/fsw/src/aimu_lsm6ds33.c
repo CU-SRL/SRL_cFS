@@ -52,7 +52,7 @@ static CFE_EVS_BinFilter_t  AIMU_LSM6DS33_EventFilters[] =
           {AIMU_LSM6DS33_STARTUP_INF_EID,       0x0000},
           {AIMU_LSM6DS33_COMMAND_ERR_EID,       0x0000},
           {AIMU_LSM6DS33_COMMANDNOP_INF_EID,    0x0000},
-          {AIMU_LSM6DS332_COMMANDRST_INF_EID,    0x0000},
+          {AIMU_LSM6DS33_COMMANDRST_INF_EID,    0x0000},
        };
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -117,7 +117,7 @@ void AIMU_LSM6DS33_AppInit(void)
     ** Create the Software Bus command pipe and subscribe to housekeeping
     **  messages
     */
-    CFE_SB_CreatePipe(&AIMU_LSM6DS33_CommandPipe, AIMU_LSM6DS33_PIPE_DEPTH,"AIMU_LSM6DS33_CMD_PIPE");
+    CFE_SB_CreatePipe(&AIMU_LSM6DS33_CommandPipe, AIMU_LSM6DS33_PIPE_DEPTH,"LSM6DS33_CMD_PIPE");
     CFE_SB_Subscribe(AIMU_LSM6DS33_CMD_MID, AIMU_LSM6DS33_CommandPipe);
     CFE_SB_Subscribe(AIMU_LSM6DS33_SEND_HK_MID, AIMU_LSM6DS33_CommandPipe);
 
@@ -336,11 +336,7 @@ bool INIT_AIMU_LSM6DS33(int I2CBus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkTele
         AIMU_LSM6DS33_HkTelemetryPkt->aimu_lsm6ds33_device_error_count++;
 
 		return false;
-	}
-
-		return false;
-	}
-    
+	} 
 
 	// Close the I2C file
 	I2C_close(file);
@@ -380,7 +376,7 @@ void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkT
 			
 		// Altitude
 		uint8_t xla, xha, yla, yha, zla, zha;
-        uint16_t accx, accy, accz
+        float accx, accy, accz;
 
 		xla = AIMU_LSM6DS33.buffer[0];
 		xha = AIMU_LSM6DS33.buffer[1];
@@ -395,7 +391,7 @@ void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkT
 
 		// Gyro
 		uint8_t xlg, xhg, ylg, yhg, zlg, zhg;
-        uint16_t gyx, gyy, gyz;
+        float gyx, gyy, gyz;
 
 		xlg = AIMU_LSM6DS33.buffer[6];
 		xhg = AIMU_LSM6DS33.buffer[7];
@@ -417,7 +413,7 @@ void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkT
         AIMU_LSM6DS33_DataTelemetryPkt->AIMU_LSM6DS33_ANGULAR_RATEZ = gyz;
 
 		// Print Processed Values if the debug flag is enabled for this app
-		CFE_EVS_SendEvent(AIMU_LSM6DS33_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Acceleration: %d, %d, %d Angular Rate: %d, %d, %d ", accx, accy, accz, gyx, gyy, gyz);
+		CFE_EVS_SendEvent(AIMU_LSM6DS33_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Acceleration (x, y, z): %F, %F, %F Angular Rate (x, y, z): %F, %F, %F ", accx, accy, accz, gyx, gyy, gyz);
 	}
 
 	// Close the I2C Buffer
