@@ -47,7 +47,7 @@
 #include <linux/i2c.h>
 #include <linux/i2c-dev.h>
 #include <sys/ioctl.h>
-#include <stropts.h>
+//#include <stropts.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -77,7 +77,7 @@ struct MCP98001_data {
 	uint8_t buffer[MCP98001_I2C_BUFFER];
 	
 	// Data Variables
-	uint16_t temperature;
+	//float temperature;
 } MCP98001;
 
 /****************************************************************************/
@@ -103,7 +103,7 @@ bool MCP98001_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength);
 */
 
 /* MCP98001 Barometer */
-bool INIT_MCP98001(int I2CBus, mcp98001_hk_tlm_t* MCP98001_HkTelemetryPkt);
-void PROCESS_MCP98001(int i2cbus, mcp98001_hk_tlm_t* MCP98001_HkTelemetryPkt, mcp98001_data_tlm_t* MCP98001_DataTelemetryPkt);
+bool INIT_MCP98001(int I2CBus, mcp98001_hk_tlm_t* MCP98001_HkTelemetryPkt, uint8 DeviceNumber);
+void PROCESS_MCP98001(int i2cbus, mcp98001_hk_tlm_t* MCP98001_HkTelemetryPkt, mcp98001_data_tlm_t* MCP98001_DataTelemetryPkt, uint8 DeviceNumber);
 
 #endif /* _mcp98001_h_ */

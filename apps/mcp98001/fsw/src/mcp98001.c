@@ -205,11 +205,13 @@ void MCP98001_ProcessGroundCommand(void)
 
         // DEVICE SPECIFIC COMMANDS
         case MCP98001_INIT:
-            INIT_MCP98001(1, &MCP98001_HkTelemetryPkt);
+            INIT_MCP98001(1, &MCP98001_HkTelemetryPkt, 1);
+            INIT_MCP98001(1, &MCP98001_HkTelemetryPkt, 2);
             break;
         
         case MCP98001_PROCESS:
-            PROCESS_MCP98001(1, &MCP98001_HkTelemetryPkt, &MCP98001_DataTelemetryPkt);
+            PROCESS_MCP98001(1, &MCP98001_HkTelemetryPkt, &MCP98001_DataTelemetryPkt, 1);
+            PROCESS_MCP98001(1, &MCP98001_HkTelemetryPkt, &MCP98001_DataTelemetryPkt, 2);
             break;
 
         /* default case already found during FC vs length test */
@@ -295,15 +297,20 @@ bool MCP98001_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength)
 /*					to the datasheet.										  */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
-bool INIT_MCP98001(int I2CBus, mcp98001_hk_tlm_t* MCP98001_HkTelemetryPkt)
+bool INIT_MCP98001(int I2CBus, mcp98001_hk_tlm_t* MCP98001_HkTelemetryPkt, uint8 DeviceNumber)
 {
-	//Device 2
-    // Open I2C for the first device address
-	int file1 = I2C_open(I2CBus, MCP98001_1_I2C_ADDR);
-
+    int file;
+	//Device
+    // Open I2C 
+	if(DeviceNumber==1){
+        file = I2C_open(I2CBus, MCP98001_1_I2C_ADDR);
+    }
+    else{
+        file = I2C_open(I2CBus, MCP98001_2_I2C_ADDR);
+    }
 	
 	// Configure resolution to 12 bits
-	if(!I2C_write(file1, MCP98001_CONFIG, 0x60))
+	if(!I2C_write(file, MCP98001_CONFIG, 0x60))
 	{
 		CFE_EVS_SendEvent(MCP98001_FAILED_TO_CONFIGURE, CFE_EVS_EventType_ERROR,
            "Failed to place MCP98001 resolution to 12 bits... ");
@@ -312,23 +319,7 @@ bool INIT_MCP98001(int I2CBus, mcp98001_hk_tlm_t* MCP98001_HkTelemetryPkt)
 	}
 
 	// Close the I2C file
-	I2C_close(file1);
-
-    //Device 2
-    // Open I2C for the second device address
-	int file2 = I2C_open(I2CBus, MCP98001_2_I2C_ADDR);
-
-   // Configure resolution to 12 bits
-	if(!I2C_write(file2, MCP98001_CONFIG, 0x60))
-	{
-		CFE_EVS_SendEvent(MCP98001_FAILED_TO_CONFIGURE, CFE_EVS_EventType_ERROR,
-           "Failed to place MCP98001 resolution to 12 bits... ");
-        MCP98001_HkTelemetryPkt->mcp98001_device_error_count++;
-		return false;
-	}
-
-    // Close the I2C file
-	I2C_close(file2);
+	I2C_close(file);
 
 	return true;
 }
@@ -343,13 +334,20 @@ bool INIT_MCP98001(int I2CBus, mcp98001_hk_tlm_t* MCP98001_HkTelemetryPkt)
 /*			turn around...		                                              */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
-void PROCESS_MCP98001(int i2cbus, mcp98001_hk_tlm_t* MCP98001_HkTelemetryPkt, mcp98001_data_tlm_t* MCP98001_DataTelemetryPkt)
+void PROCESS_MCP98001(int i2cbus, mcp98001_hk_tlm_t* MCP98001_HkTelemetryPkt, mcp98001_data_tlm_t* MCP98001_DataTelemetryPkt, uint8 DeviceNumber)
 {
+    int file;
+
 	// Open the I2C Device
-	int file = I2C_open(i2cbus, MPL3115_I2C_ADDR);
+	if(DeviceNumber==1){
+        file = I2C_open(i2cbus, MCP98001_1_I2C_ADDR);
+    }
+    else{
+        file = I2C_open(i2cbus, MCP98001_2_I2C_ADDR);
+    }
 
 	// Check for data in the STATUS register
-	I2C_read(file1, MPL3115_STATUS, 1, MCP98001.status);
+	I2C_read(file, MCP98001_CONFIG, 1, MCP98001.status);
 	if (MCP98001.status[0] != 0)
 	{
 		// Read the Data Buffer

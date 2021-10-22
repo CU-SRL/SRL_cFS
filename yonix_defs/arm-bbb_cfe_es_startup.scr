@@ -14,6 +14,8 @@ CFE_APP, /cf/sch_lab.so,        SCH_Lab_AppMain,       SCH_LAB_APP,   80,   1638
 CFE_APP, /cf/aimu_lis3mdl.so,   AIMU_LIS3MDL_AppMain,  AIMU_LIS3MDL,  70,   16384, 0x0, 0;
 CFE_APP, /cf/aimu_lps25h.so,    AIMU_LPS25H_AppMain,   AIMU_LPS25H,   70,   16384, 0x0, 0;
 CFE_APP, /cf/aimu_lsm6ds33.so,  AIMU_LSM6DS33_AppMain, AIMU_LSM6DS33, 70,   16384, 0x0, 0;
+CFE_APP, /cf/mcp98001.so,       MCP98001_AppMain,      MCP98001,      80,   16384, 0x0, 0;
+
 !
 ! Startup script fields:
 ! 1. Object Type      -- CFE_APP for an Application, or CFE_LIB for a library.

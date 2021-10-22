@@ -52,6 +52,13 @@ typedef struct
 
 } mcp98001_NoArgsCmd_t;
 
+typedef struct
+{
+   uint8    CmdHeader[CFE_SB_CMD_HDR_SIZE];
+   uint8    DeviceNumber;
+
+} mcp98001_DeviceCommand_t;
+
 /*************************************************************************/
 /*
 ** Type definition (MCP98001 App housekeeping)
