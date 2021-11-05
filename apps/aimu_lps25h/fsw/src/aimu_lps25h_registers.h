@@ -14,7 +14,8 @@
 //        Registers can be found in Datasheets.
 //-------------------------------------------------------
 
-#define AIMU_LPS25H_I2C_ADDR             0x5D /*! I2C address */
+#define AIMU_LPS25H_I2C_ADDR_R             0xBB /*! I2C address Read*/
+#define AIMU_LPS25H_I2C_ADDR_W             0xBA /*! I2C address */
 #define AIMU_LPS25H_REF_P_XL             0x08 /*! The REF_P_XL register contains the lowest part of the reference pressure value that is sum to the sensor output pressure */
 #define AIMU_LPS25H_REF_P_L              0x09 /*! The REF_P_L register contains the middle part of the reference pressure value that is sum to the sensor output pressure */
 #define AIMU_LPS25H_REF_P_H              0x0A /*! The REF_P_H register contains the highest part of the reference pressure value that is sum to the sensor output pressure. */

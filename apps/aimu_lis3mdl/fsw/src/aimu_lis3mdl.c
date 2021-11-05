@@ -68,6 +68,9 @@ void AIMU_LIS3MDL_AppMain( void )
 
     AIMU_LIS3MDL_AppInit();
 
+    //After Initialization
+    AIMU_LIS3MDL_HkTelemetryPkt.AppStatus = RunStatus;
+
     /*
     ** AIMU_LIS3MDL Runloop
     */
@@ -89,6 +92,8 @@ void AIMU_LIS3MDL_AppMain( void )
         }
 
     }
+    //After While Loop
+    AIMU_LIS3MDL_HkTelemetryPkt.AppStatus = RunStatus;
 
     CFE_ES_ExitApp(RunStatus);
 
@@ -298,7 +303,7 @@ bool AIMU_LIS3MDL_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength)
 bool INIT_AIMU_LIS3MDL(int I2CBus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTelemetryPkt)
 {
 	// Open I2C for the device address
-	int file = I2C_open(I2CBus, AIMU_LIS3MDL_I2C_ADDR);
+	int file = I2C_open(I2CBus, AIMU_LIS3MDL_I2C_ADDR_W);
 	
 	// Place Full Scale +-12 Hz
     if(!I2C_write(file, AIMU_LIS3MDL_CTRL_REG2, 0x40))
@@ -358,7 +363,7 @@ bool INIT_AIMU_LIS3MDL(int I2CBus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTelemet
 void PROCESS_AIMU_LIS3MDL(int i2cbus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTelemetryPkt, aimu_lis3mdl_data_tlm_t* AIMU_LIS3MDL_DataTelemetryPkt)
 {
 	// Open the I2C Device
-	int file = I2C_open(i2cbus, AIMU_LIS3MDL_I2C_ADDR);
+	int file = I2C_open(i2cbus, AIMU_LIS3MDL_I2C_ADDR_R);
 
 	// Check for data in the STATUS register
 	I2C_read(file, AIMU_LIS3MDL_STATUS_REG, 1, AIMU_LIS3MDL.status);
@@ -391,10 +396,14 @@ void PROCESS_AIMU_LIS3MDL(int i2cbus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTele
         magz = (zhm << 8 | zlm);
 
 
+        CFE_SB_InitMsg(&AIMU_LIS3MDL_DataTelemetryPkt, AIMU_LIS3MDL_DATA_TLM_MID, sizeof(aimu_lis3mdl_data_tlm_t), true);
 		// Store into packet
 		AIMU_LIS3MDL_DataTelemetryPkt->AIMU_LIS3MDL_MAGSIGX = magx;
         AIMU_LIS3MDL_DataTelemetryPkt->AIMU_LIS3MDL_MAGSIGY = magy;
         AIMU_LIS3MDL_DataTelemetryPkt->AIMU_LIS3MDL_MAGSIGZ = magz;
+
+        CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &AIMU_LIS3MDL_DataTelemetryPkt);
+        CFE_SB_SendMsg((CFE_SB_Msg_t *) &AIMU_LIS3MDL_DataTelemetryPkt);
 
 		// Print Processed Values if the debug flag is enabled for this app
 		CFE_EVS_SendEvent(AIMU_LIS3MDL_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Mag-x: %F Mag-y: %F  Mag-z: %F ", magx, magy, magz);

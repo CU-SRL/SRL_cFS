@@ -59,6 +59,7 @@ typedef struct
 typedef struct 
 {
     uint8               TlmHeader[CFE_SB_TLM_HDR_SIZE];
+    uint32              AppStatus;
     uint8               aimu_lsm6ds33_command_error_count;
     uint8               aimu_lsm6ds33_command_count;
     uint8               aimu_lsm6ds33_error_count;

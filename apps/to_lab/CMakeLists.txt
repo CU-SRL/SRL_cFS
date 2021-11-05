@@ -11,6 +11,9 @@ include_directories(${sc_MISSION_DIR}/fsw/platform_inc)
 include_directories(${ds_MISSION_DIR}/fsw/platform_inc)
 include_directories(${cs_MISSION_DIR}/fsw/platform_inc)
 include_directories(${hk_MISSION_DIR}/fsw/platform_inc)
+include_directories(${aimu_lis3mdl_MISSION_DIR}/fsw/platform_inc)
+include_directories(${aimu_lps25h_MISSION_DIR}/fsw/platform_inc)
+include_directories(${aimu_lsm6ds33_MISSION_DIR}/fsw/platform_inc)
 
 aux_source_directory(fsw/src APP_SRC_FILES)
 

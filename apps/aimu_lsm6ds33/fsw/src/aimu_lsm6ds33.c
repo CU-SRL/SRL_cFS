@@ -68,6 +68,8 @@ void AIMU_LSM6DS33_AppMain( void )
 
     AIMU_LSM6DS33_AppInit();
 
+    //After Initialization
+    AIMU_LSM6DS33_HkTelemetryPkt.AppStatus = RunStatus;
     /*
     ** AIMU_LSM6DS33 Runloop
     */
@@ -89,6 +91,8 @@ void AIMU_LSM6DS33_AppMain( void )
         }
 
     }
+    //After While Loop
+    AIMU_LSM6DS33_HkTelemetryPkt.AppStatus = RunStatus;
 
     CFE_ES_ExitApp(RunStatus);
 
@@ -298,7 +302,7 @@ bool AIMU_LSM6DS33_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength)
 bool INIT_AIMU_LSM6DS33(int I2CBus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkTelemetryPkt)
 {
 	// Open I2C for the device address
-	int file = I2C_open(I2CBus, AIMU_LSM6DS33_I2C_ADDR);
+	int file = I2C_open(I2CBus, AIMU_LSM6DS33_I2C_ADDR_W);
 	
 	// Accelerometer Axes Enabled
 	if(!I2C_write(file, AIMU_LSM6DS33_CTRL9_XL, 0x38))
@@ -357,7 +361,7 @@ bool INIT_AIMU_LSM6DS33(int I2CBus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkTele
 void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkTelemetryPkt, aimu_lsm6ds33_data_tlm_t* AIMU_LSM6DS33_DataTelemetryPkt)
 {
 	// Open the I2C Device
-	int file = I2C_open(i2cbus, AIMU_LSM6DS33_I2C_ADDR);
+	int file = I2C_open(i2cbus, AIMU_LSM6DS33_I2C_ADDR_R);
 
 	// Check for data in the STATUS register
 	I2C_read(file, AIMU_LSM6DS33_STATUS_REG, 1, AIMU_LSM6DS33.status);

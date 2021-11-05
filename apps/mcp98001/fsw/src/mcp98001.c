@@ -68,6 +68,8 @@ void MCP98001_AppMain( void )
 
     MCP98001_AppInit();
 
+    MCP98001_HkTelemetryPkt.AppStatus = RunStatus;
+
     /*
     ** MCP98001 Runloop
     */
@@ -87,7 +89,8 @@ void MCP98001_AppMain( void )
         {
             MCP98001_ProcessCommandPacket();
         }
-
+        
+        MCP98001_HkTelemetryPkt.AppStatus = RunStatus;
     }
 
     CFE_ES_ExitApp(RunStatus);

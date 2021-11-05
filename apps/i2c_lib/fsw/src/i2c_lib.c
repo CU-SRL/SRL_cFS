@@ -99,9 +99,9 @@ int I2C_open(int I2CBus, uint8_t addr)
 	// Open the I2C Device
 	if ((file = open(i2cbuf, O_RDWR)) < 0)
 	{
-        /*CFE_EVS_SendEvent(I2C_OPEN_I2C_BUS_ERR_EID, CFE_EVS_EventType_ERROR,
+        CFE_EVS_SendEvent(I2C_OPEN_I2C_BUS_ERR_EID, CFE_EVS_EventType_ERROR,
            "Failed to open I2C BUS %d", I2CBus);
-        I2C_HkTelemetryPkt.i2c_error_count++;*/
+        //I2C_HkTelemetryPkt.i2c_error_count++;
 
         return -1;
 	}
@@ -109,9 +109,9 @@ int I2C_open(int I2CBus, uint8_t addr)
 	// Open IO operation
 	if(ioctl(file, I2C_SLAVE, addr) < 0)
 	{
-        /*CFE_EVS_SendEvent(I2C_OPEN_SLAVE_ERR_EID, CFE_EVS_EventType_ERROR,
+        CFE_EVS_SendEvent(I2C_OPEN_SLAVE_ERR_EID, CFE_EVS_EventType_ERROR,
            "I2C_SLAVE address %X failed... ", addr);
-        I2C_HkTelemetryPkt.i2c_error_count++;*/
+        //I2C_HkTelemetryPkt.i2c_error_count++;
         
         return -1;
 	}
@@ -143,9 +143,9 @@ bool I2C_write(int file, uint8_t reg, uint8_t val)
 	uint8_t write_buf[2] = { reg, val };
 	if (write(file, write_buf, 2) != 2)
 	{
-        /*CFE_EVS_SendEvent(I2C_WRITE_REGISTER_ERR_EID, CFE_EVS_EventType_ERROR,
+        CFE_EVS_SendEvent(I2C_WRITE_REGISTER_ERR_EID, CFE_EVS_EventType_ERROR,
            "Error failed to write to register %X! ", reg);
-        I2C_HkTelemetryPkt.i2c_error_count++;*/
+        //I2C_HkTelemetryPkt.i2c_error_count++;
         
 		return false;
 	}
@@ -170,9 +170,9 @@ bool I2C_read(int file, uint8_t reg, unsigned int byte_count, uint8_t *buffer)
 	// Write to the register we want to read from
 	if(!I2C_write(file, reg, 1))
 	{
-        /*CFE_EVS_SendEvent(I2C_WRITE_REGISTER_ERR_EID, CFE_EVS_EventType_ERROR,
+        CFE_EVS_SendEvent(I2C_WRITE_REGISTER_ERR_EID, CFE_EVS_EventType_ERROR,
            "Failed to write to register %X for reading... ", reg);
-        I2C_HkTelemetryPkt.i2c_error_count++;*/
+        //I2C_HkTelemetryPkt.i2c_error_count++;
 
 		return false;
 	}
@@ -180,9 +180,9 @@ bool I2C_read(int file, uint8_t reg, unsigned int byte_count, uint8_t *buffer)
 	// Read the specific number of bytes
 	if(read(file, buffer, byte_count) != byte_count)
 	{
-        /*CFE_EVS_SendEvent(I2C_REGISTER_READ_ERR_EID, CFE_EVS_EventType_ERROR,
+        CFE_EVS_SendEvent(I2C_REGISTER_READ_ERR_EID, CFE_EVS_EventType_ERROR,
            "Failed to read from %d registers... ", byte_count);
-        I2C_HkTelemetryPkt.i2c_error_count++;*/
+        //I2C_HkTelemetryPkt.i2c_error_count++;
 
 		return false;
 	}

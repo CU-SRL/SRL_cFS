@@ -65,9 +65,10 @@ void AIMU_LPS25H_AppMain( void )
     uint32 RunStatus = CFE_ES_RunStatus_APP_RUN;
 
     CFE_ES_PerfLogEntry(AIMU_LPS25H_PERF_ID);
-
     AIMU_LPS25H_AppInit();
 
+    //After Initialization
+    AIMU_LPS25H_HkTelemetryPkt.AppStatus = RunStatus;
     /*
     ** LPS25H Runloop
     */
@@ -89,6 +90,8 @@ void AIMU_LPS25H_AppMain( void )
         }
 
     }
+    //After While Loop
+    AIMU_LPS25H_HkTelemetryPkt.AppStatus = RunStatus;
 
     CFE_ES_ExitApp(RunStatus);
 
@@ -298,7 +301,7 @@ bool AIMU_LPS25H_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength)
 bool INIT_AIMU_LPS25H(int I2CBus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemetryPkt)
 {
 	// Open I2C for the device address
-	int file = I2C_open(I2CBus, AIMU_LPS25H_I2C_ADDR);
+	int file = I2C_open(I2CBus, AIMU_LPS25H_I2C_ADDR_W);
 	
 	// Set Device to Continuous mode and to 12.5 Hz
 	if(!I2C_write(file, AIMU_LPS25H_CTRL_REG1, 0x58))
@@ -338,7 +341,7 @@ bool INIT_AIMU_LPS25H(int I2CBus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemetryP
 void PROCESS_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemetryPkt, aimu_lps25h_data_tlm_t* AIMU_LPS25H_DataTelemetryPkt)
 {
 	// Open the I2C Device
-	int file = I2C_open(i2cbus, AIMU_LPS25H_I2C_ADDR);
+	int file = I2C_open(i2cbus, AIMU_LPS25H_I2C_ADDR_R);
 
 	// Check for data in the STATUS register
 	I2C_read(file, AIMU_LPS25H_STATUS_REG, 1, AIMU_LPS25H.status);

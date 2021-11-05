@@ -14,7 +14,8 @@
 //        Registers can be found in Datasheets.
 //-------------------------------------------------------
 
-#define AIMU_LSM6DS33_I2C_ADDR             0x6A /*! I2C address */
+#define AIMU_LSM6DS33_I2C_ADDR_R             0xD7 /*! I2C address */
+#define AIMU_LSM6DS33_I2C_ADDR_W             0xD6 /*! I2C address */
 #define AIMU_LSM6DS33_FUNC_CFG_ACCESS      0x01 /*! Enable embedded functions register */
 #define AIMU_LSM6DS33_FIFO_CTRL1           0x06 /*! FIFO control register */
 #define AIMU_LSM6DS33_FIFO_CTRL2           0x07 /*! FIFO control register */
