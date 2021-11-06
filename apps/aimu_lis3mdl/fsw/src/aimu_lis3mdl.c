@@ -210,11 +210,11 @@ void AIMU_LIS3MDL_ProcessGroundCommand(void)
 
         // DEVICE SPECIFIC COMMANDS
         case AIMU_LIS3MDL_INIT:
-            INIT_AIMU_LIS3MDL(1, &AIMU_LIS3MDL_HkTelemetryPkt);
+            INIT_AIMU_LIS3MDL(2, &AIMU_LIS3MDL_HkTelemetryPkt);
             break;
         
         case AIMU_LIS3MDL_PROCESS:
-            PROCESS_AIMU_LIS3MDL(1, &AIMU_LIS3MDL_HkTelemetryPkt, &AIMU_LIS3MDL_DataTelemetryPkt);
+            PROCESS_AIMU_LIS3MDL(2, &AIMU_LIS3MDL_HkTelemetryPkt, &AIMU_LIS3MDL_DataTelemetryPkt);
             break;
 
         /* default case already found during FC vs length test */
@@ -303,7 +303,7 @@ bool AIMU_LIS3MDL_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength)
 bool INIT_AIMU_LIS3MDL(int I2CBus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTelemetryPkt)
 {
 	// Open I2C for the device address
-	int file = I2C_open(I2CBus, AIMU_LIS3MDL_I2C_ADDR_W);
+	int file = I2C_open(I2CBus, AIMU_LIS3MDL_I2C_ADDR);
 	
 	// Place Full Scale +-12 Hz
     if(!I2C_write(file, AIMU_LIS3MDL_CTRL_REG2, 0x40))
@@ -363,7 +363,7 @@ bool INIT_AIMU_LIS3MDL(int I2CBus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTelemet
 void PROCESS_AIMU_LIS3MDL(int i2cbus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTelemetryPkt, aimu_lis3mdl_data_tlm_t* AIMU_LIS3MDL_DataTelemetryPkt)
 {
 	// Open the I2C Device
-	int file = I2C_open(i2cbus, AIMU_LIS3MDL_I2C_ADDR_R);
+	int file = I2C_open(i2cbus, AIMU_LIS3MDL_I2C_ADDR);
 
 	// Check for data in the STATUS register
 	I2C_read(file, AIMU_LIS3MDL_STATUS_REG, 1, AIMU_LIS3MDL.status);

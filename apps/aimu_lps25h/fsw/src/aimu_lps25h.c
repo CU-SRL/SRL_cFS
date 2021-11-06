@@ -208,11 +208,11 @@ void AIMU_LPS25H_ProcessGroundCommand(void)
 
         // DEVICE SPECIFIC COMMANDS
         case AIMU_LPS25H_INIT:
-            INIT_AIMU_LPS25H(1, &AIMU_LPS25H_HkTelemetryPkt);
+            INIT_AIMU_LPS25H(2, &AIMU_LPS25H_HkTelemetryPkt);
             break;
         
         case AIMU_LPS25H_PROCESS:
-            PROCESS_AIMU_LPS25H(1, &AIMU_LPS25H_HkTelemetryPkt, &AIMU_LPS25H_DataTelemetryPkt);
+            PROCESS_AIMU_LPS25H(2, &AIMU_LPS25H_HkTelemetryPkt, &AIMU_LPS25H_DataTelemetryPkt);
             break;
 
         /* default case already found during FC vs length test */
@@ -301,7 +301,7 @@ bool AIMU_LPS25H_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength)
 bool INIT_AIMU_LPS25H(int I2CBus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemetryPkt)
 {
 	// Open I2C for the device address
-	int file = I2C_open(I2CBus, AIMU_LPS25H_I2C_ADDR_W);
+	int file = I2C_open(I2CBus, AIMU_LPS25H_I2C_ADDR);
 	
 	// Set Device to Continuous mode and to 12.5 Hz
 	if(!I2C_write(file, AIMU_LPS25H_CTRL_REG1, 0x58))
@@ -341,7 +341,7 @@ bool INIT_AIMU_LPS25H(int I2CBus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemetryP
 void PROCESS_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemetryPkt, aimu_lps25h_data_tlm_t* AIMU_LPS25H_DataTelemetryPkt)
 {
 	// Open the I2C Device
-	int file = I2C_open(i2cbus, AIMU_LPS25H_I2C_ADDR_R);
+	int file = I2C_open(i2cbus, AIMU_LPS25H_I2C_ADDR);
 
 	// Check for data in the STATUS register
 	I2C_read(file, AIMU_LPS25H_STATUS_REG, 1, AIMU_LPS25H.status);

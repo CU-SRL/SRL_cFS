@@ -208,13 +208,13 @@ void MCP98001_ProcessGroundCommand(void)
 
         // DEVICE SPECIFIC COMMANDS
         case MCP98001_INIT:
-            INIT_MCP98001(1, &MCP98001_HkTelemetryPkt, 1);
-            INIT_MCP98001(1, &MCP98001_HkTelemetryPkt, 2);
+            INIT_MCP98001(2, &MCP98001_HkTelemetryPkt, 1);
+            INIT_MCP98001(2, &MCP98001_HkTelemetryPkt, 2);
             break;
         
         case MCP98001_PROCESS:
-            PROCESS_MCP98001(1, &MCP98001_HkTelemetryPkt, &MCP98001_DataTelemetryPkt, 1);
-            PROCESS_MCP98001(1, &MCP98001_HkTelemetryPkt, &MCP98001_DataTelemetryPkt, 2);
+            PROCESS_MCP98001(2, &MCP98001_HkTelemetryPkt, &MCP98001_DataTelemetryPkt, 1);
+            PROCESS_MCP98001(2, &MCP98001_HkTelemetryPkt, &MCP98001_DataTelemetryPkt, 2);
             break;
 
         /* default case already found during FC vs length test */

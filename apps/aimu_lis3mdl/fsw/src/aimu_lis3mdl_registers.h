@@ -14,8 +14,7 @@
 //        Registers can be found in Datasheets.
 //-------------------------------------------------------
 
-#define AIMU_LIS3MDL_I2C_ADDR_R             0x39 /*! I2C address Read*/
-#define AIMU_LIS3MDL_I2C_ADDR_W             0x38 /*! I2C address Write*/
+#define AIMU_LIS3MDL_I2C_ADDR             0x1e /*! I2C address Read*/
 #define AIMU_LIS3MDL_WHO_AM_I             0x0F /*! Device identification register */
 #define AIMU_LIS3MDL_CTRL_REG1            0x20 /*! Control Register */
 #define AIMU_LIS3MDL_CTRL_REG2            0x21 /*! Control Register */
