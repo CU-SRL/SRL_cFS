@@ -13,8 +13,8 @@
 //                  MCP98001 Registers
 //-------------------------------------------------------
 
-#define MCP98001_1_I2C_ADDR                 0x60 /*! I2C address */
-#define MCP98001_2_I2C_ADDR                 0x60 /*! I2C address */
+#define MCP98001_1_I2C_ADDR                 0x48 /*! I2C address */
+#define MCP98001_2_I2C_ADDR                 0x49 /*! I2C address */
 #define MCP98001_AMBIENT_TEMP               0x00 /*! 9 to 12 bit temperature output */
 #define MCP98001_CONFIG                     0x01 /*! Configuration Register */
 #define MCP98001_HYSTERESIS                 0x02 /*! Temperature lower limit register */
