@@ -395,8 +395,6 @@ void PROCESS_AIMU_LIS3MDL(int i2cbus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTele
         magy = (yhm << 8 | ylm);
         magz = (zhm << 8 | zlm);
 
-
-        CFE_SB_InitMsg(&AIMU_LIS3MDL_DataTelemetryPkt, AIMU_LIS3MDL_DATA_TLM_MID, sizeof(aimu_lis3mdl_data_tlm_t), true);
 		// Store into packet
 		AIMU_LIS3MDL_DataTelemetryPkt->AIMU_LIS3MDL_MAGSIGX = magx;
         AIMU_LIS3MDL_DataTelemetryPkt->AIMU_LIS3MDL_MAGSIGY = magy;
