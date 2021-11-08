@@ -402,9 +402,6 @@ void PROCESS_AIMU_LIS3MDL(int i2cbus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTele
         AIMU_LIS3MDL_DataTelemetryPkt->AIMU_LIS3MDL_MAGSIGY = magy;
         AIMU_LIS3MDL_DataTelemetryPkt->AIMU_LIS3MDL_MAGSIGZ = magz;
 
-        CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &AIMU_LIS3MDL_DataTelemetryPkt);
-        CFE_SB_SendMsg((CFE_SB_Msg_t *) &AIMU_LIS3MDL_DataTelemetryPkt);
-
 		// Print Processed Values if the debug flag is enabled for this app
 		CFE_EVS_SendEvent(AIMU_LIS3MDL_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Mag-x: %F Mag-y: %F  Mag-z: %F ", magx, magy, magz);
 	}
