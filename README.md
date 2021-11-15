@@ -3,7 +3,7 @@
 # SRL_cFS
 #### Table of contents
 1. [Introduction](#Introduction)
-    - [Team Members](#Team-Members)
+    - [Contributors](#Contributors)
 2. [Compilation Instructions](#Compilation-Instructions)
     - [Instructions for cFS compilation on Raspberry PI - Development ONLY](#Instructions-for-cFS-compilation-on-Raspberry-PI---Development-ONLY)
     - [Instructions for Development Machine Setup](#Instructions-for-Development-Machine-Setup)
