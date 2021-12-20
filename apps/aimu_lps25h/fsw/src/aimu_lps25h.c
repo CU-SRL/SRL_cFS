@@ -359,29 +359,21 @@ void PROCESS_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemetryPkt
 		/* Process the Data Buffer */
 			
 		// Pressure
-		int32_t press;
+		uint8_t pxl, pl, ph;
 
-		press = AIMU_LPS25H.buffer[0] << 24;
-		press |= AIMU_LPS25H.buffer[1] << 16;
-		press |= AIMU_LPS25H.buffer[2] << 8;
+		pxl = AIMU_LPS25H.buffer[0] << 24;
+		pl |= AIMU_LPS25H.buffer[1] << 16;
+		ph |= AIMU_LPS25H.buffer[2] << 8;
 
-		float pressure = press;		
+		float pressure = (int32_t)(int8_t)ph << 16 | (uint16_t)pl << 8 | pxl;		
 
 		// Temperature
-		int16_t t;
+		uint8_t tl, th;
 
-		t = AIMU_LPS25H.buffer[3];
-		t <<= 8;
-		t |= AIMU_LPS25H.buffer[4];
-		t >>= 4;
+		tl = AIMU_LPS25H.buffer[3];
+		th = AIMU_LPS25H.buffer[4];
 
-		if(t & 0x800)
-		{
-			t |= 0xF000;
-		}
-
-		float temp = t;
-		temp /= 16.0;
+		float temp = (int16_t)(th << 8 | tl);
 
 		// Store into packet
 		AIMU_LPS25H_DataTelemetryPkt->AIMU_LPS25H_PRESSURE = pressure;

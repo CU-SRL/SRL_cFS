@@ -391,9 +391,15 @@ void PROCESS_AIMU_LIS3MDL(int i2cbus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTele
 		zlm = AIMU_LIS3MDL.buffer[4];
 		zhm = AIMU_LIS3MDL.buffer[5];	
 
-        magx = (xhm << 8 | xlm);
-        magy = (yhm << 8 | ylm);
-        magz = (zhm << 8 | zlm);
+        magx = (int16_t)(xhm << 8 | xlm);
+        magy = (int16_t)(yhm << 8 | ylm);
+        magz = (int16_t)(zhm << 8 | zlm);
+
+        float mag = sqrt(((magx**2) + (magy**2) + (magz**2)))
+
+        magx /= mag;
+        magy /= mag;
+        magz /= mag;
 
 		// Store into packet
 		AIMU_LIS3MDL_DataTelemetryPkt->AIMU_LIS3MDL_MAGSIGX = magx;
