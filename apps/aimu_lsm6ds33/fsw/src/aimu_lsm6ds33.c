@@ -389,9 +389,15 @@ void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkT
 		zla = AIMU_LSM6DS33.buffer[4];
 		zha = AIMU_LSM6DS33.buffer[5];	
 
-        accx = (xha << 8 | xla);
-        accy = (yha << 8 | yla);
-        accz = (zha << 8 | zla);
+        accx = (int16_t)(xha << 8 | xla);
+        accy = (int16_t)(yha << 8 | yla);
+        accz = (int16_t)(zha << 8 | zla);
+
+        float mag = sqrt(((accx**2) + (accy**2) + (accz**2)))
+
+        accx /= mag;
+        accy /= mag;
+        accz /= mag;
 
 		// Gyro
 		uint8_t xlg, xhg, ylg, yhg, zlg, zhg;
@@ -404,9 +410,15 @@ void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkT
 		zlg = AIMU_LSM6DS33.buffer[10];
 		zhg = AIMU_LSM6DS33.buffer[11];	
 
-        gyx = (xhg << 8 | xlg);
-        gyy = (yhg << 8 | ylg);
-        gyz = (zhg << 8 | zlg);
+        gyx = (int16_t)(xhg << 8 | xlg);
+        gyy = (int16_t)(yhg << 8 | ylg);
+        gyz = (int16_t)(zhg << 8 | zlg);
+
+        mag = sqrt(((gyx**2) + (gyy**2) + (gyz**2)))
+
+        gyx /= mag;
+        gyy /= mag;
+        gyz /= mag;
 
 		// Store into packet
 		AIMU_LSM6DS33_DataTelemetryPkt->AIMU_LSM6DS33_ACCELERATIONX = accx;
