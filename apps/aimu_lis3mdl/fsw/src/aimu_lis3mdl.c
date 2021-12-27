@@ -369,6 +369,7 @@ void PROCESS_AIMU_LIS3MDL(int i2cbus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTele
 	I2C_read(file, AIMU_LIS3MDL_STATUS_REG, 1, AIMU_LIS3MDL.status);
 	if (AIMU_LIS3MDL.status[0] != 0) //double check this
 	{
+        float scale = 2281;
 		// Read the Data Buffer
 		if(!I2C_read(file, AIMU_LIS3MDL_OUT_X_L, 6, AIMU_LIS3MDL.buffer))
 		{
@@ -382,7 +383,6 @@ void PROCESS_AIMU_LIS3MDL(int i2cbus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTele
 			
 		// Magnetic readings
 		uint8_t xlm, xhm, ylm, yhm, zlm, zhm;
-        float magx, magy, magz;
 
 		xlm = AIMU_LIS3MDL.buffer[0];
 		xhm = AIMU_LIS3MDL.buffer[1];
@@ -391,15 +391,18 @@ void PROCESS_AIMU_LIS3MDL(int i2cbus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTele
 		zlm = AIMU_LIS3MDL.buffer[4];
 		zhm = AIMU_LIS3MDL.buffer[5];	
 
-        magx = (int16_t)(xhm << 8 | xlm);
-        magy = (int16_t)(yhm << 8 | ylm);
-        magz = (int16_t)(zhm << 8 | zlm);
+        int16_t x, y, z;
 
-        float mag = sqrt(((magx**2) + (magy**2) + (magz**2)))
+        x = (xhm << 8 | xlm);
+        y = (yhm << 8 | ylm);
+        z = (zhm << 8 | zlm);
 
-        magx /= mag;
-        magy /= mag;
-        magz /= mag;
+        //read magnetic field
+        float magx, magy, magz;
+
+        magx = (float)x / scale * 4.0 * 100.0 / 32768.0;
+        magy = (float)y / scale * 4.0 * 100.0 / 32768.0;
+        magz = (float)z / scale * 4.0 * 100.0 / 32768.0;
 
 		// Store into packet
 		AIMU_LIS3MDL_DataTelemetryPkt->AIMU_LIS3MDL_MAGSIGX = magx;

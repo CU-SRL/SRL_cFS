@@ -368,7 +368,7 @@ void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkT
 	if (AIMU_LSM6DS33.status[0] != 0)
 	{
 		// Read the Data Buffer
-		if(!I2C_read(file, AIMU_LSM6DS33_OUTX_L_G, 12, AIMU_LSM6DS33.buffer))
+		if(!I2C_read(file, AIMU_LSM6DS33_OUT_TEMP_L, 14, AIMU_LSM6DS33.buffer))
 		{
 			CFE_EVS_SendEvent(AIMU_LSM6DS33_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read data buffers... ");
         	AIMU_LSM6DS33_HkTelemetryPkt->aimu_lsm6ds33_device_error_count++;
@@ -377,48 +377,63 @@ void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkT
 		}
 
 		/* Process the Data Buffer */
-			
-		// Altitude
-		uint8_t xla, xha, yla, yha, zla, zha;
-        float accx, accy, accz;
 
-		xla = AIMU_LSM6DS33.buffer[0];
-		xha = AIMU_LSM6DS33.buffer[1];
-		yla = AIMU_LSM6DS33.buffer[2];
-        yha = AIMU_LSM6DS33.buffer[3];
-		zla = AIMU_LSM6DS33.buffer[4];
-		zha = AIMU_LSM6DS33.buffer[5];	
+        //Temp
 
-        accx = (int16_t)(xha << 8 | xla);
-        accy = (int16_t)(yha << 8 | yla);
-        accz = (int16_t)(zha << 8 | zla);
+        uint8_t xlt, xht;
+        xlg = AIMU_LSM6DS33.buffer[0];
+		xhg = AIMU_LSM6DS33.buffer[1];
 
-        float mag = sqrt(((accx**2) + (accy**2) + (accz**2)))
+        int16_t t;
+        t = (xht << 8 | xlt);
 
-        accx /= mag;
-        accy /= mag;
-        accz /= mag;
+        float temp;
+        temp = (t / 16.0) + 25.0;
 
 		// Gyro
 		uint8_t xlg, xhg, ylg, yhg, zlg, zhg;
+
+		xlg = AIMU_LSM6DS33.buffer[2];
+		xhg = AIMU_LSM6DS33.buffer[3];
+		ylg = AIMU_LSM6DS33.buffer[4];
+        yhg = AIMU_LSM6DS33.buffer[5];
+		zlg = AIMU_LSM6DS33.buffer[6];
+		zhg = AIMU_LSM6DS33.buffer[7];	
+
+        int16_t gx, gy, gz;
+
+        gx = (xhg << 8 | xlg);
+        gy = (yhg << 8 | ylg);
+        gz = (zhg << 8 | zlg);
+
         float gyx, gyy, gyz;
 
-		xlg = AIMU_LSM6DS33.buffer[6];
-		xhg = AIMU_LSM6DS33.buffer[7];
-		ylg = AIMU_LSM6DS33.buffer[8];
-        yhg = AIMU_LSM6DS33.buffer[9];
-		zlg = AIMU_LSM6DS33.buffer[10];
-		zhg = AIMU_LSM6DS33.buffer[11];	
+        gyx = gx * scale;
+        gyy =;
+        gyz =;
 
-        gyx = (int16_t)(xhg << 8 | xlg);
-        gyy = (int16_t)(yhg << 8 | ylg);
-        gyz = (int16_t)(zhg << 8 | zlg);
+        // Accel
+		uint8_t xla, xha, yla, yha, zla, zha;
 
-        mag = sqrt(((gyx**2) + (gyy**2) + (gyz**2)))
+		xla = AIMU_LSM6DS33.buffer[8];
+		xha = AIMU_LSM6DS33.buffer[9];
+		yla = AIMU_LSM6DS33.buffer[10];
+        yha = AIMU_LSM6DS33.buffer[11];
+		zla = AIMU_LSM6DS33.buffer[12];
+		zha = AIMU_LSM6DS33.buffer[13];	
 
-        gyx /= mag;
-        gyy /= mag;
-        gyz /= mag;
+        int16_t ax, ay, az;
+
+        ax = (xha << 8 | xla);
+        ay = (yha << 8 | yla);
+        az = (zha << 8 | zla);
+
+        float accelx, accely, accelz;
+
+        accelx /= mag;
+        accely /= mag;
+        accelz /= mag;
+        
 
 		// Store into packet
 		AIMU_LSM6DS33_DataTelemetryPkt->AIMU_LSM6DS33_ACCELERATIONX = accx;
