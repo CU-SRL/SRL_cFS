@@ -303,18 +303,10 @@ bool INIT_AIMU_LSM6DS33(int I2CBus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkTele
 {
 	// Open I2C for the device address
 	int file = I2C_open(I2CBus, AIMU_LSM6DS33_I2C_ADDR);
-	
-	// Accelerometer Axes Enabled
-	if(!I2C_write(file, AIMU_LSM6DS33_CTRL9_XL, 0x38))
-	{
-		CFE_EVS_SendEvent(AIMU_LSM6DS33_FAILED_ENABLE_AXES, CFE_EVS_EventType_ERROR,
-           "Failed to enable AIMU_LSM6DS33 Accel Axes... ");
-        AIMU_LSM6DS33_HkTelemetryPkt->aimu_lsm6ds33_device_error_count++;
-		return false;
-	}
 
-    // Switch the Accel to active, set mode to High performance (416 Hz)
-	if(!I2C_write(file, AIMU_LSM6DS33_CTRL1_XL, 0x60))
+    // Accel
+    // ODR = 0110 (416 Hz (high performance)); FS_XL = 11 (+/-8 g full scale)
+	if(!I2C_write(file, AIMU_LSM6DS33_CTRL1_XL, 0x6C))
 	{
 		CFE_EVS_SendEvent(AIMU_LSM6DS33_FAILED_CHANGE_TO_ACTIVE_MODE_ERR_EID, CFE_EVS_EventType_ERROR,
            "Failed to switch Accel to active...  ");
@@ -323,17 +315,9 @@ bool INIT_AIMU_LSM6DS33(int I2CBus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkTele
 		return false;
 	}
 
-	// Gyro Axes Enabled
-	if(!I2C_write(file, AIMU_LSM6DS33_CTRL10_C, 0x38))
-	{
-		CFE_EVS_SendEvent(AIMU_LSM6DS33_FAILED_ENABLE_AXES, CFE_EVS_EventType_ERROR,
-           "Failed to enable AIMU_LSM6DS33 Gyro Axes... ");
-        AIMU_LSM6DS33_HkTelemetryPkt->aimu_lsm6ds33_device_error_count++;
-		return false;
-	}
-
-    // Switch the Gyro to active, set mode to High performance (416 Hz)
-	if(!I2C_write(file, AIMU_LSM6DS33_CTRL2_G, 0x60))
+	// Gyro
+    // ODR = 0110 (416 Hz (high performance)); FS_XL = 11 (2000dps)
+	if(!I2C_write(file, AIMU_LSM6DS33_CTRL2_G, 0x68))
 	{
 		CFE_EVS_SendEvent(AIMU_LSM6DS33_FAILED_CHANGE_TO_ACTIVE_MODE_ERR_EID, CFE_EVS_EventType_ERROR,
            "Failed to switch Gyro to active...  ");
@@ -360,6 +344,13 @@ bool INIT_AIMU_LSM6DS33(int I2CBus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkTele
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkTelemetryPkt, aimu_lsm6ds33_data_tlm_t* AIMU_LSM6DS33_DataTelemetryPkt)
 {
+
+    //define needed variables for data gathering
+    gyro_scale = 70.0;
+    accel_scale = 0.244;
+    dps_to_rads = 0.017453293F;
+    gravity_standard = 9.80665F;
+
 	// Open the I2C Device
 	int file = I2C_open(i2cbus, AIMU_LSM6DS33_I2C_ADDR);
 
@@ -378,7 +369,7 @@ void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkT
 
 		/* Process the Data Buffer */
 
-        //Temp
+        //Temp --> not placed in data packet for now
 
         uint8_t xlt, xht;
         xlg = AIMU_LSM6DS33.buffer[0];
@@ -390,9 +381,9 @@ void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkT
         float temp;
         temp = (t / 16.0) + 25.0;
 
+
 		// Gyro
 		uint8_t xlg, xhg, ylg, yhg, zlg, zhg;
-
 		xlg = AIMU_LSM6DS33.buffer[2];
 		xhg = AIMU_LSM6DS33.buffer[3];
 		ylg = AIMU_LSM6DS33.buffer[4];
@@ -401,16 +392,14 @@ void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkT
 		zhg = AIMU_LSM6DS33.buffer[7];	
 
         int16_t gx, gy, gz;
-
         gx = (xhg << 8 | xlg);
         gy = (yhg << 8 | ylg);
         gz = (zhg << 8 | zlg);
 
         float gyx, gyy, gyz;
-
-        gyx = gx * scale;
-        gyy =;
-        gyz =;
+        gyx = gx * gyro_scale * dps_to_rads / 1000.0;
+        gyy = gy * gyro_scale * dps_to_rads / 1000.0;
+        gyz = gz * gyro_scale * dps_to_rads / 1000.0;
 
         // Accel
 		uint8_t xla, xha, yla, yha, zla, zha;
@@ -430,9 +419,9 @@ void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkT
 
         float accelx, accely, accelz;
 
-        accelx /= mag;
-        accely /= mag;
-        accelz /= mag;
+        accelx = ax * accel_scale * gravity_standard / 1000.0;
+        accely = ay * accel_scale * gravity_standard / 1000.0;
+        accelz = az * accel_scale * gravity_standard / 1000.0;
         
 
 		// Store into packet

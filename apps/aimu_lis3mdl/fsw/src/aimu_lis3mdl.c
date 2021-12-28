@@ -314,8 +314,8 @@ bool INIT_AIMU_LIS3MDL(int I2CBus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTelemet
         return false;
     }
 
-    //  Sets UHP mode on the X/Y axes, ODR at 80 Hz and activates temperature sensor
-    if(!I2C_write(file, AIMU_LIS3MDL_CTRL_REG1, 0xFC))
+    //  Sets UHP mode on the X/Y axes, ODR at 80 Hz and does not activate temperature sensor
+    if(!I2C_write(file, AIMU_LIS3MDL_CTRL_REG1, 0x7C))
     {
         CFE_EVS_SendEvent(AIMU_LIS3MDL_FAIL_ACTIVATE_TEMP_EID, CFE_EVS_EventType_ERROR,
            "Failed to activate the temperature sensor...  ");
@@ -324,17 +324,7 @@ bool INIT_AIMU_LIS3MDL(int I2CBus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTelemet
         return false;
     }
 
-    // Switch the LPS25H to active, set altimeter mode, set polling mode
-    if(!I2C_write(file, AIMU_LIS3MDL_CTRL_REG1, 0xB9))
-    {
-        CFE_EVS_SendEvent(AIMU_LIS3MDL_FAILED_CHANGE_TO_ACTIVE_MODE_ERR_EID, CFE_EVS_EventType_ERROR,
-           "Failed to switch LPS25H to active...  ");
-        AIMU_LIS3MDL_HkTelemetryPkt->aimu_lis3mdl_device_error_count++;
-
-        return false;
-    }
-
-    // Sets UHP mode on the Z-axis
+    // Sets UHP mode on the Z-axis --> Big Endian data selection
     if(!I2C_write(file, AIMU_LIS3MDL_CTRL_REG4, 0x0C))
     {
         CFE_EVS_SendEvent(AIMU_LIS3MDL_ACTIVE_ZUHP_EID, CFE_EVS_EventType_ERROR,
@@ -399,10 +389,9 @@ void PROCESS_AIMU_LIS3MDL(int i2cbus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTele
 
         //read magnetic field
         float magx, magy, magz;
-
-        magx = (float)x / scale * 4.0 * 100.0 / 32768.0;
-        magy = (float)y / scale * 4.0 * 100.0 / 32768.0;
-        magz = (float)z / scale * 4.0 * 100.0 / 32768.0;
+        magx = x / scale;
+        magy = y / scale;
+        magz = z / scale;
 
 		// Store into packet
 		AIMU_LIS3MDL_DataTelemetryPkt->AIMU_LIS3MDL_MAGSIGX = magx;

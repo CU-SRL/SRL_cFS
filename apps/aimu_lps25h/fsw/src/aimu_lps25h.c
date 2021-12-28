@@ -340,6 +340,11 @@ bool INIT_AIMU_LPS25H(int I2CBus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemetryP
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 void PROCESS_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemetryPkt, aimu_lps25h_data_tlm_t* AIMU_LPS25H_DataTelemetryPkt)
 {
+    //define variables needed for data calculations
+    temp_scale = 480;
+    temp_offset = 42.5;
+
+
 	// Open the I2C Device
 	int file = I2C_open(i2cbus, AIMU_LPS25H_I2C_ADDR);
 
@@ -359,13 +364,15 @@ void PROCESS_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemetryPkt
 		/* Process the Data Buffer */
 			
 		// Pressure
-		uint8_t pxl, pl, ph;
+		int32_t pxl, pl, ph;
 
 		pxl = AIMU_LPS25H.buffer[0] << 24;
 		pl |= AIMU_LPS25H.buffer[1] << 16;
 		ph |= AIMU_LPS25H.buffer[2] << 8;
 
-		float pressure = (int32_t)(int8_t)ph << 16 | (uint16_t)pl << 8 | pxl;		
+		int32_t p = ph << 8 | pl << 8 | pxl;
+
+        float pressure = p / 4096.0;		
 
 		// Temperature
 		uint8_t tl, th;
@@ -373,7 +380,10 @@ void PROCESS_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemetryPkt
 		tl = AIMU_LPS25H.buffer[3];
 		th = AIMU_LPS25H.buffer[4];
 
-		float temp = (int16_t)(th << 8 | tl);
+		int16_t t = th << 8 | tl;
+
+        float temp = (t / temp_scale) + temp_offset;
+
 
 		// Store into packet
 		AIMU_LPS25H_DataTelemetryPkt->AIMU_LPS25H_PRESSURE = pressure;
