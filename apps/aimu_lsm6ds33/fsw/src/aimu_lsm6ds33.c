@@ -346,10 +346,10 @@ void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkT
 {
 
     //define needed variables for data gathering
-    gyro_scale = 70.0;
-    accel_scale = 0.244;
-    dps_to_rads = 0.017453293F;
-    gravity_standard = 9.80665F;
+    float gyro_scale = 70.0;
+    float accel_scale = 0.244;
+    float dps_to_rads = 0.017453293F;
+    float gravity_standard = 9.80665F;
 
 	// Open the I2C Device
 	int file = I2C_open(i2cbus, AIMU_LSM6DS33_I2C_ADDR);
@@ -372,8 +372,8 @@ void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkT
         //Temp --> not placed in data packet for now
 
         uint8_t xlt, xht;
-        xlg = AIMU_LSM6DS33.buffer[0];
-		xhg = AIMU_LSM6DS33.buffer[1];
+        xlt = AIMU_LSM6DS33.buffer[0];
+		xht = AIMU_LSM6DS33.buffer[1];
 
         int16_t t;
         t = (xht << 8 | xlt);
@@ -425,15 +425,15 @@ void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkT
         
 
 		// Store into packet
-		AIMU_LSM6DS33_DataTelemetryPkt->AIMU_LSM6DS33_ACCELERATIONX = accx;
-        AIMU_LSM6DS33_DataTelemetryPkt->AIMU_LSM6DS33_ACCELERATIONY = accy;
-        AIMU_LSM6DS33_DataTelemetryPkt->AIMU_LSM6DS33_ACCELERATIONZ = accz;
+		AIMU_LSM6DS33_DataTelemetryPkt->AIMU_LSM6DS33_ACCELERATIONX = accelx;
+        AIMU_LSM6DS33_DataTelemetryPkt->AIMU_LSM6DS33_ACCELERATIONY = accely;
+        AIMU_LSM6DS33_DataTelemetryPkt->AIMU_LSM6DS33_ACCELERATIONZ = accelz;
 		AIMU_LSM6DS33_DataTelemetryPkt->AIMU_LSM6DS33_ANGULAR_RATEX = gyx;
         AIMU_LSM6DS33_DataTelemetryPkt->AIMU_LSM6DS33_ANGULAR_RATEY = gyy;
         AIMU_LSM6DS33_DataTelemetryPkt->AIMU_LSM6DS33_ANGULAR_RATEZ = gyz;
 
 		// Print Processed Values if the debug flag is enabled for this app
-		CFE_EVS_SendEvent(AIMU_LSM6DS33_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Acceleration (x, y, z): %F, %F, %F Angular Rate (x, y, z): %F, %F, %F ", accx, accy, accz, gyx, gyy, gyz);
+		CFE_EVS_SendEvent(AIMU_LSM6DS33_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Acceleration (x, y, z): %F, %F, %F Angular Rate (x, y, z): %F, %F, %F ", accelx, accely, accelz, gyx, gyy, gyz);
 	}
 
 	// Close the I2C Buffer

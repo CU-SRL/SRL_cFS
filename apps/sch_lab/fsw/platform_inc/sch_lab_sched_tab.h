@@ -38,7 +38,7 @@
 #include "ci_lab_msgids.h"
 #include "to_lab_msgids.h"
 
-#include "sample_app_msgids.h"
+//#include "sample_app_msgids.h"
 
 #include "sc_msgids.h"
 #include "hs_msgids.h"

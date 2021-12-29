@@ -48,7 +48,7 @@
 */
 #include "cfe_msgids.h"
 #include "ds_msgids.h"
-#include "sample_app_msgids.h"
+//#include "sample_app_msgids.h"
 
 /* #include "ci_lab_msgids.h"  */
 /* #include "to_lab_msgids.h"  */
@@ -272,18 +272,18 @@ DS_FilterTable_t DS_FilterTable =
         { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED }
       }
     },
-    /* Packet Index 015 */
+    /* Packet Index 015 
     {
-      /* .MessageID = */ SAMPLE_APP_HK_TLM_MID,
-      /* .Filter    = */
+      /* .MessageID =  SAMPLE_APP_HK_TLM_MID,
+      /* .Filter    = 
       {
-        /* File table index, filter type, N, X, O */
+        /* File table index, filter type, N, X, O 
         { FILE_ALL_APP_HK_PKTS,  DS_BY_COUNT, 1, 1, 0 },
         { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED },
         { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED },
         { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED }
-      }
-    },
+      } 
+    },*/
     /* Packet Index 016 */
     {
       /* .MessageID = */ DS_UNUSED,

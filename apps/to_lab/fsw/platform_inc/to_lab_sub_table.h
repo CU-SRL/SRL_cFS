@@ -38,7 +38,7 @@
 
 #include "ci_lab_msgids.h"
 
-#include "sample_app_msgids.h"
+//#include "sample_app_msgids.h"
 
 #include "hs_msgids.h"
 #include "fm_msgids.h"
@@ -58,7 +58,7 @@ static TO_subscription_t  TO_SubTable[] =
             {TO_LAB_HK_TLM_MID,     {0,0},  4},
             {TO_LAB_DATA_TYPES_MID, {0,0},  4},
             {CI_LAB_HK_TLM_MID,     {0,0},  4},
-            {SAMPLE_APP_HK_TLM_MID, {0,0},  4},
+            //{SAMPLE_APP_HK_TLM_MID, {0,0},  4},
 
 	        {HS_HK_TLM_MID,         {0,0},  4},
             {FM_HK_TLM_MID,         {0,0},  4},
