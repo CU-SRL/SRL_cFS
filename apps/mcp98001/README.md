@@ -1,6 +1,6 @@
 # Core Flight System : Framework : App : MPL3115A2
 
-This repository contains an i2c application (i2c) for the sensor MPL3115A2, which is a framework component of the Core Flight System.
+This repository contains an i2c application (i2c) for the sensor MCP9801 temperature sensors which our found on our v1 Adaptor Board, which is a framework component of the Core Flight System.
 
 ## Version Notes
 

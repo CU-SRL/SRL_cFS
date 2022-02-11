@@ -1,6 +1,6 @@
 # Core Flight System : Framework : App : AIMU_LSM6DS33
 
-This repository contains a i2c application (i2c) for the LSM6DS33 on the AltIMU, which is a framework component of the Core Flight System.
+This repository contains a i2c application (i2c) for the LSM6DS33 (Gyro and Accelerometer) on the AltIMU, which is a framework component of the Core Flight System.
 
 ## Version Notes
 

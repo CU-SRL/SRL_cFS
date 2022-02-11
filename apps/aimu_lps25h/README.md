@@ -1,6 +1,6 @@
 # Core Flight System : Framework : App : AIMU_LPS25H
 
-This repository contains a i2c application (i2c) for the LPS25H which is on the AltIMU, which is a framework component of the Core Flight System.
+This repository contains a i2c application (i2c) for the LPS25H (pressure sensor) which is on the AltIMU, which is a framework component of the Core Flight System.
 
 ## Version Notes
 
