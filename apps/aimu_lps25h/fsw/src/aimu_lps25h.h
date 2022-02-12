@@ -21,7 +21,7 @@
 ** File: aimu_lps25h.h
 **
 ** Purpose:
-**   This file is main hdr file for the LPS25H application.
+**   This file is main hdr file for the LIS3MDL application.
 **
 ** Notes: Naming conventions and device specific variables changed.
 *******************************************************************************/
@@ -59,16 +59,16 @@
 /***********************************************************************/
 
 #define AIMU_LPS25H_PIPE_DEPTH           32
-#define MAX_BUS                          64
+#define MAX_BUS                            64
 
-// Define the Data Buffer Size using the Datasheet (59 buffers because going to 3a)
-#define AIMU_LPS25H_I2C_BUFFER 0x3B
+// Define the Data Buffer Size using the Datasheet (96 buffers because going to 5f)
+#define AIMU_LPS25H_I2C_BUFFER 0x60
 
 /************************************************************************
 ** Type Definitions
 *************************************************************************/
 
-// Define the Data Struct to hold the data from the LPS25H
+// Define the Data Struct to hold the data from the LIS3MDL
 struct AIMU_LPS25H_data {
 	// Status Buffer
 	uint8_t status[1];
@@ -76,9 +76,6 @@ struct AIMU_LPS25H_data {
 	// Data Buffer
 	uint8_t buffer[AIMU_LPS25H_I2C_BUFFER];
 	
-	/* Data Variables
-	double acceleration;
-	double angular_rate; */
 } AIMU_LPS25H;
 
 /****************************************************************************/
@@ -103,7 +100,7 @@ bool AIMU_LPS25H_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength);
 **
 */
 
-/* LPS25H Accel + Gyro */
+/* LIS3MDL Accel + Gyro */
 bool INIT_AIMU_LPS25H(int I2CBus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemetryPkt);
 void PROCESS_AIMU_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemetryPkt, aimu_lps25h_data_tlm_t* AIMU_LPS25H_DataTelemetryPkt);
 

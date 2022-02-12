@@ -21,7 +21,7 @@
 ** File: aimu_lps25h_perfids.h
 **
 ** Purpose: 
-**  Define LPS25H App Performance IDs
+**  Define LIS3MDL App Performance IDs
 **
 ** Notes: This can stay the same (for now), just change names
 **

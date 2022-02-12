@@ -12,7 +12,7 @@ CFE_APP, /cf/hk.so,             HK_AppMain,            HK,            90,   1638
 CFE_APP, /cf/hs.so,             HS_AppMain,            HS,            120,  16384, 0x0, 0;
 CFE_APP, /cf/sch_lab.so,        SCH_Lab_AppMain,       SCH_LAB_APP,   80,   16384, 0x0, 0;
 CFE_APP, /cf/aimu_lis3mdl.so,   AIMU_LIS3MDL_AppMain,  AIMU_LIS3MDL,  70,   16384, 0x0, 0;
-CFE_APP, /cf/aimu_lps25h.so,    AIMU_LPS25H_AppMain,   AIMU_LPS25H,   70,   16384, 0x0, 0;
+CFE_APP, /cf/aimu_lps25h.so,    AIMU_LPS25H_AppMain,   AIMU_LPS25H,   80,   16384, 0x0, 0;
 CFE_APP, /cf/aimu_lsm6ds33.so,  AIMU_LSM6DS33_AppMain, AIMU_LSM6DS33, 70,   16384, 0x0, 0;
 CFE_APP, /cf/h3lis100dl.so,     H3LIS100DL_AppMain,    H3LIS100DL,    70,   16384, 0x0, 0;
 CFE_APP, /cf/ms5611.so,         MS5611_AppMain,        MS5611,        70,   16384, 0x0, 0;

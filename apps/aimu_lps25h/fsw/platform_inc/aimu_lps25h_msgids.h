@@ -21,7 +21,7 @@
 ** File: aimu_lps25h_msgids.h
 **
 ** Purpose: 
-**  Define LPS25H Message IDs
+**  Define LIS3MDL Message IDs
 **
 ** Notes: Check for open MID spaces, and assign them to the app. Change naming.
 **
@@ -30,12 +30,12 @@
 #ifndef _aimu_lps25h_msgids_h_
 #define _aimu_lps25h_msgids_h_
 
-#define AIMU_LPS25H_CMD_MID            	0x18DB
-#define AIMU_LPS25H_SEND_HK_MID        	0x18DC
-#define AIMU_LPS25H_HK_TLM_MID		    0x08DA
-#define AIMU_LPS25H_DATA_TLM_MID		0x08DB
+#define AIMU_LPS25H_CMD_MID            	0x18DD
+#define AIMU_LPS25H_SEND_HK_MID        	0x18DE
+#define AIMU_LPS25H_HK_TLM_MID		        0x08DC
+#define AIMU_LPS25H_DATA_TLM_MID		    0x08DD
 
-#endif /* _aimu_lps25h_msgids_h_ */
+#endif /* _aimu_lis2mdl_msgids_h_ */
 
 /************************/
 /*  End of File Comment */
