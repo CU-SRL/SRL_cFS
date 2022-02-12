@@ -305,34 +305,14 @@ bool INIT_AIMU_LPS25H(int I2CBus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemetryP
 	// Open I2C for the device address
 	int file = I2C_open(I2CBus, AIMU_LPS25H_I2C_ADDR);
 	
-	// Place Full Scale +-12 Hz
-    if(!I2C_write(file, AIMU_LPS25H_CTRL_REG2, 0x40))
-    {
-        CFE_EVS_SendEvent(AIMU_LPS25H_FAILED_FULL_SCALE_CHANGE, CFE_EVS_EventType_ERROR,
-           "Failed to place Full Scale +-12 Hz... ");
+	// PD = 1 (active mode);  ODR = 011 (12.5 Hz pressure & temperature output data rate)
+	if(!I2C_write(file, AIMU_LPS25H_CTRL_REG1, 0xB0))
+	{
+		CFE_EVS_SendEvent(AIMU_LPS25H_FAILED_TO_ACTIVATE_EID, CFE_EVS_EventType_ERROR,
+           "Failed to activate the sensor properly... ");
         AIMU_LPS25H_HkTelemetryPkt->aimu_lps25h_device_error_count++;
-        return false;
-    }
-
-    //  Sets UHP mode on the X/Y axes, ODR at 80 Hz and does not activate temperature sensor
-    if(!I2C_write(file, AIMU_LPS25H_CTRL_REG1, 0x7C))
-    {
-        CFE_EVS_SendEvent(AIMU_LPS25H_FAIL_ACTIVATE_TEMP_EID, CFE_EVS_EventType_ERROR,
-           "Failed to activate the temperature sensor...  ");
-        AIMU_LPS25H_HkTelemetryPkt->aimu_lps25h_device_error_count++;
-
-        return false;
-    }
-
-    // Sets UHP mode on the Z-axis --> Big Endian data selection
-    if(!I2C_write(file, AIMU_LPS25H_CTRL_REG4, 0x0C))
-    {
-        CFE_EVS_SendEvent(AIMU_LPS25H_ACTIVE_ZUHP_EID, CFE_EVS_EventType_ERROR,
-           "Failed to enable events on the LPS25H...  ");
-        AIMU_LPS25H_HkTelemetryPkt->aimu_lps25h_device_error_count++;
-
-        return false;
-    }
+		return false;
+	}
 
 	// Close the I2C file
 	I2C_close(file);
