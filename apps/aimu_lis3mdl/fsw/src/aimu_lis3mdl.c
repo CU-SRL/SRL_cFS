@@ -68,6 +68,9 @@ void AIMU_LIS3MDL_AppMain( void )
 
     AIMU_LIS3MDL_AppInit();
 
+    INIT_AIMU_LIS3MDL(2, &AIMU_LIS3MDL_HkTelemetryPkt); //initialize device
+
+
     //After Initialization
     AIMU_LIS3MDL_HkTelemetryPkt.AppStatus = RunStatus;
 
@@ -125,6 +128,7 @@ void AIMU_LIS3MDL_AppInit(void)
     CFE_SB_CreatePipe(&AIMU_LIS3MDL_CommandPipe, AIMU_LIS3MDL_PIPE_DEPTH, "LIS3MDL_CMD_PIPE");
     CFE_SB_Subscribe(AIMU_LIS3MDL_CMD_MID, AIMU_LIS3MDL_CommandPipe);
     CFE_SB_Subscribe(AIMU_LIS3MDL_SEND_HK_MID, AIMU_LIS3MDL_CommandPipe);
+    CFE_SB_Subscribe(AIMU_LIS3MDL_SEND_DATA_MID, AIMU_LIS3MDL_CommandPipe);
 
     AIMU_LIS3MDL_ResetCounters();
 
@@ -169,6 +173,10 @@ void AIMU_LIS3MDL_ProcessCommandPacket(void)
 
         case AIMU_LIS3MDL_SEND_HK_MID:
             AIMU_LIS3MDL_ReportHousekeeping();
+            break;
+
+        case AIMU_LIS3MDL_SEND_DATA_MID:
+            AIMU_LIS3MDL_SendDataPacket();
             break;
 
         default:
@@ -238,6 +246,22 @@ void AIMU_LIS3MDL_ReportHousekeeping(void)
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &AIMU_LIS3MDL_HkTelemetryPkt);
     CFE_SB_SendMsg((CFE_SB_Msg_t *) &AIMU_LIS3MDL_HkTelemetryPkt);
+    return;
+
+} /* End of AIMU_LIS3MDL_ReportHousekeeping() */
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
+/*  Name:  AIMU_LIS3MDL_SendDataPacket                                        */
+/*                                                                            */
+/*  Purpose:                                                                  */
+/*         This function is triggered in response to a task telemetry request */
+/*         from the housekeeping task. This function will gather the Apps     */
+/*         telemetry, packetize it and send it to the ram folder via DS       */
+/* * * * * * * * * * * * * * * * * * * * * * * *  * * * * * * *  * *  * * * * */
+void AIMU_LIS3MDL_SendDataPacket(void)
+{
+    CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &AIMU_LIS3MDL_DataTelemetryPkt);
+    CFE_SB_SendMsg((CFE_SB_Msg_t *) &AIMU_LIS3MDL_DataTelemetryPkt);
     return;
 
 } /* End of AIMU_LIS3MDL_ReportHousekeeping() */

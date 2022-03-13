@@ -90,6 +90,7 @@ void AIMU_LIS3MDL_AppInit(void);
 void AIMU_LIS3MDL_ProcessCommandPacket(void);
 void AIMU_LIS3MDL_ProcessGroundCommand(void);
 void AIMU_LIS3MDL_ReportHousekeeping(void);
+void AIMU_LIS3MDL_SendDataPacket(void);
 void AIMU_LIS3MDL_ResetCounters(void);
 
 bool AIMU_LIS3MDL_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength);

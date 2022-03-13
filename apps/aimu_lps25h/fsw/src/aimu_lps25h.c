@@ -21,7 +21,7 @@
 ** File: aimu_lps25h.c
 **
 ** Purpose:
-**   This file contains the source code for the LIS3MDL App.
+**   This file contains the source code for the LPS25H App.
 **
 *******************************************************************************/
 
@@ -67,6 +67,8 @@ void AIMU_LPS25H_AppMain( void )
     CFE_ES_PerfLogEntry(AIMU_LPS25H_PERF_ID);
 
     AIMU_LPS25H_AppInit();
+
+    INIT_AIMU_LPS25H(2, &AIMU_LPS25H_HkTelemetryPkt);
 
     //After Initialization
     AIMU_LPS25H_HkTelemetryPkt.AppStatus = RunStatus;
@@ -122,9 +124,10 @@ void AIMU_LPS25H_AppInit(void)
     ** Create the Software Bus command pipe and subscribe to housekeeping
     **  messages
     */
-    CFE_SB_CreatePipe(&AIMU_LPS25H_CommandPipe, AIMU_LPS25H_PIPE_DEPTH, "LIS3MDL_CMD_PIPE");
+    CFE_SB_CreatePipe(&AIMU_LPS25H_CommandPipe, AIMU_LPS25H_PIPE_DEPTH, "LPS25H_CMD_PIPE");
     CFE_SB_Subscribe(AIMU_LPS25H_CMD_MID, AIMU_LPS25H_CommandPipe);
     CFE_SB_Subscribe(AIMU_LPS25H_SEND_HK_MID, AIMU_LPS25H_CommandPipe);
+    CFE_SB_Subscribe(AIMU_LPS25H_SEND_DATA_MID, AIMU_LPS25H_CommandPipe);
 
     AIMU_LPS25H_ResetCounters();
 
@@ -151,7 +154,7 @@ void AIMU_LPS25H_AppInit(void)
 /*  Name:  AIMU_LPS25H_ProcessCommandPacket                                 */
 /*                                                                            */
 /*  Purpose:                                                                  */
-/*     This routine will process any packet that is received on the LIS3MDL  */
+/*     This routine will process any packet that is received on the LPS25H  */
 /*     command pipe.                                                          */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * *  * * * * * * *  * *  * * * * */
@@ -169,6 +172,10 @@ void AIMU_LPS25H_ProcessCommandPacket(void)
 
         case AIMU_LPS25H_SEND_HK_MID:
             AIMU_LPS25H_ReportHousekeeping();
+            break;
+
+        case AIMU_LPS25H_SEND_DATA_MID:
+            AIMU_LPS25H_SendDataPacket();
             break;
 
         default:
@@ -194,7 +201,7 @@ void AIMU_LPS25H_ProcessGroundCommand(void)
 
     CommandCode = CFE_SB_GetCmdCode(AIMU_LPS25HMsgPtr);
 
-    /* Process "known" LIS3MDL app ground commands */
+    /* Process "known" LPS25H app ground commands */
     switch (CommandCode)
     {
         case AIMU_LPS25H_NOOP_CC:
@@ -238,6 +245,22 @@ void AIMU_LPS25H_ReportHousekeeping(void)
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &AIMU_LPS25H_HkTelemetryPkt);
     CFE_SB_SendMsg((CFE_SB_Msg_t *) &AIMU_LPS25H_HkTelemetryPkt);
+    return;
+
+} /* End of AIMU_LPS25H_ReportHousekeeping() */
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
+/*  Name:  AIMU_LPS25H_SendDataPacket                                         */
+/*                                                                            */
+/*  Purpose:                                                                  */
+/*         This function is triggered in response to a task telemetry request */
+/*         from the housekeeping task. This function will gather the Apps     */
+/*         telemetry, packetize it and send it to the ram folder via DS       */
+/* * * * * * * * * * * * * * * * * * * * * * * *  * * * * * * *  * *  * * * * */
+void AIMU_LPS25H_SendDataPacket(void)
+{
+    CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &AIMU_LPS25H_DataTelemetryPkt);
+    CFE_SB_SendMsg((CFE_SB_Msg_t *) &AIMU_LPS25H_DataTelemetryPkt);
     return;
 
 } /* End of AIMU_LPS25H_ReportHousekeeping() */
@@ -296,7 +319,7 @@ bool AIMU_LPS25H_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength)
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 /*                                                                            */
-/* INIT_AIMU_LPS25H() -- This function initializes the LIS3MDL according	  */
+/* INIT_AIMU_LPS25H() -- This function initializes the LPS25H according	  */
 /*					to the datasheet.										  */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
@@ -332,6 +355,11 @@ bool INIT_AIMU_LPS25H(int I2CBus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemetryP
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 void PROCESS_AIMU_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemetryPkt, aimu_lps25h_data_tlm_t* AIMU_LPS25H_DataTelemetryPkt)
 {
+
+    //define variables needed for data calculations
+    float temp_scale = 480;
+    float temp_offset = 42.5;
+
 	// Open the I2C Device
 	int file = I2C_open(i2cbus, AIMU_LPS25H_I2C_ADDR);
 
@@ -341,7 +369,7 @@ void PROCESS_AIMU_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemet
 	{
         float scale = 2281;
 		// Read the Data Buffer
-		if(!I2C_read(file, AIMU_LPS25H_OUT_X_L, 6, AIMU_LPS25H.buffer))
+		if(!I2C_read(file, AIMU_LPS25H_PRESS_POUT_XL, 6, AIMU_LPS25H.buffer))
 		{
 			CFE_EVS_SendEvent(AIMU_LPS25H_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read data buffers... ");
         	AIMU_LPS25H_HkTelemetryPkt->aimu_lps25h_device_error_count++;
@@ -351,35 +379,34 @@ void PROCESS_AIMU_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemet
 
 		/* Process the Data Buffer */
 			
-		// Magnetic readings
-		uint8_t xlm, xhm, ylm, yhm, zlm, zhm;
+		// Pressure
+		int32_t pxl, pl, ph;
 
-		xlm = AIMU_LPS25H.buffer[0];
-		xhm = AIMU_LPS25H.buffer[1];
-		ylm = AIMU_LPS25H.buffer[2];
-        yhm = AIMU_LPS25H.buffer[3];
-		zlm = AIMU_LPS25H.buffer[4];
-		zhm = AIMU_LPS25H.buffer[5];	
+		pxl = AIMU_LPS25H.buffer[0] << 24;
+		pl |= AIMU_LPS25H.buffer[1] << 16;
+		ph |= AIMU_LPS25H.buffer[2] << 8;
 
-        int16_t x, y, z;
+		int32_t p = ph << 8 | pl << 8 | pxl;
 
-        x = (xhm << 8 | xlm);
-        y = (yhm << 8 | ylm);
-        z = (zhm << 8 | zlm);
+        float pressure = p / 4096.0;		
 
-        //read magnetic field
-        float magx, magy, magz;
-        magx = x / scale;
-        magy = y / scale;
-        magz = z / scale;
+		// Temperature (in C)
+		uint8_t tl, th;
+
+		tl = AIMU_LPS25H.buffer[3];
+		th = AIMU_LPS25H.buffer[4];
+
+		int16_t t = th << 8 | tl;
+
+        float temp = (t / temp_scale) + temp_offset;
+
 
 		// Store into packet
-		AIMU_LPS25H_DataTelemetryPkt->AIMU_LPS25H_MAGSIGX = magx;
-        AIMU_LPS25H_DataTelemetryPkt->AIMU_LPS25H_MAGSIGY = magy;
-        AIMU_LPS25H_DataTelemetryPkt->AIMU_LPS25H_MAGSIGZ = magz;
+		AIMU_LPS25H_DataTelemetryPkt->AIMU_LPS25H_PRESSURE = pressure;
+		AIMU_LPS25H_DataTelemetryPkt->AIMU_LPS25H_TEMPERATURE = temp;
 
 		// Print Processed Values if the debug flag is enabled for this app
-		CFE_EVS_SendEvent(AIMU_LPS25H_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Mag-x: %F Mag-y: %F  Mag-z: %F ", magx, magy, magz);
+		CFE_EVS_SendEvent(AIMU_LPS25H_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Pressure: %F Temperature: %F ", pressure, temp);
 	}
 
 	// Close the I2C Buffer

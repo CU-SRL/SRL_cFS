@@ -1,7 +1,5 @@
 CFE_LIB, /cf/cfs_lib.so,        CFS_LibInit,           CFS_LIB,        0,   0,     0x0, 0;
-CFE_LIB, /cf/sample_lib.so,     SAMPLE_LibInit,        SAMPLE_LIB,     0,   0,     0x0, 0;
 CFE_LIB, /cf/i2c_lib.so,        I2C_LibInit,           I2C_LIB,        0,   0,     0x0, 0;
-CFE_APP, /cf/sample_app.so,     SAMPLE_AppMain,        SAMPLE_APP,    50,   16384, 0x0, 0;
 CFE_APP, /cf/ci_lab.so,         CI_Lab_AppMain,        CI_LAB_APP,    60,   16384, 0x0, 0;
 CFE_APP, /cf/to_lab.so,         TO_Lab_AppMain,        TO_LAB_APP,    70,   16384, 0x0, 0;
 CFE_APP, /cf/ds.so,             DS_AppMain,            DS,            70,   16384, 0x0, 0;
@@ -20,6 +18,8 @@ CFE_APP, /cf/max7502.so,        MAX7502_AppMain,       MAX7502,       80,   1638
 
 !Unused Definitions
 !CFE_APP, /cf/mcp98001.so,       MCP98001_AppMain,      MCP98001,      80,   16384, 0x0, 0;
+!CFE_APP, /cf/sample_app.so,     SAMPLE_AppMain,        SAMPLE_APP,    50,   16384, 0x0, 0;
+!CFE_LIB, /cf/sample_lib.so,     SAMPLE_LibInit,        SAMPLE_LIB,     0,   0,     0x0, 0;
 !
 ! Startup script fields:
 ! 1. Object Type      -- CFE_APP for an Application, or CFE_LIB for a library.

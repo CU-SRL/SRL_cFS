@@ -93,6 +93,7 @@ void AIMU_LSM6DS33_AppInit(void);
 void AIMU_LSM6DS33_ProcessCommandPacket(void);
 void AIMU_LSM6DS33_ProcessGroundCommand(void);
 void AIMU_LSM6DS33_ReportHousekeeping(void);
+void AIMU_LSM6DS33_SendDataPacket(void);
 void AIMU_LSM6DS33_ResetCounters(void);
 
 bool AIMU_LSM6DS33_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength);

@@ -349,6 +349,8 @@ void PROCESS_MAX7502(int i2cbus, max7502_hk_tlm_t* MAX7502_HkTelemetryPkt, max75
         file = I2C_open(i2cbus, MAX7502_2_I2C_ADDR);
     }
 
+    MAX7502_DataTelemetryPkt->DeviceNumber = DeviceNumber; //set device number so telemetry packets can be disinguished
+
 	// Check for data in the STATUS register
 	I2C_read(file, MAX7502_CONFIG, 1, MAX7502.status);
 	if (MAX7502.status[0] != 0)
@@ -378,7 +380,7 @@ void PROCESS_MAX7502(int i2cbus, max7502_hk_tlm_t* MAX7502_HkTelemetryPkt, max75
 		}
 
 		float temp = t;
-		temp /= 16.0;
+        temp /= 16.0;
 
 
 		MAX7502_DataTelemetryPkt->MAX7502_TEMPERATURE = temp;

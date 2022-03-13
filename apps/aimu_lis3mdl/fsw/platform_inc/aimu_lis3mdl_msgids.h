@@ -32,6 +32,7 @@
 
 #define AIMU_LIS3MDL_CMD_MID            	0x18DD
 #define AIMU_LIS3MDL_SEND_HK_MID        	0x18DE
+#define AIMU_LIS3MDL_SEND_DATA_MID        	0x18C2
 #define AIMU_LIS3MDL_HK_TLM_MID		        0x08DC
 #define AIMU_LIS3MDL_DATA_TLM_MID		    0x08DD
 

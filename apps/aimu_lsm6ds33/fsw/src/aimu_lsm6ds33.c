@@ -68,6 +68,8 @@ void AIMU_LSM6DS33_AppMain( void )
 
     AIMU_LSM6DS33_AppInit();
 
+    INIT_AIMU_LSM6DS33(2, &AIMU_LSM6DS33_HkTelemetryPkt);
+
     //After Initialization
     AIMU_LSM6DS33_HkTelemetryPkt.AppStatus = RunStatus;
     /*
@@ -124,6 +126,7 @@ void AIMU_LSM6DS33_AppInit(void)
     CFE_SB_CreatePipe(&AIMU_LSM6DS33_CommandPipe, AIMU_LSM6DS33_PIPE_DEPTH,"LSM6DS33_CMD_PIPE");
     CFE_SB_Subscribe(AIMU_LSM6DS33_CMD_MID, AIMU_LSM6DS33_CommandPipe);
     CFE_SB_Subscribe(AIMU_LSM6DS33_SEND_HK_MID, AIMU_LSM6DS33_CommandPipe);
+    CFE_SB_Subscribe(AIMU_LSM6DS33_SEND_DATA_MID, AIMU_LSM6DS33_CommandPipe);
 
     AIMU_LSM6DS33_ResetCounters();
 
@@ -168,6 +171,10 @@ void AIMU_LSM6DS33_ProcessCommandPacket(void)
 
         case AIMU_LSM6DS33_SEND_HK_MID:
             AIMU_LSM6DS33_ReportHousekeeping();
+            break;
+
+        case AIMU_LSM6DS33_SEND_DATA_MID:
+            AIMU_LSM6DS33_SendDataPacket();
             break;
 
         default:
@@ -237,6 +244,22 @@ void AIMU_LSM6DS33_ReportHousekeeping(void)
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &AIMU_LSM6DS33_HkTelemetryPkt);
     CFE_SB_SendMsg((CFE_SB_Msg_t *) &AIMU_LSM6DS33_HkTelemetryPkt);
+    return;
+
+} /* End of AIMU_LSM6DS33_ReportHousekeeping() */
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
+/*  Name:  AIMU_LSM6DS33_SendDataPacket                                      */
+/*                                                                            */
+/*  Purpose:                                                                  */
+/*         This function is triggered in response to a task telemetry request */
+/*         from the housekeeping task. This function will gather the Apps     */
+/*         telemetry, packetize it and send it to the ram folder via DS       */
+/* * * * * * * * * * * * * * * * * * * * * * * *  * * * * * * *  * *  * * * * */
+void AIMU_LSM6DS33_SendDataPacket(void)
+{
+    CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &AIMU_LSM6DS33_DataTelemetryPkt);
+    CFE_SB_SendMsg((CFE_SB_Msg_t *) &AIMU_LSM6DS33_DataTelemetryPkt);
     return;
 
 } /* End of AIMU_LSM6DS33_ReportHousekeeping() */
@@ -392,9 +415,9 @@ void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkT
 		zhg = AIMU_LSM6DS33.buffer[7];	
 
         int16_t gx, gy, gz;
-        gx = (xhg << 8 | xlg);
-        gy = (yhg << 8 | ylg);
-        gz = (zhg << 8 | zlg);
+        gx = xhg << 8 | xlg;
+        gy = yhg << 8 | ylg;
+        gz = zhg << 8 | zlg;
 
         float gyx, gyy, gyz;
         gyx = gx * gyro_scale * dps_to_rads / 1000.0;

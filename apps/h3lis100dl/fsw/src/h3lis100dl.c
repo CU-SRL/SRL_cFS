@@ -308,18 +308,17 @@ bool INIT_H3LIS100DL(int I2CBus, h3lis100dl_hk_tlm_t* H3LIS100DL_HkTelemetryPkt)
     // ODR = 00110 (400 Hz (high performance)); 111 to enable all exes
 	if(!I2C_write(file, H3LIS100DL_CTRL1_G, 0x37))
 	{
-		CFE_EVS_SendEvent(H3LIS100DL_FAILED_CHANGE_TO_ACTIVE_MODE_ERR_EID, CFE_EVS_EventType_ERROR,
-           "Failed to switch Accel to active...  ");
+		CFE_EVS_SendEvent(H3LIS100DL_FAILED_ENABLE_AXES, CFE_EVS_EventType_ERROR,
+           "Failed to switch enable axes...  ");
         H3LIS100DL_HkTelemetryPkt->h3lis100dl_device_error_count++;
 
 		return false;
 	}
 
-	// Gyro
     // ODR = 0110 (Normal Mode);  HPc = 64 => 11
 	if(!I2C_write(file, H3LIS100DL_CTRL2_G, 0x03))
 	{
-		CFE_EVS_SendEvent(H3LIS100DL_FAILED_CHANGE_TO_ACTIVE_MODE_ERR_EID, CFE_EVS_EventType_ERROR,
+		CFE_EVS_SendEvent(H3LIS100DL_FAILED_CONFIGURE_HPCFILTER, CFE_EVS_EventType_ERROR,
            "Failed to configure high-pass filter cutoff frequency... ");
         H3LIS100DL_HkTelemetryPkt->h3lis100dl_device_error_count++;
 
@@ -379,9 +378,9 @@ void PROCESS_H3LIS100DL(int i2cbus, h3lis100dl_hk_tlm_t* H3LIS100DL_HkTelemetryP
 
         int16_t ax, ay, az;
 
-        ax = (xla * 256 + xha);
-        ay = (yla * 256 + yha);
-        az = (zla * 256 + zha);
+        ax = (xla * 256) + (int16_t)xha;
+        ay = (yla * 256) + (int16_t)yha;
+        az = (zla * 256) + (int16_t)zha;
 
         float accelx, accely, accelz;
 

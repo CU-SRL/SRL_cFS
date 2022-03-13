@@ -62,7 +62,7 @@
 #define MAX_BUS                            64
 
 // Define the Data Buffer Size using the Datasheet (96 buffers because going to 5f)
-#define AIMU_LPS25H_I2C_BUFFER 0x60
+#define AIMU_LPS25H_I2C_BUFFER 0x3B
 
 /************************************************************************
 ** Type Definitions
@@ -90,6 +90,7 @@ void AIMU_LPS25H_AppInit(void);
 void AIMU_LPS25H_ProcessCommandPacket(void);
 void AIMU_LPS25H_ProcessGroundCommand(void);
 void AIMU_LPS25H_ReportHousekeeping(void);
+void AIMU_LPS25H_SendDataPacket(void);
 void AIMU_LPS25H_ResetCounters(void);
 
 bool AIMU_LPS25H_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength);

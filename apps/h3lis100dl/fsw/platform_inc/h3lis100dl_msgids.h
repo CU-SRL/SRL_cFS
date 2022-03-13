@@ -30,10 +30,10 @@
 #ifndef _h3lis100dl_msgids_h_
 #define _h3lis100dl_msgids_h_
 
-#define H3LIS100DL_CMD_MID            	0x18D9
-#define H3LIS100DL_SEND_HK_MID        	0x18DA
-#define H3LIS100DL_HK_TLM_MID		    0x08D8
-#define H3LIS100DL_DATA_TLM_MID		    0x08D9
+#define H3LIS100DL_CMD_MID            	0x18F1
+#define H3LIS100DL_SEND_HK_MID        	0x18F2
+#define H3LIS100DL_HK_TLM_MID		    0x08F1
+#define H3LIS100DL_DATA_TLM_MID		    0x08F2
 
 #endif /* _h3lis100dl_msgids_h_ */
 

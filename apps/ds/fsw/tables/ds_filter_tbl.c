@@ -48,6 +48,15 @@
 */
 #include "cfe_msgids.h"
 #include "ds_msgids.h"
+
+//Sensor apps
+#include "aimu_lis3mdl_msgids.h"
+#include "aimu_lps25h_msgids.h"
+#include "aimu_lsm6ds33_msgids.h"
+#include "max7502_msgids.h"
+#include "ms5611_msgids.h"
+#include "h3lis100dl_msgids.h"
+
 //#include "sample_app_msgids.h"
 
 /* #include "ci_lab_msgids.h"  */
@@ -82,6 +91,8 @@
 
 #define FILE_CFE_APP_HK_PKTS  4
 #define FILE_CFE_APP_TLM_PKTS 5
+
+#define FILE_SENSOR_APP_DATA_PKTS 6
 
 
 /*
@@ -272,41 +283,41 @@ DS_FilterTable_t DS_FilterTable =
         { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED }
       }
     },
-    /* Packet Index 015 
+    /* Packet Index 015 */
     {
-      /* .MessageID =  SAMPLE_APP_HK_TLM_MID,
-      /* .Filter    = 
+      /* .MessageID = */ AIMU_LIS3MDL_DATA_TLM_MID,
+      /* .Filter    = */
       {
-        /* File table index, filter type, N, X, O 
-        { FILE_ALL_APP_HK_PKTS,  DS_BY_COUNT, 1, 1, 0 },
+        /* File table index, filter type, N, X, O */
+        { FILE_SENSOR_APP_DATA_PKTS,  DS_BY_COUNT, 1, 1, 0 },
         { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED },
         { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED },
         { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED }
       } 
-    },*/
+    },
     /* Packet Index 016 */
     {
-      /* .MessageID = */ DS_UNUSED,
+      /* .MessageID = */ AIMU_LSM6DS33_DATA_TLM_MID,
       /* .Filter    = */
       {
         /* File table index, filter type, N, X, O */
-        { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED },
+        { FILE_SENSOR_APP_DATA_PKTS,  DS_BY_COUNT, 1, 1, 0 },
         { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED },
         { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED },
         { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED }
-      }
+      } 
     },
     /* Packet Index 017 */
     {
-      /* .MessageID = */ DS_UNUSED,
+      /* .MessageID = */ AIMU_LPS25H_DATA_TLM_MID,
       /* .Filter    = */
       {
         /* File table index, filter type, N, X, O */
-        { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED },
+        { FILE_SENSOR_APP_DATA_PKTS,  DS_BY_COUNT, 1, 1, 0 },
         { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED },
         { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED },
         { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED }
-      }
+      } 
     },
     /* Packet Index 018 */
     {

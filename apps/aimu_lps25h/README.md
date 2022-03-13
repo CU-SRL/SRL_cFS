@@ -1,6 +1,6 @@
 # Core Flight System : Framework : App : AIMU_LIS3MDL
 
-This repository contains a i2c application (i2c) for the LIS3MDL (magnetometer) on the AltIMU, which is a framework component of the Core Flight System.
+This repository contains a i2c application (i2c) for the LPS25H () on the AltIMU, which is a framework component of the Core Flight System.
 
 ## Version Notes
 

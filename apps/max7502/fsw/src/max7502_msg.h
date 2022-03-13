@@ -78,6 +78,7 @@ typedef struct
 typedef struct 
 {
     uint8               TlmHeader[CFE_SB_TLM_HDR_SIZE];
+    uint8               DeviceNumber;
     float               MAX7502_TEMPERATURE;
 
 }   OS_PACK max7502_data_tlm_t  ;
