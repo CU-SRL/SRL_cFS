@@ -4,9 +4,9 @@ This repository contains a i2c application (i2c) for the LPS25H () on the AltIMU
 
 ## App Development Resources:
 
-Datasheet: [https://www.pololu.com/file/0J761/LPS25H.pdf](https://www.pololu.com/file/0J761/LPS25H.pdf)
-Pololu Github: [https://github.com/pololu/lps-arduino](https://github.com/pololu/lps-arduino)
-Adafruit Github: [https://github.com/adafruit/Adafruit_LPS2X](https://github.com/adafruit/Adafruit_LPS2X)
+Datasheet: [https://www.pololu.com/file/0J761/LPS25H.pdf](https://www.pololu.com/file/0J761/LPS25H.pdf)   
+Pololu Github: [https://github.com/pololu/lps-arduino](https://github.com/pololu/lps-arduino)   
+Adafruit Github: [https://github.com/adafruit/Adafruit_LPS2X](https://github.com/adafruit/Adafruit_LPS2X)   
 
 ## Version Notes
 
