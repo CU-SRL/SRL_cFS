@@ -134,6 +134,10 @@ void AIMU_LPS25H_AppInit(void)
     CFE_SB_InitMsg(&AIMU_LPS25H_HkTelemetryPkt,
                    AIMU_LPS25H_HK_TLM_MID,
                    AIMU_LPS25H_HK_TLM_LNGTH, true);
+                   
+    CFE_SB_InitMsg(&AIMU_LPS25H_DataTelemetryPkt,
+                   AIMU_LPS25H_DATA_TLM_MID,
+                   AIMU_LPS25H_DATA_TLM_LNGTH, true);
 
     CFE_EVS_SendEvent (AIMU_LPS25H_STARTUP_INF_EID, CFE_EVS_EventType_INFORMATION,
                "AIMU_LPS25H App Initialized. Version %d.%d.%d.%d\n",
@@ -175,7 +179,7 @@ void AIMU_LPS25H_ProcessCommandPacket(void)
             break;
 
         case AIMU_LPS25H_SEND_DATA_MID:
-            AIMU_LPS25H_SendDataPacket();
+            PROCESS_AIMU_LPS25H(2, &AIMU_LPS25H_HkTelemetryPkt, &AIMU_LPS25H_DataTelemetryPkt);       
             break;
 
         default:
@@ -404,6 +408,8 @@ void PROCESS_AIMU_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemet
 		// Store into packet
 		AIMU_LPS25H_DataTelemetryPkt->AIMU_LPS25H_PRESSURE = pressure;
 		AIMU_LPS25H_DataTelemetryPkt->AIMU_LPS25H_TEMPERATURE = temp;
+
+        AIMU_LPS25H_SendDataPacket();
 
 		// Print Processed Values if the debug flag is enabled for this app
 		CFE_EVS_SendEvent(AIMU_LPS25H_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Pressure: %F Temperature: %F ", pressure, temp);

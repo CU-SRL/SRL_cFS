@@ -134,6 +134,10 @@ void AIMU_LSM6DS33_AppInit(void)
                    AIMU_LSM6DS33_HK_TLM_MID,
                    AIMU_LSM6DS33_HK_TLM_LNGTH, true);
 
+    CFE_SB_InitMsg(&AIMU_LSM6DS33_DataTelemetryPkt,
+                   AIMU_LSM6DS33_DATA_TLM_MID,
+                   AIMU_LSM6DS33_DATA_TLM_LNGTH, true);
+
     CFE_EVS_SendEvent (AIMU_LSM6DS33_STARTUP_INF_EID, CFE_EVS_EventType_INFORMATION,
                "AIMU_LSM6DS33 App Initialized. Version %d.%d.%d.%d\n",
                 AIMU_LSM6DS33_MAJOR_VERSION,
@@ -174,7 +178,7 @@ void AIMU_LSM6DS33_ProcessCommandPacket(void)
             break;
 
         case AIMU_LSM6DS33_SEND_DATA_MID:
-            AIMU_LSM6DS33_SendDataPacket();
+            PROCESS_AIMU_LSM6DS33(2, &AIMU_LSM6DS33_HkTelemetryPkt, &AIMU_LSM6DS33_DataTelemetryPkt);
             break;
 
         default:
@@ -454,6 +458,8 @@ void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkT
 		AIMU_LSM6DS33_DataTelemetryPkt->AIMU_LSM6DS33_ANGULAR_RATEX = gyx;
         AIMU_LSM6DS33_DataTelemetryPkt->AIMU_LSM6DS33_ANGULAR_RATEY = gyy;
         AIMU_LSM6DS33_DataTelemetryPkt->AIMU_LSM6DS33_ANGULAR_RATEZ = gyz;
+
+        AIMU_LSM6DS33_SendDataPacket();
 
 		// Print Processed Values if the debug flag is enabled for this app
 		CFE_EVS_SendEvent(AIMU_LSM6DS33_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Acceleration (x, y, z): %F, %F, %F Angular Rate (x, y, z): %F, %F, %F ", accelx, accely, accelz, gyx, gyy, gyz);

@@ -36,6 +36,7 @@
 #include "aimu_lis3mdl_events.h"
 #include "aimu_lis3mdl_version.h"
 
+
 #include "i2c_lib.h"
 
 /*
@@ -136,6 +137,10 @@ void AIMU_LIS3MDL_AppInit(void)
                    AIMU_LIS3MDL_HK_TLM_MID,
                    AIMU_LIS3MDL_HK_TLM_LNGTH, true);
 
+    CFE_SB_InitMsg(&AIMU_LIS3MDL_DataTelemetryPkt,
+                   AIMU_LIS3MDL_DATA_TLM_MID,
+                   AIMU_LIS3MDL_DATA_TLM_LNGTH, true);
+
     CFE_EVS_SendEvent (AIMU_LIS3MDL_STARTUP_INF_EID, CFE_EVS_EventType_INFORMATION,
                "AIMU_LIS3MDL App Initialized. Version %d.%d.%d.%d\n",
                 AIMU_LIS3MDL_MAJOR_VERSION,
@@ -176,7 +181,7 @@ void AIMU_LIS3MDL_ProcessCommandPacket(void)
             break;
 
         case AIMU_LIS3MDL_SEND_DATA_MID:
-            AIMU_LIS3MDL_SendDataPacket();
+            PROCESS_AIMU_LIS3MDL(2, &AIMU_LIS3MDL_HkTelemetryPkt, &AIMU_LIS3MDL_DataTelemetryPkt);
             break;
 
         default:
@@ -260,6 +265,8 @@ void AIMU_LIS3MDL_ReportHousekeeping(void)
 /* * * * * * * * * * * * * * * * * * * * * * * *  * * * * * * *  * *  * * * * */
 void AIMU_LIS3MDL_SendDataPacket(void)
 {
+
+
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &AIMU_LIS3MDL_DataTelemetryPkt);
     CFE_SB_SendMsg((CFE_SB_Msg_t *) &AIMU_LIS3MDL_DataTelemetryPkt);
     return;
@@ -421,6 +428,8 @@ void PROCESS_AIMU_LIS3MDL(int i2cbus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTele
 		AIMU_LIS3MDL_DataTelemetryPkt->AIMU_LIS3MDL_MAGSIGX = magx;
         AIMU_LIS3MDL_DataTelemetryPkt->AIMU_LIS3MDL_MAGSIGY = magy;
         AIMU_LIS3MDL_DataTelemetryPkt->AIMU_LIS3MDL_MAGSIGZ = magz;
+
+        AIMU_LIS3MDL_SendDataPacket();
 
 		// Print Processed Values if the debug flag is enabled for this app
 		CFE_EVS_SendEvent(AIMU_LIS3MDL_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Mag-x: %F Mag-y: %F  Mag-z: %F ", magx, magy, magz);
