@@ -375,8 +375,8 @@ void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkT
     //define needed variables for data gathering
     float gyro_scale = 70.0;
     float accel_scale = 0.244;
-    float dps_to_rads = 0.017453293F;
-    float gravity_standard = 9.80665F;
+    float dps_to_rads = 0.017453293;
+    float gravity_standard = 9.80665; //do not use because we want in g's
 
 	// Open the I2C Device
 	int file = I2C_open(i2cbus, AIMU_LSM6DS33_I2C_ADDR);
@@ -403,13 +403,13 @@ void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkT
 		xht = AIMU_LSM6DS33.buffer[1];
 
         int16_t t;
-        t = (xht << 8 | xlt);
+        t = ((int16_t)xht << 8 | (int16_t)xlt);
 
         float temp;
-        temp = (t / 16.0) + 25.0;
+        temp = ((float)t / 16.0) + 25.0;
 
 
-		// Gyro
+		// Gyro in radians
 		uint8_t xlg, xhg, ylg, yhg, zlg, zhg;
 		xlg = AIMU_LSM6DS33.buffer[2];
 		xhg = AIMU_LSM6DS33.buffer[3];
@@ -419,16 +419,16 @@ void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkT
 		zhg = AIMU_LSM6DS33.buffer[7];	
 
         int16_t gx, gy, gz;
-        gx = xhg << 8 | xlg;
-        gy = yhg << 8 | ylg;
-        gz = zhg << 8 | zlg;
+        gx = ((int16_t)xhg << 8) | (int16_t)xlg;
+        gy = ((int16_t)yhg << 8) | (int16_t)ylg;
+        gz = ((int16_t)zhg << 8) | (int16_t)zlg;
 
         float gyx, gyy, gyz;
-        gyx = gx * gyro_scale * dps_to_rads / 1000.0;
-        gyy = gy * gyro_scale * dps_to_rads / 1000.0;
-        gyz = gz * gyro_scale * dps_to_rads / 1000.0;
+        gyx = (float)gx * gyro_scale * dps_to_rads;
+        gyy = (float)gy * gyro_scale * dps_to_rads;
+        gyz = (float)gz * gyro_scale * dps_to_rads;
 
-        // Accel
+        // Accel in g
 		uint8_t xla, xha, yla, yha, zla, zha;
 
 		xla = AIMU_LSM6DS33.buffer[8];
@@ -440,15 +440,15 @@ void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkT
 
         int16_t ax, ay, az;
 
-        ax = (xha << 8 | xla);
-        ay = (yha << 8 | yla);
-        az = (zha << 8 | zla);
+        ax = ((int16_t)xha << 8 | (int16_t)xla);
+        ay = ((int16_t)yha << 8 | (int16_t)yla);
+        az = ((int16_t)zha << 8 | (int16_t)zla);
 
         float accelx, accely, accelz;
 
-        accelx = ax * accel_scale * gravity_standard / 1000.0;
-        accely = ay * accel_scale * gravity_standard / 1000.0;
-        accelz = az * accel_scale * gravity_standard / 1000.0;
+        accelx = (float)ax * accel_scale ;
+        accely = (float)ay * accel_scale;
+        accelz = (float)az * accel_scale;
         
 
 		// Store into packet

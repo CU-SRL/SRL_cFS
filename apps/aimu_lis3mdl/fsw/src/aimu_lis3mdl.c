@@ -390,7 +390,7 @@ void PROCESS_AIMU_LIS3MDL(int i2cbus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTele
 	I2C_read(file, AIMU_LIS3MDL_STATUS_REG, 1, AIMU_LIS3MDL.status);
 	if (AIMU_LIS3MDL.status[0] != 0) //double check this
 	{
-        float scale = 2281; //scale factor
+        float scale = 2281.0; //scale factor
 		// Read the Data Buffer
 		if(!I2C_read(file, AIMU_LIS3MDL_OUT_X_L, 6, AIMU_LIS3MDL.buffer))
 		{
@@ -413,9 +413,9 @@ void PROCESS_AIMU_LIS3MDL(int i2cbus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTele
 		zhm = AIMU_LIS3MDL.buffer[5];	
 
         int16_t x, y, z; //combine low and high bits
-        x = (xhm << 8 | xlm);
-        y = (yhm << 8 | ylm);
-        z = (zhm << 8 | zlm);
+        x = ((int16_t)xhm << 8 | (int16_t)xlm);
+        y = ((int16_t)yhm << 8 | (int16_t)ylm);
+        z = ((int16_t)zhm << 8 | (int16_t)zlm);
 
         //read magnetic field
         float magx, magy, magz; //divide by scale factor

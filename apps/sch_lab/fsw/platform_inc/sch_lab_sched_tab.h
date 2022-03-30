@@ -85,11 +85,11 @@ SCH_LAB_ScheduleTable_t SCH_LAB_ScheduleTable[SCH_LAB_MAX_SCHEDULE_ENTRIES] =
 
 
      {AIMU_LIS3MDL_SEND_HK_MID,         4, 0},
-     {AIMU_LIS3MDL_SEND_DATA_MID,       4, 0},//send out data every 4 seconds
+     {AIMU_LIS3MDL_SEND_DATA_MID,       10, 0},//send out data every 10 seconds
      {AIMU_LPS25H_SEND_HK_MID,          4, 0},
-     {AIMU_LPS25H_SEND_DATA_MID,        4, 0},//send out data every 4 seconds
+     {AIMU_LPS25H_SEND_DATA_MID,        10, 0},//send out data every 10 seconds
      {AIMU_LSM6DS33_SEND_HK_MID,        4, 0},
-     {AIMU_LSM6DS33_SEND_DATA_MID,      4, 0}, //send out data every 4 seconds
+     {AIMU_LSM6DS33_SEND_DATA_MID,      10, 0}, //send out data every 10 seconds
      {MAX7502_SEND_HK_MID,              4, 0},
      {MS5611_SEND_HK_MID,               4, 0},
      {H3LIS100DL_SEND_HK_MID,           4, 0},

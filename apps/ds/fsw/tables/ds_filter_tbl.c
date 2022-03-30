@@ -290,7 +290,7 @@ DS_FilterTable_t DS_FilterTable =
       {
         /* File table index, filter type, N, X, O */
         { FILE_SENSOR_APP_DATA_PKTS,  DS_BY_COUNT, 1, 1, 0 },
-        { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED },
+        { FILE_ALL_APP_TLM_PKTS, DS_BY_COUNT, 1, 1, 0 },
         { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED },
         { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED }
       } 
@@ -302,7 +302,7 @@ DS_FilterTable_t DS_FilterTable =
       {
         /* File table index, filter type, N, X, O */
         { FILE_SENSOR_APP_DATA_PKTS,  DS_BY_COUNT, 1, 1, 0 },
-        { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED },
+        { FILE_ALL_APP_TLM_PKTS, DS_BY_COUNT, 1, 1, 0 },
         { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED },
         { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED }
       } 
@@ -314,7 +314,7 @@ DS_FilterTable_t DS_FilterTable =
       {
         /* File table index, filter type, N, X, O */
         { FILE_SENSOR_APP_DATA_PKTS,  DS_BY_COUNT, 1, 1, 0 },
-        { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED },
+        { FILE_ALL_APP_TLM_PKTS, DS_BY_COUNT, 1, 1, 0 },
         { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED },
         { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED }
       } 

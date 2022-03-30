@@ -361,7 +361,7 @@ void PROCESS_AIMU_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemet
 {
 
     //define variables needed for data calculations
-    float temp_scale = 480;
+    float temp_scale = 480.0;
     float temp_offset = 42.5;
 
 	// Open the I2C Device
@@ -371,7 +371,7 @@ void PROCESS_AIMU_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemet
 	I2C_read(file, AIMU_LPS25H_STATUS_REG, 1, AIMU_LPS25H.status);
 	if (AIMU_LPS25H.status[0] != 0) //double check this
 	{
-        float scale = 2281;
+        float scale = 2281.0;
 		// Read the Data Buffer
 		if(!I2C_read(file, AIMU_LPS25H_PRESS_OUT_XL, 6, AIMU_LPS25H.buffer))
 		{
@@ -384,33 +384,32 @@ void PROCESS_AIMU_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemet
 		/* Process the Data Buffer */
 			
 		// Pressure (in hPa)
-		int32_t raw_pressure;
+		int24_t raw_pressure;
 
-		raw_pressure = (int32_t)buffer[2];
+		raw_pressure = (int24_t)AIMU_LPS25H.buffer[2];
         raw_pressure <<= 8;
-        raw_pressure |= (int32_t)(buffer[1]);
+        raw_pressure |= (int24_t)AIMU_LPS25H.buffer[1];
         raw_pressure <<= 8;
-        raw_pressure |= (int32_t)(buffer[0]);
+        raw_pressure |= (int24_t)AIMU_LPS25H.buffer[0];
 
-        if (raw_pressure & 0x800000) { //if raw pressure is negative
+        if (raw_pressure && 0x800000) { 
             raw_pressure = raw_pressure - 0xFFFFFF;
         }
 
-        float pressure = p / 4096.0;		
+        float pressure = (float)raw_pressure / 4096.0;		
 
 		// Temperature (in C)
 		uint8_t tl, th;
-
 		tl = AIMU_LPS25H.buffer[3];
 		th = AIMU_LPS25H.buffer[4];
 
-		int16_t t = th << 8 | tl;
+		int16_t t = ((int16_t)th << 8) | (int16_t)tl;
 
-        if (t & 0x8000) { //if temp negative
+        if (t && 0x8000) { 
              t = t - 0xFFFF;
         }
 
-        float temp = (t / temp_scale) + temp_offset;
+        float temp = ((float)t / temp_scale) + temp_offset;
 
 
 		// Store into packet
