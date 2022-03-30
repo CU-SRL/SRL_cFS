@@ -27,7 +27,7 @@
 #define AIMU_LPS25H_INT_CFG              0x24 /*! Interrupt differential configuration register. */
 #define AIMU_LPS25H_INT_SOURCE           0x25 /*! INT_SOURCE register is cleared by reading it */
 #define AIMU_LPS25H_STATUS_REG           0x27 /*! Status register */
-#define AIMU_LPS25H_PRESS_POUT_XL        0x28 /*! The PRESS_OUT_XL register contains the lowest part of the pressure output value */
+#define AIMU_LPS25H_PRESS_OUT_XL         0x28 /*! The PRESS_OUT_XL register contains the lowest part of the pressure output value */
 #define AIMU_LPS25H_PRESS_OUT_L          0x29 /*! The PRESS_OUT_L register contains the middle part of the pressure output value. */
 #define AIMU_LPS25H_PRESS_OUT_H          0x2A /*! The PRESS_OUT_H register contains the highest part of the pressure output value. */
 #define AIMU_LPS25H_TEMP_OUT_L           0x2B /*! The TEMP_OUT_L register contains the low part of the temperature output value. */

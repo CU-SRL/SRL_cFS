@@ -390,7 +390,7 @@ void PROCESS_AIMU_LIS3MDL(int i2cbus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTele
 	I2C_read(file, AIMU_LIS3MDL_STATUS_REG, 1, AIMU_LIS3MDL.status);
 	if (AIMU_LIS3MDL.status[0] != 0) //double check this
 	{
-        float scale = 2281;
+        float scale = 2281; //scale factor
 		// Read the Data Buffer
 		if(!I2C_read(file, AIMU_LIS3MDL_OUT_X_L, 6, AIMU_LIS3MDL.buffer))
 		{
@@ -412,24 +412,23 @@ void PROCESS_AIMU_LIS3MDL(int i2cbus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTele
 		zlm = AIMU_LIS3MDL.buffer[4];
 		zhm = AIMU_LIS3MDL.buffer[5];	
 
-        int16_t x, y, z;
-
+        int16_t x, y, z; //combine low and high bits
         x = (xhm << 8 | xlm);
         y = (yhm << 8 | ylm);
         z = (zhm << 8 | zlm);
 
         //read magnetic field
-        float magx, magy, magz;
-        magx = x / scale;
-        magy = y / scale;
-        magz = z / scale;
+        float magx, magy, magz; //divide by scale factor
+        magx = (float)x / scale;
+        magy = (float)y / scale;
+        magz = (float)z / scale;
 
 		// Store into packet
 		AIMU_LIS3MDL_DataTelemetryPkt->AIMU_LIS3MDL_MAGSIGX = magx;
         AIMU_LIS3MDL_DataTelemetryPkt->AIMU_LIS3MDL_MAGSIGY = magy;
         AIMU_LIS3MDL_DataTelemetryPkt->AIMU_LIS3MDL_MAGSIGZ = magz;
 
-        AIMU_LIS3MDL_SendDataPacket();
+        AIMU_LIS3MDL_SendDataPacket(); //send data packet telemetry
 
 		// Print Processed Values if the debug flag is enabled for this app
 		CFE_EVS_SendEvent(AIMU_LIS3MDL_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Mag-x: %F Mag-y: %F  Mag-z: %F ", magx, magy, magz);

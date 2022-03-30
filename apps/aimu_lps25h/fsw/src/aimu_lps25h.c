@@ -373,7 +373,7 @@ void PROCESS_AIMU_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemet
 	{
         float scale = 2281;
 		// Read the Data Buffer
-		if(!I2C_read(file, AIMU_LPS25H_PRESS_POUT_XL, 6, AIMU_LPS25H.buffer))
+		if(!I2C_read(file, AIMU_LPS25H_PRESS_OUT_XL, 6, AIMU_LPS25H.buffer))
 		{
 			CFE_EVS_SendEvent(AIMU_LPS25H_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read data buffers... ");
         	AIMU_LPS25H_HkTelemetryPkt->aimu_lps25h_device_error_count++;
@@ -383,14 +383,18 @@ void PROCESS_AIMU_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemet
 
 		/* Process the Data Buffer */
 			
-		// Pressure
-		int32_t pxl, pl, ph;
+		// Pressure (in hPa)
+		int32_t raw_pressure;
 
-		pxl = AIMU_LPS25H.buffer[0] << 24;
-		pl |= AIMU_LPS25H.buffer[1] << 16;
-		ph |= AIMU_LPS25H.buffer[2] << 8;
+		raw_pressure = (int32_t)buffer[2];
+        raw_pressure <<= 8;
+        raw_pressure |= (int32_t)(buffer[1]);
+        raw_pressure <<= 8;
+        raw_pressure |= (int32_t)(buffer[0]);
 
-		int32_t p = ph << 8 | pl << 8 | pxl;
+        if (raw_pressure & 0x800000) { //if raw pressure is negative
+            raw_pressure = raw_pressure - 0xFFFFFF;
+        }
 
         float pressure = p / 4096.0;		
 
@@ -401,6 +405,10 @@ void PROCESS_AIMU_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemet
 		th = AIMU_LPS25H.buffer[4];
 
 		int16_t t = th << 8 | tl;
+
+        if (t & 0x8000) { //if temp negative
+             t = t - 0xFFFF;
+        }
 
         float temp = (t / temp_scale) + temp_offset;
 
