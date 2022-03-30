@@ -419,14 +419,14 @@ void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkT
 		zhg = AIMU_LSM6DS33.buffer[7];	
 
         int16_t gx, gy, gz;
-        gx = ((int16_t)xhg << 8) | (int16_t)xlg;
-        gy = ((int16_t)yhg << 8) | (int16_t)ylg;
-        gz = ((int16_t)zhg << 8) | (int16_t)zlg;
+        gx = (xhg << 8) | xlg;
+        gy = (yhg << 8) | ylg;
+        gz = (zhg << 8) | zlg;
 
         float gyx, gyy, gyz;
-        gyx = (float)gx * gyro_scale * dps_to_rads;
-        gyy = (float)gy * gyro_scale * dps_to_rads;
-        gyz = (float)gz * gyro_scale * dps_to_rads;
+        gyx = (float)gx * gyro_scale * dps_to_rads / 1000.0;
+        gyy = (float)gy * gyro_scale * dps_to_rads / 1000.0;
+        gyz = (float)gz * gyro_scale * dps_to_rads / 1000.0;
 
         // Accel in g
 		uint8_t xla, xha, yla, yha, zla, zha;
@@ -437,18 +437,15 @@ void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkT
         yha = AIMU_LSM6DS33.buffer[11];
 		zla = AIMU_LSM6DS33.buffer[12];
 		zha = AIMU_LSM6DS33.buffer[13];	
+        
+        //combine high and low bits into twos complement number
+        int16_t ax = (xha << 8 | xla);
+        int16_t ay = (yha << 8 | yla);
+        int16_t az = (zha << 8 | zla);
 
-        int16_t ax, ay, az;
-
-        ax = ((int16_t)xha << 8 | (int16_t)xla);
-        ay = ((int16_t)yha << 8 | (int16_t)yla);
-        az = ((int16_t)zha << 8 | (int16_t)zla);
-
-        float accelx, accely, accelz;
-
-        accelx = (float)ax * accel_scale ;
-        accely = (float)ay * accel_scale;
-        accelz = (float)az * accel_scale;
+        float accelx = (float)ax * accel_scale / 1000.0;
+        float accely = (float)ay * accel_scale / 1000.0;
+        float accelz = (float)az * accel_scale / 1000.0;
         
 
 		// Store into packet

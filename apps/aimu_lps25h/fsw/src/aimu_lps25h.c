@@ -384,29 +384,32 @@ void PROCESS_AIMU_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemet
 			
 		// Pressure (in hPa)
 		int32_t raw_pressure;
-
-		raw_pressure = (int32_t)AIMU_LPS25H.buffer[2];
+        //combine high and low bits into twos complement number
+		raw_pressure = (uint32_t)AIMU_LPS25H.buffer[2];
         raw_pressure <<= 8;
-        raw_pressure |= (int32_t)AIMU_LPS25H.buffer[1];
+        raw_pressure |= (uint32_t)AIMU_LPS25H.buffer[1];
         raw_pressure <<= 8;
-        raw_pressure |= (int32_t)AIMU_LPS25H.buffer[0];
+        raw_pressure |= (uint32_t)AIMU_LPS25H.buffer[0];
 
-        if (raw_pressure && 0x800000) { 
-            raw_pressure = raw_pressure - 0xFFFFFF;
-        }
+        if(raw_pressure & 0x800000)
+		{
+			raw_pressure |= 0xF00000;
+		}
 
         float pressure = (float)raw_pressure / 4096.0;		
 
-		// Temperature (in C)
-		uint8_t tl, th;
-		tl = AIMU_LPS25H.buffer[3];
-		th = AIMU_LPS25H.buffer[4];
+		// Temperature (in C) 
+        //combine high and low bits into twos complement number
+        int16_t t;
+		t = AIMU_LPS25H.buffer[3];
+		t <<= 8;
+		t |= AIMU_LPS25H.buffer[4];
+		t >>= 4;
 
-		int16_t t = ((int16_t)th << 8) | (int16_t)tl;
-
-        if (t && 0x8000) { 
-             t = t - 0xFFFF;
-        }
+        if(t & 0x800)
+		{
+			t |= 0xF000;
+		}
 
         float temp = ((float)t / temp_scale) + temp_offset;
 
