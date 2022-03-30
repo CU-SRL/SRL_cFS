@@ -171,7 +171,7 @@ DS_DestFileTable_t DS_DestFileTable =
       /* .MaxFileAge    = */ (60),             /* 1 minute */
       /* .SequenceCount = */ 5000,
     },
-    /* File Index 06 */
+    /* File Index 06 Data Filter*/
     {
 #if (DS_MOVE_FILES == TRUE)
       /* .Movename      = */ DS_EMPTY_STRING,
@@ -182,8 +182,8 @@ DS_DestFileTable_t DS_DestFileTable =
 
       /* .FileNameType  = */ DS_BY_COUNT,
       /* .EnableState   = */ DS_ENABLED,
-      /* .MaxFileSize   = */ (1024),         /* 1024 bytes */
-      /* .MaxFileAge    = */ (60),             /* 1 minute */
+      /* .MaxFileSize   = */ (1024 * 1024 * 2),         /* 2 Mbytes */
+      /* .MaxFileAge    = */ (30 * 60),                /* 30 Minutes */
       /* .SequenceCount = */ 6000,
     },
     /* File Index 07 */

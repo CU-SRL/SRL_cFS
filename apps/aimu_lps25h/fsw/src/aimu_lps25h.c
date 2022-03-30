@@ -267,7 +267,7 @@ void AIMU_LPS25H_SendDataPacket(void)
     CFE_SB_SendMsg((CFE_SB_Msg_t *) &AIMU_LPS25H_DataTelemetryPkt);
     return;
 
-} /* End of AIMU_LPS25H_ReportHousekeeping() */
+} /* End of AIMU_LPS25H_SendDataPacket() */
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 /*  Name:  AIMU_LPS25H_ResetCounters                                            */
@@ -385,11 +385,10 @@ void PROCESS_AIMU_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemet
 		// Pressure (in hPa)
 		int32_t raw_pressure;
         //combine high and low bits into twos complement number
-		raw_pressure = (uint32_t)AIMU_LPS25H.buffer[2];
-        raw_pressure <<= 8;
-        raw_pressure |= (uint32_t)AIMU_LPS25H.buffer[1];
-        raw_pressure <<= 8;
-        raw_pressure |= (uint32_t)AIMU_LPS25H.buffer[0];
+		raw_pressure = AIMU_LPS25H.buffer[2] << 16;
+        raw_pressure |= AIMU_LPS25H.buffer[1] << 8;
+        raw_pressure |= AIMU_LPS25H.buffer[0];
+        //raw_pressure >>= 8; //bc it's 24 bits not 32
 
         if(raw_pressure & 0x800000)
 		{
@@ -402,16 +401,14 @@ void PROCESS_AIMU_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemet
         //combine high and low bits into twos complement number
         int16_t t;
 		t = AIMU_LPS25H.buffer[3];
-		t <<= 8;
-		t |= AIMU_LPS25H.buffer[4];
-		t >>= 4;
+		t |= AIMU_LPS25H.buffer[4] << 8;
 
         if(t & 0x800)
 		{
 			t |= 0xF000;
 		}
 
-        float temp = ((float)t / temp_scale) + temp_offset;
+        float temp = temp_offset + ((float)t / temp_scale);
 
 
 		// Store into packet

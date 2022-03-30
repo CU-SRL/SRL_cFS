@@ -54,7 +54,7 @@
 #include "aimu_lps25h_msgids.h"
 #include "aimu_lsm6ds33_msgids.h"
 #include "max7502_msgids.h"
-#include "ms5611_msgids.h"
+//#include "ms5611_msgids.h"
 #include "h3lis100dl_msgids.h"
 
 //#include "sample_app_msgids.h"
@@ -321,27 +321,27 @@ DS_FilterTable_t DS_FilterTable =
     },
     /* Packet Index 018 */
     {
-      /* .MessageID = */ DS_UNUSED,
+      /* .MessageID = */ H3LIS100DL_DATA_TLM_MID,
       /* .Filter    = */
       {
         /* File table index, filter type, N, X, O */
-        { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED },
-        { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED },
+        { FILE_SENSOR_APP_DATA_PKTS,  DS_BY_COUNT, 1, 1, 0 },
+        { FILE_ALL_APP_TLM_PKTS, DS_BY_COUNT, 1, 1, 0 },
         { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED },
         { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED }
-      }
+      } 
     },
     /* Packet Index 019 */
     {
-      /* .MessageID = */ DS_UNUSED,
+      /* .MessageID = */ MAX7502_DATA_TLM_MID,
       /* .Filter    = */
       {
         /* File table index, filter type, N, X, O */
-        { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED },
-        { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED },
+        { FILE_SENSOR_APP_DATA_PKTS,  DS_BY_COUNT, 1, 1, 0 },
+        { FILE_ALL_APP_TLM_PKTS, DS_BY_COUNT, 1, 1, 0 },
         { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED },
         { DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED, DS_UNUSED }
-      }
+      } 
     },
     /* Packet Index 020 */
     {

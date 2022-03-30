@@ -332,8 +332,8 @@ bool INIT_AIMU_LSM6DS33(int I2CBus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkTele
 	int file = I2C_open(I2CBus, AIMU_LSM6DS33_I2C_ADDR);
 
     // Accel
-    // ODR = 0110 (416 Hz (high performance)); FS_XL = 11 (+/-8 g full scale)
-	if(!I2C_write(file, AIMU_LSM6DS33_CTRL1_XL, 0x6C))
+    // ODR = 0110 (416 Hz (high performance)); FS_XL = 01 (+/-16 g full scale)
+	if(!I2C_write(file, AIMU_LSM6DS33_CTRL1_XL, 0x64))
 	{
 		CFE_EVS_SendEvent(AIMU_LSM6DS33_FAILED_CHANGE_TO_ACTIVE_MODE_ERR_EID, CFE_EVS_EventType_ERROR,
            "Failed to switch Accel to active...  ");
@@ -374,7 +374,7 @@ void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkT
 
     //define needed variables for data gathering
     float gyro_scale = 70.0;
-    float accel_scale = 0.244;
+    float accel_scale = 0.488;
     float dps_to_rads = 0.017453293;
     float gravity_standard = 9.80665; //do not use because we want in g's
 
@@ -386,7 +386,7 @@ void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkT
 	if (AIMU_LSM6DS33.status[0] != 0)
 	{
 		// Read the Data Buffer
-		if(!I2C_read(file, AIMU_LSM6DS33_OUT_TEMP_L, 14, AIMU_LSM6DS33.buffer))
+		if(!I2C_read(file, AIMU_LSM6DS33_OUTX_L_G, 12, AIMU_LSM6DS33.buffer))
 		{
 			CFE_EVS_SendEvent(AIMU_LSM6DS33_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read data buffers... ");
         	AIMU_LSM6DS33_HkTelemetryPkt->aimu_lsm6ds33_device_error_count++;
@@ -398,52 +398,69 @@ void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkT
 
         //Temp --> not placed in data packet for now
 
-        uint8_t xlt, xht;
-        xlt = AIMU_LSM6DS33.buffer[0];
-		xht = AIMU_LSM6DS33.buffer[1];
-
-        int16_t t;
-        t = ((int16_t)xht << 8 | (int16_t)xlt);
-
-        float temp;
-        temp = ((float)t / 16.0) + 25.0;
-
-
-		// Gyro in radians
+		// Gyro in radians/second (have to convert from degrees per second)
 		uint8_t xlg, xhg, ylg, yhg, zlg, zhg;
-		xlg = AIMU_LSM6DS33.buffer[2];
-		xhg = AIMU_LSM6DS33.buffer[3];
-		ylg = AIMU_LSM6DS33.buffer[4];
-        yhg = AIMU_LSM6DS33.buffer[5];
-		zlg = AIMU_LSM6DS33.buffer[6];
-		zhg = AIMU_LSM6DS33.buffer[7];	
+		xlg = AIMU_LSM6DS33.buffer[0];
+		xhg = AIMU_LSM6DS33.buffer[1];
+		ylg = AIMU_LSM6DS33.buffer[2];
+        yhg = AIMU_LSM6DS33.buffer[3];
+		zlg = AIMU_LSM6DS33.buffer[4];
+		zhg = AIMU_LSM6DS33.buffer[5];	
 
         int16_t gx, gy, gz;
         gx = (xhg << 8) | xlg;
+        if(gx & 0x800)
+		{
+			gx |= 0xF000;
+		}
+
         gy = (yhg << 8) | ylg;
+        if(gy & 0x800)
+		{
+			gy |= 0xF000;
+		}
+
         gz = (zhg << 8) | zlg;
+        if(gz & 0x800)
+		{
+			gz |= 0xF000;
+		}
 
         float gyx, gyy, gyz;
-        gyx = (float)gx * gyro_scale * dps_to_rads / 1000.0;
+        gyx = (float)gx * gyro_scale * dps_to_rads / 1000.0; //scale in mdps
         gyy = (float)gy * gyro_scale * dps_to_rads / 1000.0;
         gyz = (float)gz * gyro_scale * dps_to_rads / 1000.0;
 
         // Accel in g
 		uint8_t xla, xha, yla, yha, zla, zha;
 
-		xla = AIMU_LSM6DS33.buffer[8];
-		xha = AIMU_LSM6DS33.buffer[9];
-		yla = AIMU_LSM6DS33.buffer[10];
-        yha = AIMU_LSM6DS33.buffer[11];
-		zla = AIMU_LSM6DS33.buffer[12];
-		zha = AIMU_LSM6DS33.buffer[13];	
+		xla = AIMU_LSM6DS33.buffer[6];
+		xha = AIMU_LSM6DS33.buffer[7];
+		yla = AIMU_LSM6DS33.buffer[8];
+        yha = AIMU_LSM6DS33.buffer[9];
+		zla = AIMU_LSM6DS33.buffer[10];
+		zha = AIMU_LSM6DS33.buffer[11];	
         
         //combine high and low bits into twos complement number
         int16_t ax = (xha << 8 | xla);
-        int16_t ay = (yha << 8 | yla);
-        int16_t az = (zha << 8 | zla);
+        if(ax & 0x800)
+		{
+			ax |= 0xF000;
+		}
 
-        float accelx = (float)ax * accel_scale / 1000.0;
+        int16_t ay = (yha << 8 | yla);
+        if(ay & 0x800)
+		{
+			ay |= 0xF000;
+		}
+
+        int16_t az = (zha << 8 | zla);
+        if(az & 0x800)
+		{
+			az |= 0xF000;
+		}
+
+        float accelx = (float)ax * accel_scale / 1000.0; //scale in mgauss
         float accely = (float)ay * accel_scale / 1000.0;
         float accelz = (float)az * accel_scale / 1000.0;
         

@@ -32,6 +32,7 @@
 
 #define MAX7502_CMD_MID            	0x18F3
 #define MAX7502_SEND_HK_MID        	0x18F4
+#define MAX7502_SEND_DATA_MID      	0x18C4
 #define MAX7502_HK_TLM_MID		    0x08F3
 #define MAX7502_DATA_TLM_MID		0x08F4
 

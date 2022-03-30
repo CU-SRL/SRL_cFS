@@ -68,6 +68,8 @@ void H3LIS100DL_AppMain( void )
 
     H3LIS100DL_AppInit();
 
+    INIT_H3LIS100DL(1, &H3LIS100DL_HkTelemetryPkt);
+
     //After Initialization
     H3LIS100DL_HkTelemetryPkt.AppStatus = RunStatus;
     /*
@@ -124,12 +126,17 @@ void H3LIS100DL_AppInit(void)
     CFE_SB_CreatePipe(&H3LIS100DL_CommandPipe, H3LIS100DL_PIPE_DEPTH,"H3LIS100DL_CMD_PIPE");
     CFE_SB_Subscribe(H3LIS100DL_CMD_MID, H3LIS100DL_CommandPipe);
     CFE_SB_Subscribe(H3LIS100DL_SEND_HK_MID, H3LIS100DL_CommandPipe);
+    CFE_SB_Subscribe(H3LIS100DL_SEND_DATA_MID, H3LIS100DL_CommandPipe);
 
     H3LIS100DL_ResetCounters();
 
     CFE_SB_InitMsg(&H3LIS100DL_HkTelemetryPkt,
                    H3LIS100DL_HK_TLM_MID,
                    H3LIS100DL_HK_TLM_LNGTH, true);
+    
+    CFE_SB_InitMsg(&H3LIS100DL_DataTelemetryPkt,
+                   H3LIS100DL_DATA_TLM_MID,
+                   H3LIS100DL_DATA_TLM_LNGTH, true);
 
     CFE_EVS_SendEvent (H3LIS100DL_STARTUP_INF_EID, CFE_EVS_EventType_INFORMATION,
                "H3LIS100DL App Initialized. Version %d.%d.%d.%d\n",
@@ -168,6 +175,10 @@ void H3LIS100DL_ProcessCommandPacket(void)
 
         case H3LIS100DL_SEND_HK_MID:
             H3LIS100DL_ReportHousekeeping();
+            break;
+
+        case H3LIS100DL_SEND_DATA_MID:
+            PROCESS_H3LIS100DL(1, &H3LIS100DL_HkTelemetryPkt, &H3LIS100DL_DataTelemetryPkt);
             break;
 
         default:
@@ -240,6 +251,22 @@ void H3LIS100DL_ReportHousekeeping(void)
     return;
 
 } /* End of H3LIS100DL_ReportHousekeeping() */
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
+/*  Name:  MAX7502_SendDataPacket                                         */
+/*                                                                            */
+/*  Purpose:                                                                  */
+/*         This function is triggered in response to a task telemetry request */
+/*         from the housekeeping task. This function will gather the Apps     */
+/*         telemetry, packetize it and send it to the ram folder via DS       */
+/* * * * * * * * * * * * * * * * * * * * * * * *  * * * * * * *  * *  * * * * */
+void H3LIS100DL_SendDataPacket(void)
+{
+    CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &H3LIS100DL_DataTelemetryPkt);
+    CFE_SB_SendMsg((CFE_SB_Msg_t *) &H3LIS100DL_DataTelemetryPkt);
+    return;
+
+} /* End of H3LIS100DL_SendDataPacket() */
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 /*  Name:  H3LIS100DL_ResetCounters                                            */
@@ -378,9 +405,9 @@ void PROCESS_H3LIS100DL(int i2cbus, h3lis100dl_hk_tlm_t* H3LIS100DL_HkTelemetryP
 
         int16_t ax, ay, az;
 
-        ax = (xla * 256) + (int16_t)xha;
-        ay = (yla * 256) + (int16_t)yha;
-        az = (zla * 256) + (int16_t)zha;
+        ax = ((int16_t)xla * 256) + (int16_t)xha;
+        ay = ((int16_t)yla * 256) + (int16_t)yha;
+        az = ((int16_t)zla * 256) + (int16_t)zha;
 
         float accelx, accely, accelz;
 
@@ -393,6 +420,8 @@ void PROCESS_H3LIS100DL(int i2cbus, h3lis100dl_hk_tlm_t* H3LIS100DL_HkTelemetryP
 		H3LIS100DL_DataTelemetryPkt->H3LIS100DL_ACCELERATIONX = accelx;
         H3LIS100DL_DataTelemetryPkt->H3LIS100DL_ACCELERATIONY = accely;
         H3LIS100DL_DataTelemetryPkt->H3LIS100DL_ACCELERATIONZ = accelz;
+
+        H3LIS100DL_SendDataPacket();
 
 		// Print Processed Values if the debug flag is enabled for this app
 		CFE_EVS_SendEvent(H3LIS100DL_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Acceleration (x, y, z): %F, %F, %F", accelx, accely, accelz);

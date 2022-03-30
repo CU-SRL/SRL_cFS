@@ -32,6 +32,7 @@
 
 #define H3LIS100DL_CMD_MID            	0x18F1
 #define H3LIS100DL_SEND_HK_MID        	0x18F2
+#define H3LIS100DL_SEND_DATA_MID       	0x18C5
 #define H3LIS100DL_HK_TLM_MID		    0x08F1
 #define H3LIS100DL_DATA_TLM_MID		    0x08F2
 

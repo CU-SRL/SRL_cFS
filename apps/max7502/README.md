@@ -1,4 +1,4 @@
-# Core Flight System : Framework : App : MPL3115A2
+# Core Flight System : Framework : App : MAX7502
 
 This repository contains an i2c application (i2c) for the sensor MAX7502 temperature sensors found on our Adaptor Board v2 - Obsidian Flight System, which is a framework component of the Core Flight System.
 
