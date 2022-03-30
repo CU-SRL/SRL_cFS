@@ -371,7 +371,6 @@ void PROCESS_AIMU_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemet
 	I2C_read(file, AIMU_LPS25H_STATUS_REG, 1, AIMU_LPS25H.status);
 	if (AIMU_LPS25H.status[0] != 0) //double check this
 	{
-        float scale = 2281.0;
 		// Read the Data Buffer
 		if(!I2C_read(file, AIMU_LPS25H_PRESS_OUT_XL, 6, AIMU_LPS25H.buffer))
 		{
@@ -384,13 +383,13 @@ void PROCESS_AIMU_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemet
 		/* Process the Data Buffer */
 			
 		// Pressure (in hPa)
-		int24_t raw_pressure;
+		int32_t raw_pressure;
 
-		raw_pressure = (int24_t)AIMU_LPS25H.buffer[2];
+		raw_pressure = (int32_t)AIMU_LPS25H.buffer[2];
         raw_pressure <<= 8;
-        raw_pressure |= (int24_t)AIMU_LPS25H.buffer[1];
+        raw_pressure |= (int32_t)AIMU_LPS25H.buffer[1];
         raw_pressure <<= 8;
-        raw_pressure |= (int24_t)AIMU_LPS25H.buffer[0];
+        raw_pressure |= (int32_t)AIMU_LPS25H.buffer[0];
 
         if (raw_pressure && 0x800000) { 
             raw_pressure = raw_pressure - 0xFFFFFF;
