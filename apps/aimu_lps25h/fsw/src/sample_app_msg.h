@@ -18,29 +18,23 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: max7502_msg.h 
+** File: sample_app_msg.h 
 **
 ** Purpose: 
-**  Define MAX7502 App Messages and info
+**  Define SAMPLE App  Messages and info
 **
 ** Notes:
 **
 **
 *******************************************************************************/
-#ifndef _max7502_msg_h_
-#define _max7502_msg_h_
+#ifndef _sample_app_msg_h_
+#define _sample_app_msg_h_
 
 /*
-** MAX7502 App command codes
+** SAMPLE App command codes
 */
-#define MAX7502_NOOP_CC                 0
-#define MAX7502_RESET_COUNTERS_CC       1
-
-// Device Command Codes
-#define MAX7502_INIT          10 // Should also be able to be down automatically when flight ready
-#define MAX7502_SHUTDOWN      11
-#define MAX7502_RESET         12
-#define MAX7502_PROCESS       13 // Should also be able to be down automatically when flight ready
+#define SAMPLE_APP_NOOP_CC                 0
+#define SAMPLE_APP_RESET_COUNTERS_CC       1
 
 /*************************************************************************/
 /*
@@ -50,43 +44,24 @@ typedef struct
 {
    uint8    CmdHeader[CFE_SB_CMD_HDR_SIZE];
 
-} max7502_NoArgsCmd_t;
-
-typedef struct
-{
-   uint8    CmdHeader[CFE_SB_CMD_HDR_SIZE];
-   uint8    DeviceNumber;
-
-} max7502_DeviceCommand_t;
+} SAMPLE_NoArgsCmd_t;
 
 /*************************************************************************/
 /*
-** Type definition (MAX7502 App housekeeping)
+** Type definition (SAMPLE App housekeeping)
 */
 typedef struct 
 {
-    uint8               TlmHeader[CFE_SB_TLM_HDR_SIZE];
-    uint32              AppStatus;
-    uint8               max7502_command_error_count;
-    uint8               max7502_command_count;
-    uint8               max7502_error_count;
-    uint8               max7502_device_count;
-    uint8               max7502_device_error_count;
+    uint8              TlmHeader[CFE_SB_TLM_HDR_SIZE];
+    uint8              sample_command_error_count;
+    uint8              sample_command_count;
+    uint8              spare[2];
 
-}   OS_PACK max7502_hk_tlm_t  ;
+}   OS_PACK sample_hk_tlm_t  ;
 
-typedef struct 
-{
-    uint8               TlmHeader[CFE_SB_TLM_HDR_SIZE];
-    uint8               DeviceNumber;
-    float               MAX7502_TEMPERATURE;
+#define SAMPLE_APP_HK_TLM_LNGTH   sizeof ( sample_hk_tlm_t )
 
-}   OS_PACK max7502_data_tlm_t  ;
-
-#define MAX7502_HK_TLM_LNGTH   sizeof ( max7502_hk_tlm_t )
-#define MAX7502_DATA_TLM_LNGTH   sizeof ( max7502_data_tlm_t )
-
-#endif /* _max7502_msg_h_ */
+#endif /* _sample_app_msg_h_ */
 
 /************************/
 /*  End of File Comment */

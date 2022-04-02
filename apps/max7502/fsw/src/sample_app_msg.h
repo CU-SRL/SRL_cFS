@@ -18,29 +18,23 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: aimu_lps25h_msg.h 
+** File: sample_app_msg.h 
 **
 ** Purpose: 
-**  Define LIS3MDL App Messages and info
+**  Define SAMPLE App  Messages and info
 **
 ** Notes:
 **
 **
 *******************************************************************************/
-#ifndef _aimu_lps25h_msg_h_
-#define _aimu_lps25h_msg_h_
+#ifndef _sample_app_msg_h_
+#define _sample_app_msg_h_
 
 /*
-** LIS3MDL App command codes
+** SAMPLE App command codes
 */
-#define AIMU_LPS25H_NOOP_CC                 0
-#define AIMU_LPS25H_RESET_COUNTERS_CC       1
-
-/* Device Command Codes */
-#define AIMU_LPS25H_INIT          10 // Should also be able to be down automatically when flight ready
-#define AIMU_LPS25H_SHUTDOWN      11
-#define AIMU_LPS25H_RESET         12
-#define AIMU_LPS25H_PROCESS       13 // Should also be able to be down automatically when flight ready
+#define SAMPLE_APP_NOOP_CC                 0
+#define SAMPLE_APP_RESET_COUNTERS_CC       1
 
 /*************************************************************************/
 /*
@@ -50,36 +44,24 @@ typedef struct
 {
    uint8    CmdHeader[CFE_SB_CMD_HDR_SIZE];
 
-} aimu_lps25h_NoArgsCmd_t;
+} SAMPLE_NoArgsCmd_t;
 
 /*************************************************************************/
 /*
-** Type definition (LIS3MDL App housekeeping)
+** Type definition (SAMPLE App housekeeping)
 */
 typedef struct 
 {
-    uint8               TlmHeader[CFE_SB_TLM_HDR_SIZE];
-    uint32              AppStatus;
-    uint8               aimu_lps25h_command_error_count;
-    uint8               aimu_lps25h_command_count;
-    uint8               aimu_lps25h_error_count;
-    uint8               aimu_lps25h_device_count;
-    uint8               aimu_lps25h_device_error_count;
+    uint8              TlmHeader[CFE_SB_TLM_HDR_SIZE];
+    uint8              sample_command_error_count;
+    uint8              sample_command_count;
+    uint8              spare[2];
 
-}   OS_PACK aimu_lps25h_hk_tlm_t  ;
+}   OS_PACK sample_hk_tlm_t  ;
 
-typedef struct 
-{
-    uint8                TlmHeader[CFE_SB_TLM_HDR_SIZE];
-    float                AIMU_LPS25H_PRESSURE;
-    float                AIMU_LPS25H_TEMPERATURE;
+#define SAMPLE_APP_HK_TLM_LNGTH   sizeof ( sample_hk_tlm_t )
 
-}   OS_PACK aimu_lps25h_data_tlm_t  ;
-
-#define AIMU_LPS25H_HK_TLM_LNGTH   sizeof ( aimu_lps25h_hk_tlm_t )
-#define AIMU_LPS25H_DATA_TLM_LNGTH   sizeof ( aimu_lps25h_data_tlm_t )
-
-#endif /* _aimu_lps25h_msg_h_ */
+#endif /* _sample_app_msg_h_ */
 
 /************************/
 /*  End of File Comment */

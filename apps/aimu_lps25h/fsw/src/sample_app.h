@@ -18,16 +18,16 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: max7502.h
+** File: sample_app.h
 **
 ** Purpose:
-**   This file is main hdr file for the MAX7502 application.
+**   This file is main hdr file for the SAMPLE application.
 **
 **
 *******************************************************************************/
 
-#ifndef _max7502_h_
-#define _max7502_h_
+#ifndef _sample_app_h_
+#define _sample_app_h_
 
 /*
 ** Required header files.
@@ -42,68 +42,28 @@
 #include <errno.h>
 #include <unistd.h>
 
-#include <stdlib.h>
-#include <fcntl.h>
-#include <linux/i2c.h>
-#include <linux/i2c-dev.h>
-#include <sys/ioctl.h>
-//#include <stropts.h>
-#include <stdio.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <math.h>
-
-#include "max7502_msg.h"
-#include "max7502_registers.h"
-
 /***********************************************************************/
 
-#define MAX7502_PIPE_DEPTH               32
-#define MAX_BUS                           64
-
-// Define the Data Buffer Size using the Datasheet (4 buffers because going to 03)
-#define MAX7502_I2C_BUFFER 0x04
+#define SAMPLE_PIPE_DEPTH                     32
 
 /************************************************************************
 ** Type Definitions
 *************************************************************************/
 
-// Define the Data Struct to hold the data from the MAX7502
-struct MAX7502_data {
-	// Status Buffer
-	uint8_t status[1];
-
-	// Data Buffer
-	uint8_t buffer[MAX7502_I2C_BUFFER];
-	
-	// Data Variables
-	//float temperature;
-} MAX7502;
-
 /****************************************************************************/
 /*
 ** Local function prototypes.
 **
-** Note: Except for the entry point (MAX7502_AppMain), these
+** Note: Except for the entry point (SAMPLE_AppMain), these
 **       functions are not called from any other source module.
 */
-void MAX7502_AppMain(void);
-void MAX7502_AppInit(void);
-void MAX7502_ProcessCommandPacket(void);
-void MAX7502_ProcessGroundCommand(void);
-void MAX7502_ReportHousekeeping(void);
-void MAX7502_ResetCounters(void);
+void SAMPLE_AppMain(void);
+void SAMPLE_AppInit(void);
+void SAMPLE_ProcessCommandPacket(void);
+void SAMPLE_ProcessGroundCommand(void);
+void SAMPLE_ReportHousekeeping(void);
+void SAMPLE_ResetCounters(void);
 
-bool MAX7502_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength);
+bool SAMPLE_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength);
 
-/****************************************************************************/
-/*
-** Device function prototypes.
-**
-*/
-
-/* MAX7502 Barometer */
-bool INIT_MAX7502(int I2CBus, max7502_hk_tlm_t* MAX7502_HkTelemetryPkt, uint8 DeviceNumber);
-void PROCESS_MAX7502(int i2cbus, max7502_hk_tlm_t* MAX7502_HkTelemetryPkt, max7502_data_tlm_t* MAX7502_DataTelemetryPkt, uint8 DeviceNumber);
-
-#endif /* _max7502_h_ */
+#endif /* _sample_app_h_ */

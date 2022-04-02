@@ -18,25 +18,23 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: max7502_msgids.h
+** File: sample_app_msgids.h
 **
 ** Purpose: 
-**  Define MAX7502 Message IDs
+**  Define Sample App  Message IDs
 **
 ** Notes:
 **
 **
 *************************************************************************/
-#ifndef _max7502_msgids_h_
-#define _max7502_msgids_h_
+#ifndef _sample_app_msgids_h_
+#define _sample_app_msgids_h_
 
-#define MAX7502_CMD_MID            	0x18F3
-#define MAX7502_SEND_HK_MID        	0x18F4
-#define MAX7502_SEND_DATA_MID      	0x18C4
-#define MAX7502_HK_TLM_MID		    0x08F3
-#define MAX7502_DATA_TLM_MID		0x08F4
+#define SAMPLE_APP_CMD_MID            	0x1882
+#define SAMPLE_APP_SEND_HK_MID        	0x1883
+#define SAMPLE_APP_HK_TLM_MID		0x0883
 
-#endif /* _max7502_msgids_h_ */
+#endif /* _sample_app_msgids_h_ */
 
 /************************/
 /*  End of File Comment */

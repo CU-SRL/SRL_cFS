@@ -1,20 +1,27 @@
-# Core Flight System : Framework : App : MAX7502
+# Core Flight System : Framework : App : Sample
 
-This repository contains an i2c application (i2c) for the sensor MAX7502 temperature sensors found on our Adaptor Board v2 - Obsidian Flight System, which is a framework component of the Core Flight System.
+This repository contains a sample application (sample_app), which is a framework component of the Core Flight System.
 
-## App Development Resources
-Datasheet: [https://datasheets.maximintegrated.com/en/ds/MAX7500-MAX7504.pdf](https://datasheets.maximintegrated.com/en/ds/MAX7500-MAX7504.pdf)   
-- Temperature Sensors largely operate similarly, so used our previous temperature sensor code and datasheet to code this app. There are not many resources available for this sensor, so in the future we may want to either order our older temperature sensors that have code or find a new one that is well-documented.
+This sample application is a non-flight example application implementation for the cFS Bundle. It is intended to be located in the `apps/sample_app` subdirectory of a cFS Mission Tree.  The Core Flight System is bundled at https://github.com/nasa/cFS (which includes sample_app as a submodule), which includes build and execution instructions.
+
+sample_app is an example for how to build and link an application in cFS.
 
 ## Version Notes
 
-- **0.1.0 BETA RELEASE**:
-  - Initial release of the I2C App
-  - Includes the driver for the MPL3115A2 for direct operation via the BeagleBone Black pins.
+- **1.1.0 OFFICIAL RELEASE**:
+  - Minor updates (see #11)
+  - Not backwards compatible with OSAL 4.2.1
+  - Released as part of cFE 6.7.0, Apache 2.0
+- **1.0.0a OFFICIAL RELEASE**:
+  - Released as part of cFE 6.6.0a, Apache 2.0
 
 ## Known issues
 
+As a sample application, extensive testing is not performed prior to release and only minimal functionality is included.  Note discrepancies likely exist between this application and the example detailed in the application developer guide.
 
 ## Getting Help
 
+For best results, submit issues:questions or issues:help wanted requests at https://github.com/nasa/cFS.
+
+Official cFS page: http://cfs.gsfc.nasa.gov
 

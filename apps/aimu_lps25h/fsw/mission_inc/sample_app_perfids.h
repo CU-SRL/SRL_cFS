@@ -18,35 +18,21 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: max7502_events.h 
+** File: sample_app_perfids.h
 **
 ** Purpose: 
-**  Define MAX7502 App Events IDs
+**  Define Sample App Performance IDs
 **
 ** Notes:
 **
-**
 *************************************************************************/
-#ifndef _max7502_events_h_
-#define _max7502_events_h_
+#ifndef _sample_app_perfids_h_
+#define _sample_app_perfids_h_
 
 
-#define MAX7502_RESERVED_EID              0
-#define MAX7502_STARTUP_INF_EID           1 
-#define MAX7502_COMMAND_ERR_EID           2
-#define MAX7502_COMMANDNOP_INF_EID        3 
-#define MAX7502_COMMANDRST_INF_EID        4
-#define MAX7502_INVALID_MSGID_ERR_EID     5 
-#define MAX7502_LEN_ERR_EID               6 
+#define SAMPLE_APP_PERF_ID              91 
 
-/* DEVICE SPECFIC EVENTS */
-
-#define MAX7502_FAILED_TO_CONFIGURE                        20
-#define MAX7502_REGISTERS_READ_ERR_EID                     25
-#define MAX7502_DATA_DBG_EID                               26
-
-
-#endif /* _max7502_events_h_ */
+#endif /* _sample_app_perfids_h_ */
 
 /************************/
 /*  End of File Comment */

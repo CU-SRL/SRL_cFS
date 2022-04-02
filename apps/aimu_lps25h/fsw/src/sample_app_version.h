@@ -18,24 +18,24 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: lps25h_version.h
+** File: sample_app_version.h
 **
 ** Purpose: 
-**  The LIS3MDL Application header file containing version number
+**  The Sample Application header file containing version number
 **
 ** Notes:
 **
 **
 *************************************************************************/
-#ifndef lps25h_version_h_
-#define lps25h_version_h_
+#ifndef _sample_app_version_h_
+#define _sample_app_version_h_
 
-#define AIMU_LPS25H_MAJOR_VERSION    0
-#define AIMU_LPS25H_MINOR_VERSION    1
-#define AIMU_LPS25H_REVISION         0
-#define AIMU_LPS25H_MISSION_REV      0
+#define SAMPLE_APP_MAJOR_VERSION    1
+#define SAMPLE_APP_MINOR_VERSION    1
+#define SAMPLE_APP_REVISION         0
+#define SAMPLE_APP_MISSION_REV      0
       
-#endif /* lps25h_version_h_ */
+#endif /* _sample_app_version_h_ */
 
 /************************/
 /*  End of File Comment */

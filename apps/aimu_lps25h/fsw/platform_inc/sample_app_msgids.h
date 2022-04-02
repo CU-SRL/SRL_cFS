@@ -18,25 +18,23 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: aimu_lps25h_msgids.h
+** File: sample_app_msgids.h
 **
 ** Purpose: 
-**  Define LIS3MDL Message IDs
+**  Define Sample App  Message IDs
 **
-** Notes: Check for open MID spaces, and assign them to the app. Change naming.
+** Notes:
 **
 **
 *************************************************************************/
-#ifndef _aimu_lps25h_msgids_h_
-#define _aimu_lps25h_msgids_h_
+#ifndef _sample_app_msgids_h_
+#define _sample_app_msgids_h_
 
-#define AIMU_LPS25H_CMD_MID            	0x18DB
-#define AIMU_LPS25H_SEND_HK_MID        	0x18DC
-#define AIMU_LPS25H_SEND_DATA_MID      	0x18C0
-#define AIMU_LPS25H_HK_TLM_MID		    0x08DA
-#define AIMU_LPS25H_DATA_TLM_MID		0x08DB
+#define SAMPLE_APP_CMD_MID            	0x1882
+#define SAMPLE_APP_SEND_HK_MID        	0x1883
+#define SAMPLE_APP_HK_TLM_MID		0x0883
 
-#endif /* _aimu_lis2mdl_msgids_h_ */
+#endif /* _sample_app_msgids_h_ */
 
 /************************/
 /*  End of File Comment */

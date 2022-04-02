@@ -18,21 +18,28 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: aimu_lps25h_perfids.h
+** File: sample_app_events.h 
 **
 ** Purpose: 
-**  Define LIS3MDL App Performance IDs
+**  Define SAMPLE App Events IDs
 **
-** Notes: This can stay the same (for now), just change names
+** Notes:
+**
 **
 *************************************************************************/
-#ifndef _aimu_lps25h_perfids_h_
-#define _aimu_lps25h_perfids_h_
+#ifndef _sample_app_events_h_
+#define _sample_app_events_h_
 
 
-#define AIMU_LPS25H_PERF_ID              92
+#define SAMPLE_RESERVED_EID              0
+#define SAMPLE_STARTUP_INF_EID           1 
+#define SAMPLE_COMMAND_ERR_EID           2
+#define SAMPLE_COMMANDNOP_INF_EID        3 
+#define SAMPLE_COMMANDRST_INF_EID        4
+#define SAMPLE_INVALID_MSGID_ERR_EID     5 
+#define SAMPLE_LEN_ERR_EID               6 
 
-#endif /* _aimu_lps25h_perfids_h_ */
+#endif /* _sample_app_events_h_ */
 
 /************************/
 /*  End of File Comment */

@@ -18,24 +18,28 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: max7502_version.h
+** File: sample_app_events.h 
 **
 ** Purpose: 
-**  The MAX7502 Application header file containing version number
+**  Define SAMPLE App Events IDs
 **
 ** Notes:
 **
 **
 *************************************************************************/
-#ifndef _max7502_version_h_
-#define _max7502_version_h_
+#ifndef _sample_app_events_h_
+#define _sample_app_events_h_
 
-#define MAX7502_MAJOR_VERSION    0
-#define MAX7502_MINOR_VERSION    1
-#define MAX7502_REVISION         0
-#define MAX7502_MISSION_REV      0
-      
-#endif /* _max7502_version_h_ */
+
+#define SAMPLE_RESERVED_EID              0
+#define SAMPLE_STARTUP_INF_EID           1 
+#define SAMPLE_COMMAND_ERR_EID           2
+#define SAMPLE_COMMANDNOP_INF_EID        3 
+#define SAMPLE_COMMANDRST_INF_EID        4
+#define SAMPLE_INVALID_MSGID_ERR_EID     5 
+#define SAMPLE_LEN_ERR_EID               6 
+
+#endif /* _sample_app_events_h_ */
 
 /************************/
 /*  End of File Comment */
