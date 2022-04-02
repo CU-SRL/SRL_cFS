@@ -18,23 +18,24 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: sample_app_msgids.h
+** File: aimu_lps25h_v2_version.h
 **
 ** Purpose: 
-**  Define Sample App  Message IDs
+**  The Aimu_lps25h_v2 Application header file containing version number
 **
 ** Notes:
 **
 **
 *************************************************************************/
-#ifndef _sample_app_msgids_h_
-#define _sample_app_msgids_h_
+#ifndef _aimu_lps25h_v2_version_h_
+#define _aimu_lps25h_v2_version_h_
 
-#define SAMPLE_APP_CMD_MID            	0x1882
-#define SAMPLE_APP_SEND_HK_MID        	0x1883
-#define SAMPLE_APP_HK_TLM_MID		0x0883
-
-#endif /* _sample_app_msgids_h_ */
+#define AIMU_LPS25H_V2_MAJOR_VERSION    1
+#define AIMU_LPS25H_V2_MINOR_VERSION    1
+#define AIMU_LPS25H_V2_REVISION         0
+#define AIMU_LPS25H_V2_MISSION_REV      0
+      
+#endif /* _aimu_lps25h_v2_version_h_ */
 
 /************************/
 /*  End of File Comment */

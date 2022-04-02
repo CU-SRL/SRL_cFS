@@ -18,23 +18,23 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: sample_app_msg.h 
+** File: aimu_lps25h_v2_msg.h 
 **
 ** Purpose: 
-**  Define SAMPLE App  Messages and info
+**  Define AIMU_LPS25H_V2 App  Messages and info
 **
 ** Notes:
 **
 **
 *******************************************************************************/
-#ifndef _sample_app_msg_h_
-#define _sample_app_msg_h_
+#ifndef _aimu_lps25h_v2_msg_h_
+#define _aimu_lps25h_v2_msg_h_
 
 /*
-** SAMPLE App command codes
+** AIMU_LPS25H_V2 App command codes
 */
-#define SAMPLE_APP_NOOP_CC                 0
-#define SAMPLE_APP_RESET_COUNTERS_CC       1
+#define AIMU_LPS25H_V2_NOOP_CC                 0
+#define AIMU_LPS25H_V2_RESET_COUNTERS_CC       1
 
 /*************************************************************************/
 /*
@@ -44,24 +44,24 @@ typedef struct
 {
    uint8    CmdHeader[CFE_SB_CMD_HDR_SIZE];
 
-} SAMPLE_NoArgsCmd_t;
+} AIMU_LPS25H_V2_NoArgsCmd_t;
 
 /*************************************************************************/
 /*
-** Type definition (SAMPLE App housekeeping)
+** Type definition (AIMU_LPS25H_V2 App housekeeping)
 */
 typedef struct 
 {
     uint8              TlmHeader[CFE_SB_TLM_HDR_SIZE];
-    uint8              sample_command_error_count;
-    uint8              sample_command_count;
+    uint8              aimu_lps25h_v2_command_error_count;
+    uint8              aimu_lps25h_v2_command_count;
     uint8              spare[2];
 
-}   OS_PACK sample_hk_tlm_t  ;
+}   OS_PACK aimu_lps25h_v2_hk_tlm_t  ;
 
-#define SAMPLE_APP_HK_TLM_LNGTH   sizeof ( sample_hk_tlm_t )
+#define AIMU_LPS25H_V2_HK_TLM_LNGTH   sizeof ( aimu_lps25h_v2_hk_tlm_t )
 
-#endif /* _sample_app_msg_h_ */
+#endif /* _aimu_lps25h_v2_msg_h_ */
 
 /************************/
 /*  End of File Comment */

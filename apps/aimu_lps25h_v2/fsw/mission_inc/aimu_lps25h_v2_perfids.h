@@ -18,21 +18,21 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: sample_app_perfids.h
+** File: aimu_lps25h_v2_perfids.h
 **
 ** Purpose: 
-**  Define Sample App Performance IDs
+**  Define AIMU_LPS25H_V2 Performance IDs
 **
 ** Notes:
 **
 *************************************************************************/
-#ifndef _sample_app_perfids_h_
-#define _sample_app_perfids_h_
+#ifndef _aimu_lps25h_v2_perfids_h_
+#define _aimu_lps25h_v2_perfids_h_
 
 
-#define SAMPLE_APP_PERF_ID              91 
+#define AIMU_LPS25H_V2_PERF_ID              91 
 
-#endif /* _sample_app_perfids_h_ */
+#endif /* _aimu_lps25h_v2_perfids_h_ */
 
 /************************/
 /*  End of File Comment */

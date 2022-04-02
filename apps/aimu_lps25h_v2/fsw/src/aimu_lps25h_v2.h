@@ -18,7 +18,7 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: sample_app.h
+** File: aimu_lps25h_v2.h
 **
 ** Purpose:
 **   This file is main hdr file for the SAMPLE application.
@@ -26,8 +26,8 @@
 **
 *******************************************************************************/
 
-#ifndef _sample_app_h_
-#define _sample_app_h_
+#ifndef _aimu_lps25h_v2_h_
+#define _aimu_lps25h_v2_h_
 
 /*
 ** Required header files.
@@ -54,11 +54,11 @@
 /*
 ** Local function prototypes.
 **
-** Note: Except for the entry point (SAMPLE_AppMain), these
+** Note: Except for the entry point (Aimu_lps25h_v2Main), these
 **       functions are not called from any other source module.
 */
-void SAMPLE_AppMain(void);
-void SAMPLE_AppInit(void);
+void Aimu_lps25h_v2Main(void);
+void Aimu_lps25h_v2Init(void);
 void SAMPLE_ProcessCommandPacket(void);
 void SAMPLE_ProcessGroundCommand(void);
 void SAMPLE_ReportHousekeeping(void);
@@ -66,4 +66,4 @@ void SAMPLE_ResetCounters(void);
 
 bool SAMPLE_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength);
 
-#endif /* _sample_app_h_ */
+#endif /* _aimu_lps25h_v2_h_ */

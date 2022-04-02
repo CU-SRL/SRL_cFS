@@ -51,7 +51,7 @@
 
 //Sensor apps
 #include "aimu_lis3mdl_msgids.h"
-#include "aimu_lps25h_msgids.h"
+#include "aimu_lps25h_v2_msgids.h"
 #include "aimu_lsm6ds33_msgids.h"
 #include "max7502_msgids.h"
 //#include "ms5611_msgids.h"
@@ -309,7 +309,7 @@ DS_FilterTable_t DS_FilterTable =
     },
     /* Packet Index 017 */
     {
-      /* .MessageID = */ AIMU_LPS25H_DATA_TLM_MID,
+      /* .MessageID = */ AIMU_LPS25H_V2_DATA_TLM_MID,
       /* .Filter    = */
       {
         /* File table index, filter type, N, X, O */

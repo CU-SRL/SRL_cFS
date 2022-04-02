@@ -47,7 +47,7 @@
 #include "cs_msgids.h"
 #include "hk_msgids.h"
 #include "aimu_lis3mdl_msgids.h"
-#include "aimu_lps25h_msgids.h"
+#include "aimu_lps25h_v2_msgids.h"
 #include "aimu_lsm6ds33_msgids.h"
 #include "max7502_msgids.h"
 //#include "ms5611_msgids.h"
@@ -86,8 +86,8 @@ SCH_LAB_ScheduleTable_t SCH_LAB_ScheduleTable[SCH_LAB_MAX_SCHEDULE_ENTRIES] =
 
      {AIMU_LIS3MDL_SEND_HK_MID,         4, 0},
      {AIMU_LIS3MDL_SEND_DATA_MID,       4, 0},//send out data every 4 seconds
-     {AIMU_LPS25H_SEND_HK_MID,          4, 0},
-     {AIMU_LPS25H_SEND_DATA_MID,        4, 0},//send out data every 4 seconds
+     {AIMU_LPS25H_V2_SEND_HK_MID,          4, 0},
+     {AIMU_LPS25H_V2_SEND_DATA_MID,        4, 0},//send out data every 4 seconds
      {AIMU_LSM6DS33_SEND_HK_MID,        4, 0},
      {AIMU_LSM6DS33_SEND_DATA_MID,      4, 0}, //send out data every 4 seconds
      {MAX7502_SEND_HK_MID,              4, 0},

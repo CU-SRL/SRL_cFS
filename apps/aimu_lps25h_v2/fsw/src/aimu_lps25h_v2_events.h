@@ -18,24 +18,28 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: sample_app_version.h
+** File: aimu_lps25h_v2_events.h 
 **
 ** Purpose: 
-**  The Sample Application header file containing version number
+**  Define AIMU_LPS25H_V2 Events IDs
 **
 ** Notes:
 **
 **
 *************************************************************************/
-#ifndef _sample_app_version_h_
-#define _sample_app_version_h_
+#ifndef _aimu_lps25h_v2_events_h_
+#define _aimu_lps25h_v2_events_h_
 
-#define SAMPLE_APP_MAJOR_VERSION    1
-#define SAMPLE_APP_MINOR_VERSION    1
-#define SAMPLE_APP_REVISION         0
-#define SAMPLE_APP_MISSION_REV      0
-      
-#endif /* _sample_app_version_h_ */
+
+#define AIMU_LPS25H_V2_RESERVED_EID              0
+#define AIMU_LPS25H_V2_STARTUP_INF_EID           1 
+#define AIMU_LPS25H_V2_COMMAND_ERR_EID           2
+#define AIMU_LPS25H_V2_COMMANDNOP_INF_EID        3 
+#define AIMU_LPS25H_V2_COMMANDRST_INF_EID        4
+#define AIMU_LPS25H_V2_INVALID_MSGID_ERR_EID     5 
+#define AIMU_LPS25H_V2_LEN_ERR_EID               6 
+
+#endif /* _aimu_lps25h_v2_events_h_ */
 
 /************************/
 /*  End of File Comment */

@@ -18,28 +18,23 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: sample_app_events.h 
+** File: aimu_lps25h_v2_msgids.h
 **
 ** Purpose: 
-**  Define SAMPLE App Events IDs
+**  Define AIMU_LPS25H_V2  Message IDs
 **
 ** Notes:
 **
 **
 *************************************************************************/
-#ifndef _sample_app_events_h_
-#define _sample_app_events_h_
+#ifndef _aimu_lps25h_v2_msgids_h_
+#define _aimu_lps25h_v2_msgids_h_
 
+#define AIMU_LPS25H_V2_CMD_MID            	0x1882
+#define AIMU_LPS25H_V2_SEND_HK_MID        	0x1883
+#define AIMU_LPS25H_V2_HK_TLM_MID		0x0883
 
-#define SAMPLE_RESERVED_EID              0
-#define SAMPLE_STARTUP_INF_EID           1 
-#define SAMPLE_COMMAND_ERR_EID           2
-#define SAMPLE_COMMANDNOP_INF_EID        3 
-#define SAMPLE_COMMANDRST_INF_EID        4
-#define SAMPLE_INVALID_MSGID_ERR_EID     5 
-#define SAMPLE_LEN_ERR_EID               6 
-
-#endif /* _sample_app_events_h_ */
+#endif /* _aimu_lps25h_v2_msgids_h_ */
 
 /************************/
 /*  End of File Comment */
