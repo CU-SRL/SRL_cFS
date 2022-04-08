@@ -18,37 +18,28 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: aimu_lsm6ds33_events.h 
+** File: sample_app_events.h 
 **
 ** Purpose: 
-**  Define LSM6DS33 App Events IDs
+**  Define SAMPLE App Events IDs
 **
-** Notes: App Events will be the same --> just different names. Device events tbd.
+** Notes:
 **
 **
 *************************************************************************/
-#ifndef _aimu_lsm6ds33_events_h_
-#define _aimu_lsm6ds33_events_h_
+#ifndef _sample_app_events_h_
+#define _sample_app_events_h_
 
 
-#define AIMU_LSM6DS33_RESERVED_EID              0
-#define AIMU_LSM6DS33_STARTUP_INF_EID           1 
-#define AIMU_LSM6DS33_COMMAND_ERR_EID           2
-#define AIMU_LSM6DS33_COMMANDNOP_INF_EID        3 
-#define AIMU_LSM6DS33_COMMANDRST_INF_EID        4
-#define AIMU_LSM6DS33_INVALID_MSGID_ERR_EID     5 
-#define AIMU_LSM6DS33_LEN_ERR_EID               6 
+#define SAMPLE_RESERVED_EID              0
+#define SAMPLE_STARTUP_INF_EID           1 
+#define SAMPLE_COMMAND_ERR_EID           2
+#define SAMPLE_COMMANDNOP_INF_EID        3 
+#define SAMPLE_COMMANDRST_INF_EID        4
+#define SAMPLE_INVALID_MSGID_ERR_EID     5 
+#define SAMPLE_LEN_ERR_EID               6 
 
-/* DEVICE SPECFIC EVENTS */
-
-#define AIMU_LSM6DS33_DEVICE_INIT_ERR_EID                        20
-#define AIMU_LSM6DS33_FAILED_ENABLE_AXES                         21
-#define AIMU_LSM6DS33_FAILED_CHANGE_TO_ACTIVE_MODE_ERR_EID       22
-#define AIMU_LSM6DS33_REGISTERS_READ_ERR_EID                     23
-#define AIMU_LSM6DS33_DATA_DBG_EID                               24
-
-
-#endif /* _aimu_lsm6ds33_events_h_ */
+#endif /* _sample_app_events_h_ */
 
 /************************/
 /*  End of File Comment */

@@ -18,29 +18,23 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: h3lis100dl_msg.h 
+** File: sample_app_msg.h 
 **
 ** Purpose: 
-**  Define H3LIS100DL App Messages and info
+**  Define SAMPLE App  Messages and info
 **
 ** Notes:
 **
 **
 *******************************************************************************/
-#ifndef _h3lis100dl_msg_h_
-#define _h3lis100dl_msg_h_
+#ifndef _lsm6ds33_v2_msg_h_
+#define _lsm6ds33_v2_msg_h_
 
 /*
-** H3LIS100DL App command codes
+** SAMPLE App command codes
 */
-#define H3LIS100DL_NOOP_CC                 0
-#define H3LIS100DL_RESET_COUNTERS_CC       1
-
-//Device Command Codes 
-#define H3LIS100DL_INIT          10 // Should also be able to be down automatically when flight ready
-#define H3LIS100DL_SHUTDOWN      11
-#define H3LIS100DL_RESET         12
-#define H3LIS100DL_PROCESS       13 // Should also be able to be down automatically when flight ready
+#define LSM6DS33_V2_NOOP_CC                 0
+#define LSM6DS33_V2_RESET_COUNTERS_CC       1
 
 /*************************************************************************/
 /*
@@ -50,37 +44,24 @@ typedef struct
 {
    uint8    CmdHeader[CFE_SB_CMD_HDR_SIZE];
 
-} h3lis100dl_NoArgsCmd_t;
+} SAMPLE_NoArgsCmd_t;
 
 /*************************************************************************/
 /*
-** Type definition (H3LIS100DL App housekeeping)
+** Type definition (SAMPLE App housekeeping)
 */
 typedef struct 
 {
-    uint8               TlmHeader[CFE_SB_TLM_HDR_SIZE];
-    uint32              AppStatus;
-    uint8               h3lis100dl_command_error_count;
-    uint8               h3lis100dl_command_count;
-    uint8               h3lis100dl_error_count;
-    uint8               h3lis100dl_device_count;
-    uint8               h3lis100dl_device_error_count;
-
-}   OS_PACK h3lis100dl_hk_tlm_t  ;
-
-typedef struct 
-{
     uint8              TlmHeader[CFE_SB_TLM_HDR_SIZE];
-    float              H3LIS100DL_ACCELERATIONX;
-    float              H3LIS100DL_ACCELERATIONY;
-    float              H3LIS100DL_ACCELERATIONZ;
+    uint8              sample_command_error_count;
+    uint8              sample_command_count;
+    uint8              spare[2];
 
-}   OS_PACK h3lis100dl_data_tlm_t  ;
+}   OS_PACK sample_hk_tlm_t  ;
 
-#define H3LIS100DL_HK_TLM_LNGTH   sizeof ( h3lis100dl_hk_tlm_t )
-#define H3LIS100DL_DATA_TLM_LNGTH   sizeof ( h3lis100dl_data_tlm_t )
+#define SAMPLE_APP_HK_TLM_LNGTH   sizeof ( sample_hk_tlm_t )
 
-#endif /* _h3lis100dl_msg_h_ */
+#endif /* _sample_app_msg_h_ */
 
 /************************/
 /*  End of File Comment */

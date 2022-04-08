@@ -48,7 +48,7 @@
 #include "hk_msgids.h"
 #include "aimu_lis3mdl_msgids.h"
 #include "aimu_lps25h_msgids.h"
-#include "aimu_lsm6ds33_msgids.h"
+#include "aimu_lsm6ds33_v2_msgids.h"
 /* #include "lc_msgids.h" */
 
 
@@ -92,8 +92,8 @@ static TO_subscription_t  TO_SubTable[] =
             {AIMU_LIS3MDL_DATA_TLM_MID, {0,0},  4},
             {AIMU_LPS25H_HK_TLM_MID,   {0,0},  4},
             {AIMU_LPS25H_DATA_TLM_MID, {0,0},  4},
-            {AIMU_LSM6DS33_HK_TLM_MID,   {0,0},  4},
-            {AIMU_LSM6DS33_DATA_TLM_MID, {0,0},  4},
+            {AIMU_LSM6DS33_V2_HK_TLM_MID,   {0,0},  4},
+            {AIMU_LSM6DS33_V2_DATA_TLM_MID, {0,0},  4},
             {TO_UNUSED,              {0, 0}, 0} //end of valid MIDs
 };
 

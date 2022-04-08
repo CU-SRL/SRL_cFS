@@ -18,21 +18,24 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: aimu_lsm6ds33_perfids.h
+** File: sample_app_version.h
 **
 ** Purpose: 
-**  Define LSM6DS33 App Performance IDs
+**  The Sample Application header file containing version number
 **
-** Notes: This can stay the same (for now), just change names
+** Notes:
+**
 **
 *************************************************************************/
-#ifndef _aimu_lsm6ds33_perfids_h_
-#define _aimu_lsm6ds33_perfids_h_
+#ifndef _sample_app_version_h_
+#define _sample_app_version_h_
 
-
-#define AIMU_LSM6DS33_PERF_ID              92
-
-#endif /* _aimu_lsm6ds33_perfids_h_ */
+#define SAMPLE_APP_MAJOR_VERSION    1
+#define SAMPLE_APP_MINOR_VERSION    1
+#define SAMPLE_APP_REVISION         0
+#define SAMPLE_APP_MISSION_REV      0
+      
+#endif /* _sample_app_version_h_ */
 
 /************************/
 /*  End of File Comment */

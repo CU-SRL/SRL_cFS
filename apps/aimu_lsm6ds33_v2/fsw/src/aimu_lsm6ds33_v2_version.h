@@ -18,24 +18,24 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: aimu_lsm6ds33_version.h
+** File: sample_app_version.h
 **
 ** Purpose: 
-**  The LSM6DS33 Application header file containing version number
+**  The Sample Application header file containing version number
 **
 ** Notes:
 **
 **
 *************************************************************************/
-#ifndef _aimu_lsm6ds33_version_h_
-#define _aimu_lsm6ds33_version_h_
+#ifndef _sample_app_version_h_
+#define _sample_app_version_h_
 
-#define AIMU_LSM6DS33_MAJOR_VERSION    0
-#define AIMU_LSM6DS33_MINOR_VERSION    1
-#define AIMU_LSM6DS33_REVISION         0
-#define AIMU_LSM6DS33_MISSION_REV      0
+#define SAMPLE_APP_MAJOR_VERSION    1
+#define SAMPLE_APP_MINOR_VERSION    1
+#define SAMPLE_APP_REVISION         0
+#define SAMPLE_APP_MISSION_REV      0
       
-#endif /* _aimu_lsm6ds33_version_h_ */
+#endif /* _sample_app_version_h_ */
 
 /************************/
 /*  End of File Comment */

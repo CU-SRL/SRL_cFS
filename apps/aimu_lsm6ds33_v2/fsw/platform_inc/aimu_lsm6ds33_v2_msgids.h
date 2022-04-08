@@ -18,24 +18,23 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: h3lis100dl_msgids.h
+** File: sample_app_msgids.h
 **
 ** Purpose: 
-**  Define H3LIS100DL Message IDs
+**  Define Sample App  Message IDs
 **
-** Notes: Check for open MID spaces, and assign them to the app. Change naming.
+** Notes:
 **
 **
 *************************************************************************/
-#ifndef _h3lis100dl_msgids_h_
-#define _h3lis100dl_msgids_h_
+#ifndef _lsm6ds33_v2_msgids_h_
+#define _lsm6ds33_v2_msgids_h_
 
-#define H3LIS100DL_CMD_MID            	0x18D9
-#define H3LIS100DL_SEND_HK_MID        	0x18DA
-#define H3LIS100DL_HK_TLM_MID		    0x08D8
-#define H3LIS100DL_DATA_TLM_MID		    0x08D9
+#define LSM6DS33_V2_CMD_MID            	0x1882
+#define LSM6DS33_V2_SEND_HK_MID        	0x1883
+#define LSM6DS33_V2_HK_TLM_MID		0x0883
 
-#endif /* _h3lis100dl_msgids_h_ */
+#endif /* _sample_app_msgids_h_ */
 
 /************************/
 /*  End of File Comment */

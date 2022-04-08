@@ -18,25 +18,24 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: aimu_lsm6ds33_msgids.h
+** File: sample_app_perfids.h
 **
 ** Purpose: 
-**  Define LSM6DS33 Message IDs
+**  Define Sample App Performance IDs
 **
-** Notes: Check for open MID spaces, and assign them to the app. Change naming.
-**
+** Notes:
 **
 *************************************************************************/
-#ifndef _aimu_lsm6ds33_msgids_h_
-#define _aimu_lsm6ds33_msgids_h_
+#ifndef _zlsm6ds33_v2_perfids_h_
+#define _lsm6ds33_v2_perfids_h_
 
-#define AIMU_LSM6DS33_CMD_MID            	0x18D9
-#define AIMU_LSM6DS33_SEND_HK_MID        	0x18DA
-#define AIMU_LSM6DS33_HK_TLM_MID		    0x08D8
-#define AIMU_LSM6DS33_DATA_TLM_MID		    0x08D9
 
-#endif /* _aimu_lsm6ds33_msgids_h_ */
+#define LSM6DS33_PERF_ID              91 
+
+#endif /* _sample_app_perfids_h_ */
 
 /************************/
 /*  End of File Comment */
 /************************/
+
+

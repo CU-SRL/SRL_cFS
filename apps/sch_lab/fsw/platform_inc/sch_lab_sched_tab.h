@@ -48,7 +48,7 @@
 #include "hk_msgids.h"
 #include "aimu_lis3mdl_msgids.h"
 #include "aimu_lps25h_msgids.h"
-#include "aimu_lsm6ds33_msgids.h"
+#include "aimu_lsm6ds33_v2_msgids.h"
 
 /*
 ** Defines
@@ -102,7 +102,7 @@ SCH_LAB_ScheduleTable_t SCH_LAB_ScheduleTable[SCH_LAB_MAX_SCHEDULE_ENTRIES] =
   /* {SC_SEND_HK_MID,        4, 0}, */ /* Commented out because causing a seg fault */
      {AIMU_LIS3MDL_SEND_HK_MID,         4, 0},
      {AIMU_LPS25H_SEND_HK_MID,          4, 0},
-     {AIMU_LSM6DS33_SEND_HK_MID,        4, 0},
+     {AIMU_LSM6DS33_V2_SEND_HK_MID,        4, 0},
 
      {SCH_LAB_END_OF_TABLE,  0, 0}
 };

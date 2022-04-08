@@ -18,24 +18,23 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: h3lis100dl_version.h
+** File: sample_app_msgids.h
 **
 ** Purpose: 
-**  The H3LIS100DL Application header file containing version number
+**  Define Sample App  Message IDs
 **
 ** Notes:
 **
 **
 *************************************************************************/
-#ifndef _h3lis100dl_version_h_
-#define _h3lis100dl_version_h_
+#ifndef _sample_app_msgids_h_
+#define _sample_app_msgids_h_
 
-#define H3LIS100DL_MAJOR_VERSION    0
-#define H3LIS100DL_MINOR_VERSION    1
-#define H3LIS100DL_REVISION         0
-#define H3LIS100DL_MISSION_REV      0
-      
-#endif /* _h3lis100dl_version_h_ */
+#define SAMPLE_APP_CMD_MID            	0x1882
+#define SAMPLE_APP_SEND_HK_MID        	0x1883
+#define SAMPLE_APP_HK_TLM_MID		0x0883
+
+#endif /* _sample_app_msgids_h_ */
 
 /************************/
 /*  End of File Comment */

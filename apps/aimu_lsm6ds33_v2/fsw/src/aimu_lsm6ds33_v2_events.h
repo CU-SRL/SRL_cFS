@@ -18,21 +18,28 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: h3lis100dl_perfids.h
+** File: sample_app_events.h 
 **
 ** Purpose: 
-**  Define H3LIS100DL App Performance IDs
+**  Define SAMPLE App Events IDs
 **
-** Notes: This can stay the same (for now), just change names
+** Notes:
+**
 **
 *************************************************************************/
-#ifndef _h3lis100dl_perfids_h_
-#define _h3lis100dl_perfids_h_
+#ifndef _lsm6ds33_v2_events_h_
+#define _lsm6ds33_v2_events_h_
 
 
-#define H3LIS100DL_PERF_ID              92
+#define LSM6DS33_V2_RESERVED_EID              0
+#define LSM6DS33_V2_STARTUP_INF_EID           1 
+#define LSM6DS33_V2_COMMAND_ERR_EID           2
+#define LSM6DS33_V2_COMMANDNOP_INF_EID        3 
+#define LSM6DS33_V2_COMMANDRST_INF_EID        4
+#define LSM6DS33_V2_INVALID_MSGID_ERR_EID     5 
+#define LSM6DS33_V2_LEN_ERR_EID               6 
 
-#endif /* _h3lis100dl_perfids_h_ */
+#endif /* _sample_app_events_h_ */
 
 /************************/
 /*  End of File Comment */

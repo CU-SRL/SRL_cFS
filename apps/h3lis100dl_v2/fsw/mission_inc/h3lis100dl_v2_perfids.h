@@ -18,37 +18,21 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: h3lis100dl_events.h 
+** File: sample_app_perfids.h
 **
 ** Purpose: 
-**  Define H3LIS100DL App Events IDs
+**  Define Sample App Performance IDs
 **
-** Notes: App Events will be the same --> just different names. Device events tbd.
-**
+** Notes:
 **
 *************************************************************************/
-#ifndef _h3lis100dl_events_h_
-#define _h3lis100dl_events_h_
+#ifndef _sample_app_perfids_h_
+#define _sample_app_perfids_h_
 
 
-#define H3LIS100DL_RESERVED_EID              0
-#define H3LIS100DL_STARTUP_INF_EID           1 
-#define H3LIS100DL_COMMAND_ERR_EID           2
-#define H3LIS100DL_COMMANDNOP_INF_EID        3 
-#define H3LIS100DL_COMMANDRST_INF_EID        4
-#define H3LIS100DL_INVALID_MSGID_ERR_EID     5 
-#define H3LIS100DL_LEN_ERR_EID               6 
+#define SAMPLE_APP_PERF_ID              91 
 
-/* DEVICE SPECFIC EVENTS */
-
-#define H3LIS100DL_DEVICE_INIT_ERR_EID                        20
-#define H3LIS100DL_FAILED_ENABLE_AXES                         21
-#define H3LIS100DL_FAILED_CHANGE_TO_ACTIVE_MODE_ERR_EID       22
-#define H3LIS100DL_REGISTERS_READ_ERR_EID                     23
-#define H3LIS100DL_DATA_DBG_EID                               24
-
-
-#endif /* _h3lis100dl_events_h_ */
+#endif /* _sample_app_perfids_h_ */
 
 /************************/
 /*  End of File Comment */
