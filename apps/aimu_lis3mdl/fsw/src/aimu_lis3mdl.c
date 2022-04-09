@@ -73,13 +73,13 @@ void AIMU_LIS3MDL_AppMain( void )
         CFE_ES_PerfLogExit(AIMU_LIS3MDL_PERF_ID);
 
         /* Pend on receipt of command packet -- timeout set to 500 millisecs */
-        status = CFE_SB_RcvMsg(&AIMU_LIS3MDMsgPtr, AIMU_LIS3MDL_CommandPipe, 500);
+        status = CFE_SB_RcvMsg(&AIMU_LIS3MDMsgPtr, AIMU_LIS3MDL_CommandPipe, INT32_MAX); 
         
         CFE_ES_PerfLogEntry(AIMU_LIS3MDL_PERF_ID);
 
         if (status == CFE_SUCCESS)
         {
-            SAMPLE_ProcessCommandPacket();
+            AIMU_LIS3MDL_ProcessCommandPacket();
         }
 
     }
@@ -111,11 +111,11 @@ void AIMU_LIS3MDL_AppInit(void)
     ** Create the Software Bus command pipe and subscribe to housekeeping
     **  messages
     */
-    CFE_SB_CreatePipe(&AIMU_LIS3MDL_CommandPipe, SAMPLE_PIPE_DEPTH,"SAMPLE_CMD_PIPE");
+    CFE_SB_CreatePipe(&AIMU_LIS3MDL_CommandPipe, AIMU_LIS3MDL_PIPE_DEPTH,"LIS3MDL_CMD_PIPE");
     CFE_SB_Subscribe(AIMU_LIS3MDL_CMD_MID, AIMU_LIS3MDL_CommandPipe);
     CFE_SB_Subscribe(AIMU_LIS3MDL_SEND_HK_MID, AIMU_LIS3MDL_CommandPipe);
 
-    SAMPLE_ResetCounters();
+    AIMU_LIS3MDL_ResetCounters();
 
     CFE_SB_InitMsg(&AIMU_LIS3MDL_HkTelemetryPkt,
                    AIMU_LIS3MDL_HK_TLM_MID,
@@ -147,11 +147,11 @@ void AIMU_LIS3MDL_ProcessCommandPacket(void)
     switch (MsgId)
     {
         case AIMU_LIS3MDL_CMD_MID:
-            SAMPLE_ProcessGroundCommand();
+            AIMU_LIS3MDL_ProcessGroundCommand();
             break;
 
         case AIMU_LIS3MDL_SEND_HK_MID:
-            SAMPLE_ReportHousekeeping();
+            AIMU_LIS3MDL_ReportHousekeeping();
             break;
 
         default:
@@ -188,7 +188,7 @@ void AIMU_LIS3MDL_ProcessGroundCommand(void)
             break;
 
         case AIMU_LIS3MDL_RESET_COUNTERS_CC:
-            SAMPLE_ResetCounters();
+            AIMU_LIS3MDL_ResetCounters();
             break;
 
         /* default case already found during FC vs length test */
@@ -231,7 +231,7 @@ void AIMU_LIS3MDL_ResetCounters(void)
     AIMU_LIS3MDL_HkTelemetryPkt.aimu_lis3mdl_command_error_count = 0;
 
     CFE_EVS_SendEvent(aimu_lis3mdl_COMMANDRST_INF_EID, CFE_EVS_EventType_INFORMATION,
-		"SAMPLE: RESET command");
+		"AIMU_LIS3MDL: RESET command");
     return;
 
 } /* End of SAMPLE_ResetCounters() */
