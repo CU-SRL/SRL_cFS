@@ -308,7 +308,7 @@ bool INIT_AIMU_LPS25H(int I2CBus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemetryP
 	// PD = 1 (active mode);  ODR = 011 (12.5 Hz pressure & temperature output data rate)
 	if(!I2C_write(file, AIMU_LPS25H_CTRL_REG1, 0xB0))
 	{
-		CFE_EVS_SendEvent(AIMU_LPS25H_FAILED_TO_ACTIVATE_EID, CFE_EVS_EventType_ERROR,
+		CFE_EVS_SendEvent(AIMU_LPS25H_STARTUP_INF_EID, CFE_EVS_EventType_ERROR,
            "Failed to activate the sensor properly... ");
         AIMU_LPS25H_HkTelemetryPkt->aimu_lps25h_device_error_count++;
 		return false;

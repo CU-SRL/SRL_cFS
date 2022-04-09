@@ -40,16 +40,16 @@
 ** global data
 */
 
-sample_hk_tlm_t    SAMPLE_HkTelemetryPkt;
-CFE_SB_PipeId_t    SAMPLE_CommandPipe;
-CFE_SB_MsgPtr_t    SAMPLEMsgPtr;
+aimu_lis3mdl_hk_tlm_t    AIMU_LIS3MDL_HkTelemetryPkt;
+CFE_SB_PipeId_t    AIMU_LIS3MDL_CommandPipe;
+CFE_SB_MsgPtr_t    AIMU_LIS3MDMsgPtr;
 
 static CFE_EVS_BinFilter_t  AIMU_LIS3MDL_EventFilters[] =
        {  /* Event ID    mask */
-          {AIMU_LIS3MDL_STARTUP_INF_EID,       0x0000},
-          {AIMU_LIS3MDL_COMMAND_ERR_EID,       0x0000},
-          {AIMU_LIS3MDL_COMMANDNOP_INF_EID,    0x0000},
-          {AIMU_LIS3MDL_COMMANDRST_INF_EID,    0x0000},
+          {aimu_lis3mdl_STARTUP_INF_EID,       0x0000},
+          {aimu_lis3mdl_COMMAND_ERR_EID,       0x0000},
+          {aimu_lis3mdl_COMMANDNOP_INF_EID,    0x0000},
+          {aimu_lis3mdl_COMMANDRST_INF_EID,    0x0000},
        };
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -61,7 +61,7 @@ void AIMU_LIS3MDL_AppMain( void )
     int32  status;
     uint32 RunStatus = CFE_ES_RunStatus_APP_RUN;
 
-    CFE_ES_PerfLogEntry(AIMU_LIS3MDL_APP_PERF_ID);
+    CFE_ES_PerfLogEntry(AIMU_LIS3MDL_PERF_ID);
 
     AIMU_LIS3MDL_AppInit();
 
@@ -73,7 +73,7 @@ void AIMU_LIS3MDL_AppMain( void )
         CFE_ES_PerfLogExit(AIMU_LIS3MDL_PERF_ID);
 
         /* Pend on receipt of command packet -- timeout set to 500 millisecs */
-        status = CFE_SB_RcvMsg(&SAMPLEMsgPtr, AIMU_LIS3MDL_CommandPipe, 500);
+        status = CFE_SB_RcvMsg(&AIMU_LIS3MDMsgPtr, AIMU_LIS3MDL_CommandPipe, 500);
         
         CFE_ES_PerfLogEntry(AIMU_LIS3MDL_PERF_ID);
 
@@ -103,30 +103,30 @@ void AIMU_LIS3MDL_AppInit(void)
     /*
     ** Register the events
     */ 
-    CFE_EVS_Register(SAMPLE_EventFilters,
-                     sizeof(SAMPLE_EventFilters)/sizeof(CFE_EVS_BinFilter_t),
+    CFE_EVS_Register(AIMU_LIS3MDL_EventFilters,
+                     sizeof(AIMU_LIS3MDL_EventFilters)/sizeof(CFE_EVS_BinFilter_t),
                      CFE_EVS_EventFilter_BINARY);
 
     /*
     ** Create the Software Bus command pipe and subscribe to housekeeping
     **  messages
     */
-    CFE_SB_CreatePipe(&SAMPLE_CommandPipe, SAMPLE_PIPE_DEPTH,"SAMPLE_CMD_PIPE");
-    CFE_SB_Subscribe(SAMPLE_APP_CMD_MID, SAMPLE_CommandPipe);
-    CFE_SB_Subscribe(SAMPLE_APP_SEND_HK_MID, SAMPLE_CommandPipe);
+    CFE_SB_CreatePipe(&AIMU_LIS3MDL_CommandPipe, SAMPLE_PIPE_DEPTH,"SAMPLE_CMD_PIPE");
+    CFE_SB_Subscribe(AIMU_LIS3MDL_CMD_MID, AIMU_LIS3MDL_CommandPipe);
+    CFE_SB_Subscribe(AIMU_LIS3MDL_SEND_HK_MID, AIMU_LIS3MDL_CommandPipe);
 
     SAMPLE_ResetCounters();
 
-    CFE_SB_InitMsg(&SAMPLE_HkTelemetryPkt,
-                   SAMPLE_APP_HK_TLM_MID,
-                   SAMPLE_APP_HK_TLM_LNGTH, true);
+    CFE_SB_InitMsg(&AIMU_LIS3MDL_HkTelemetryPkt,
+                   AIMU_LIS3MDL_HK_TLM_MID,
+                   AIMU_LIS3MDL_HK_TLM_LNGTH, true);
 
-    CFE_EVS_SendEvent (SAMPLE_STARTUP_INF_EID, CFE_EVS_EventType_INFORMATION,
+    CFE_EVS_SendEvent (aimu_lis3mdl_STARTUP_INF_EID, CFE_EVS_EventType_INFORMATION,
                "aimu_lis3mdl App Initialized. Version %d.%d.%d.%d",
-                AIMU_LIS3MDL_MAJOR_VERSION,
-                AIMU_LIS3MDL_MINOR_VERSION, 
-                AIMU_LIS3MDL_REVISION, 
-                AIMU_LIS3MDL_MISSION_REV);
+                aimu_lis3mdl_MAJOR_VERSION,
+                aimu_lis3mdl_MINOR_VERSION, 
+                aimu_lis3mdl_REVISION, 
+                aimu_lis3mdl_MISSION_REV);
 				
 } /* End of SAMPLE_AppInit() */
 
@@ -142,7 +142,7 @@ void AIMU_LIS3MDL_ProcessCommandPacket(void)
 {
     CFE_SB_MsgId_t  MsgId;
 
-    MsgId = CFE_SB_GetMsgId(SAMPLEMsgPtr);
+    MsgId = CFE_SB_GetMsgId(AIMU_LIS3MDMsgPtr);
 
     switch (MsgId)
     {
@@ -155,8 +155,8 @@ void AIMU_LIS3MDL_ProcessCommandPacket(void)
             break;
 
         default:
-            SAMPLE_HkTelemetryPkt.sample_command_error_count++;
-            CFE_EVS_SendEvent(SAMPLE_COMMAND_ERR_EID,CFE_EVS_EventType_ERROR,
+            AIMU_LIS3MDL_HkTelemetryPkt.aimu_lis3mdl_command_error_count++;
+            CFE_EVS_SendEvent(aimu_lis3mdl_COMMAND_ERR_EID,CFE_EVS_EventType_ERROR,
 			"SAMPLE: invalid command packet,MID = 0x%x", MsgId);
             break;
     }
@@ -175,19 +175,19 @@ void AIMU_LIS3MDL_ProcessGroundCommand(void)
 {
     uint16 CommandCode;
 
-    CommandCode = CFE_SB_GetCmdCode(SAMPLEMsgPtr);
+    CommandCode = CFE_SB_GetCmdCode(AIMU_LIS3MDMsgPtr);
 
     /* Process "known" SAMPLE app ground commands */
     switch (CommandCode)
     {
-        case SAMPLE_APP_NOOP_CC:
-            SAMPLE_HkTelemetryPkt.sample_command_count++;
-            CFE_EVS_SendEvent(SAMPLE_COMMANDNOP_INF_EID,
+        case AIMU_LIS3MDL_NOOP_CC:
+            AIMU_LIS3MDL_HkTelemetryPkt.aimu_lis3mdl_command_count++;
+            CFE_EVS_SendEvent(aimu_lis3mdl_COMMANDNOP_INF_EID,
                         CFE_EVS_EventType_INFORMATION,
 			"SAMPLE: NOOP command");
             break;
 
-        case SAMPLE_APP_RESET_COUNTERS_CC:
+        case AIMU_LIS3MDL_RESET_COUNTERS_CC:
             SAMPLE_ResetCounters();
             break;
 
@@ -210,8 +210,8 @@ void AIMU_LIS3MDL_ProcessGroundCommand(void)
 /* * * * * * * * * * * * * * * * * * * * * * * *  * * * * * * *  * *  * * * * */
 void AIMU_LIS3MDL_ReportHousekeeping(void)
 {
-    CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &SAMPLE_HkTelemetryPkt);
-    CFE_SB_SendMsg((CFE_SB_Msg_t *) &SAMPLE_HkTelemetryPkt);
+    CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &AIMU_LIS3MDL_HkTelemetryPkt);
+    CFE_SB_SendMsg((CFE_SB_Msg_t *) &AIMU_LIS3MDL_HkTelemetryPkt);
     return;
 
 } /* End of SAMPLE_ReportHousekeeping() */
@@ -227,10 +227,10 @@ void AIMU_LIS3MDL_ReportHousekeeping(void)
 void AIMU_LIS3MDL_ResetCounters(void)
 {
     /* Status of commands processed by the SAMPLE App */
-    SAMPLE_HkTelemetryPkt.sample_command_count       = 0;
-    SAMPLE_HkTelemetryPkt.sample_command_error_count = 0;
+    AIMU_LIS3MDL_HkTelemetryPkt.aimu_lis3mdl_command_count       = 0;
+    AIMU_LIS3MDL_HkTelemetryPkt.aimu_lis3mdl_command_error_count = 0;
 
-    CFE_EVS_SendEvent(SAMPLE_COMMANDRST_INF_EID, CFE_EVS_EventType_INFORMATION,
+    CFE_EVS_SendEvent(aimu_lis3mdl_COMMANDRST_INF_EID, CFE_EVS_EventType_INFORMATION,
 		"SAMPLE: RESET command");
     return;
 
@@ -255,11 +255,11 @@ bool AIMU_LIS3MDL_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength)
         CFE_SB_MsgId_t MessageID   = CFE_SB_GetMsgId(msg);
         uint16         CommandCode = CFE_SB_GetCmdCode(msg);
 
-        CFE_EVS_SendEvent(SAMPLE_LEN_ERR_EID, CFE_EVS_EventType_ERROR,
+        CFE_EVS_SendEvent(aimu_lis3mdl_LEN_ERR_EID, CFE_EVS_EventType_ERROR,
            "Invalid msg length: ID = 0x%X,  CC = %d, Len = %d, Expected = %d",
               MessageID, CommandCode, ActualLength, ExpectedLength);
         result = false;
-        SAMPLE_HkTelemetryPkt.sample_command_error_count++;
+        AIMU_LIS3MDL_HkTelemetryPkt.aimu_lis3mdl_command_error_count++;
     }
 
     return(result);

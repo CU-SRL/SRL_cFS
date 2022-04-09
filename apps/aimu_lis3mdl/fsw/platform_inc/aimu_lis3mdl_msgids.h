@@ -30,9 +30,10 @@
 #ifndef _aimu_lis3mdl_msgids_h_
 #define _aimu_lis3mdl_msgids_h_
 
-#define aimu_lis3mdl_CMD_MID            	0x6967
-#define aimu_lis3mdl_SEND_HK_MID        	0x6968
-#define aimu_lis3mdl_HK_TLM_MID		    0x6969
+#define AIMU_LIS3MDL_CMD_MID            	0x6967
+#define AIMU_LIS3MDL_SEND_HK_MID        	0x6968
+#define AIMU_LIS3MDL_HK_TLM_MID		        0x6969
+#define AIMU_LIS3MDL_DATA_TLM_MID           0x6970
 
 #endif /* _aimu_lis3mdl_msgids_h_ */
 

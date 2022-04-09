@@ -53,8 +53,8 @@ typedef struct
 typedef struct 
 {
     uint8              TlmHeader[CFE_SB_TLM_HDR_SIZE];
-    uint8              sample_command_error_count;
-    uint8              sample_command_count;
+    uint8              aimu_lis3mdl_command_error_count;
+    uint8              aimu_lis3mdl_command_count;
     uint8              spare[2];
 
 }   OS_PACK aimu_lis3mdl_hk_tlm_t  ;

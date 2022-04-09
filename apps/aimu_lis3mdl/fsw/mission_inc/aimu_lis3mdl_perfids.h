@@ -30,7 +30,7 @@
 #define _aimu_lis3mdl_perfids_h_
 
 
-#define aimu_lis3mdl_ID              76
+#define AIMU_LIS3MDL_PERF_ID              76
 
 #endif /* _aimu_lis3mdl_perfids_h_ */
 

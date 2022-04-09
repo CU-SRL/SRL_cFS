@@ -40,9 +40,9 @@
 ** global data
 */
 
-sample_hk_tlm_t    SAMPLE_HkTelemetryPkt;
-CFE_SB_PipeId_t    SAMPLE_CommandPipe;
-CFE_SB_MsgPtr_t    SAMPLEMsgPtr;
+sample_hk_tlm_t    AIMU_LIS3MDL_HkTelemetryPkt;
+CFE_SB_PipeId_t    AIMU_LIS3MDL_CommandPipe;
+CFE_SB_MsgPtr_t    AIMU_LIS3MDMsgPtr;
 
 static CFE_EVS_BinFilter_t  SAMPLE_EventFilters[] =
        {  /* Event ID    mask */
@@ -73,7 +73,7 @@ void SAMPLE_AppMain( void )
         CFE_ES_PerfLogExit(SAMPLE_APP_PERF_ID);
 
         /* Pend on receipt of command packet -- timeout set to 500 millisecs */
-        status = CFE_SB_RcvMsg(&SAMPLEMsgPtr, SAMPLE_CommandPipe, 500);
+        status = CFE_SB_RcvMsg(&AIMU_LIS3MDMsgPtr, AIMU_LIS3MDL_CommandPipe, 500);
         
         CFE_ES_PerfLogEntry(SAMPLE_APP_PERF_ID);
 
@@ -111,13 +111,13 @@ void SAMPLE_AppInit(void)
     ** Create the Software Bus command pipe and subscribe to housekeeping
     **  messages
     */
-    CFE_SB_CreatePipe(&SAMPLE_CommandPipe, SAMPLE_PIPE_DEPTH,"SAMPLE_CMD_PIPE");
-    CFE_SB_Subscribe(SAMPLE_APP_CMD_MID, SAMPLE_CommandPipe);
-    CFE_SB_Subscribe(SAMPLE_APP_SEND_HK_MID, SAMPLE_CommandPipe);
+    CFE_SB_CreatePipe(&AIMU_LIS3MDL_CommandPipe, SAMPLE_PIPE_DEPTH,"SAMPLE_CMD_PIPE");
+    CFE_SB_Subscribe(SAMPLE_APP_CMD_MID, AIMU_LIS3MDL_CommandPipe);
+    CFE_SB_Subscribe(SAMPLE_APP_SEND_HK_MID, AIMU_LIS3MDL_CommandPipe);
 
     SAMPLE_ResetCounters();
 
-    CFE_SB_InitMsg(&SAMPLE_HkTelemetryPkt,
+    CFE_SB_InitMsg(&AIMU_LIS3MDL_HkTelemetryPkt,
                    SAMPLE_APP_HK_TLM_MID,
                    SAMPLE_APP_HK_TLM_LNGTH, true);
 
@@ -142,7 +142,7 @@ void SAMPLE_ProcessCommandPacket(void)
 {
     CFE_SB_MsgId_t  MsgId;
 
-    MsgId = CFE_SB_GetMsgId(SAMPLEMsgPtr);
+    MsgId = CFE_SB_GetMsgId(AIMU_LIS3MDMsgPtr);
 
     switch (MsgId)
     {
@@ -155,7 +155,7 @@ void SAMPLE_ProcessCommandPacket(void)
             break;
 
         default:
-            SAMPLE_HkTelemetryPkt.sample_command_error_count++;
+            AIMU_LIS3MDL_HkTelemetryPkt.sample_command_error_count++;
             CFE_EVS_SendEvent(SAMPLE_COMMAND_ERR_EID,CFE_EVS_EventType_ERROR,
 			"SAMPLE: invalid command packet,MID = 0x%x", MsgId);
             break;
@@ -175,13 +175,13 @@ void SAMPLE_ProcessGroundCommand(void)
 {
     uint16 CommandCode;
 
-    CommandCode = CFE_SB_GetCmdCode(SAMPLEMsgPtr);
+    CommandCode = CFE_SB_GetCmdCode(AIMU_LIS3MDMsgPtr);
 
     /* Process "known" SAMPLE app ground commands */
     switch (CommandCode)
     {
         case SAMPLE_APP_NOOP_CC:
-            SAMPLE_HkTelemetryPkt.sample_command_count++;
+            AIMU_LIS3MDL_HkTelemetryPkt.sample_command_count++;
             CFE_EVS_SendEvent(SAMPLE_COMMANDNOP_INF_EID,
                         CFE_EVS_EventType_INFORMATION,
 			"SAMPLE: NOOP command");
@@ -210,8 +210,8 @@ void SAMPLE_ProcessGroundCommand(void)
 /* * * * * * * * * * * * * * * * * * * * * * * *  * * * * * * *  * *  * * * * */
 void SAMPLE_ReportHousekeeping(void)
 {
-    CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &SAMPLE_HkTelemetryPkt);
-    CFE_SB_SendMsg((CFE_SB_Msg_t *) &SAMPLE_HkTelemetryPkt);
+    CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &AIMU_LIS3MDL_HkTelemetryPkt);
+    CFE_SB_SendMsg((CFE_SB_Msg_t *) &AIMU_LIS3MDL_HkTelemetryPkt);
     return;
 
 } /* End of SAMPLE_ReportHousekeeping() */
@@ -227,8 +227,8 @@ void SAMPLE_ReportHousekeeping(void)
 void SAMPLE_ResetCounters(void)
 {
     /* Status of commands processed by the SAMPLE App */
-    SAMPLE_HkTelemetryPkt.sample_command_count       = 0;
-    SAMPLE_HkTelemetryPkt.sample_command_error_count = 0;
+    AIMU_LIS3MDL_HkTelemetryPkt.sample_command_count       = 0;
+    AIMU_LIS3MDL_HkTelemetryPkt.sample_command_error_count = 0;
 
     CFE_EVS_SendEvent(SAMPLE_COMMANDRST_INF_EID, CFE_EVS_EventType_INFORMATION,
 		"SAMPLE: RESET command");
@@ -259,7 +259,7 @@ bool SAMPLE_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength)
            "Invalid msg length: ID = 0x%X,  CC = %d, Len = %d, Expected = %d",
               MessageID, CommandCode, ActualLength, ExpectedLength);
         result = false;
-        SAMPLE_HkTelemetryPkt.sample_command_error_count++;
+        AIMU_LIS3MDL_HkTelemetryPkt.sample_command_error_count++;
     }
 
     return(result);

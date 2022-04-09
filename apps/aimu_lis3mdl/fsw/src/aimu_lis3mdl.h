@@ -64,6 +64,6 @@ void AIMU_LIS3MDL_ProcessGroundCommand(void);
 void AIMU_LIS3MDL_ReportHousekeeping(void);
 void AIMU_LIS3MDL_ResetCounters(void);
 
-bool SAMPLE_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength);
+bool AIMU_LIS3MDL_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength);
 
 #endif /* _sample_app_h_ */
