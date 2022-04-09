@@ -253,7 +253,7 @@ void H3LIS100DL_ReportHousekeeping(void)
 } /* End of H3LIS100DL_ReportHousekeeping() */
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
-/*  Name:  MAX7502_SendDataPacket                                         */
+/*  Name:  MAX7502_V2_SendDataPacket                                         */
 /*                                                                            */
 /*  Purpose:                                                                  */
 /*         This function is triggered in response to a task telemetry request */

@@ -53,7 +53,7 @@
 #include "aimu_lis3mdl_msgids.h"
 #include "aimu_lps25h_v2_msgids.h"
 #include "aimu_lsm6ds33_msgids.h"
-#include "max7502_msgids.h"
+#include "max7502_v2_msgids.h"
 //#include "ms5611_msgids.h"
 #include "h3lis100dl_msgids.h"
 
@@ -333,7 +333,7 @@ DS_FilterTable_t DS_FilterTable =
     },
     /* Packet Index 019 */
     {
-      /* .MessageID = */ MAX7502_DATA_TLM_MID,
+      /* .MessageID = */ max7502_V2_DATA_TLM_MID,
       /* .Filter    = */
       {
         /* File table index, filter type, N, X, O */

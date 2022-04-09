@@ -14,7 +14,7 @@ include_directories(${hk_MISSION_DIR}/fsw/platform_inc)
 include_directories(${aimu_lis3mdl_MISSION_DIR}/fsw/platform_inc)
 include_directories(${aimu_lps25h_v2_MISSION_DIR}/fsw/platform_inc)
 include_directories(${aimu_lsm6ds33_MISSION_DIR}/fsw/platform_inc)
-include_directories(${max7502_MISSION_DIR}/fsw/platform_inc)
+include_directories(${max7502_v2_MISSION_DIR}/fsw/platform_inc)
 include_directories(${ms5611_MISSION_DIR}/fsw/platform_inc)
 include_directories(${h3lis100dl_MISSION_DIR}/fsw/platform_inc)
 
