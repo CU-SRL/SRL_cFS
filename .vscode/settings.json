@@ -1,9 +1,0 @@
-{
-    "C_Cpp.errorSquiggles": "Disabled",
-    "files.associations": {
-        "sch_lab_sched_tab.h": "c",
-        "aimu_lis3mdl_version.h": "c",
-        "aimu_lsm6ds33_msgids.h": "c",
-        "aimu_lis3mdl_msgids.h": "c"
-    }
-}
