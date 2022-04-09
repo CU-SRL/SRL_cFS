@@ -52,7 +52,7 @@
 #define TO_UNUSED                  0
 
 #define cfgTLM_ADDR "192.168.1.81"
-#define cfgTLM_PORT 1235
+#define cfgTLM_PORT 6969
 #define TO_LAB_VERSION_NUM "5.1.0"
 
 /******************************************************************************/

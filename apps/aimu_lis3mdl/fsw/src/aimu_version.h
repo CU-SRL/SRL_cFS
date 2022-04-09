@@ -18,21 +18,24 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: sample_app_perfids.h
+** File: aimu_lis3mdl_version.h
 **
 ** Purpose: 
-**  Define Sample App Performance IDs
+**  The Sample Application header file containing version number
 **
 ** Notes:
 **
+**
 *************************************************************************/
-#ifndef _sample_app_perfids_h_
-#define _sample_app_perfids_h_
+#ifndef _aimu_lis3mdl_version_h_
+#define _aimu_lis3mdl_version_h_
 
-
-#define SAMPLE_APP_PERF_ID              91 
-
-#endif /* _sample_app_perfids_h_ */
+#define aimu_lis3mdl_MAJOR_VERSION    1
+#define aimu_lis3mdl_MINOR_VERSION    1
+#define aimu_lis3mdl_REVISION         0
+#define aimu_lis3mdl_MISSION_REV      0
+      
+#endif /* _aimu_lis3mdl_version_h_ */
 
 /************************/
 /*  End of File Comment */

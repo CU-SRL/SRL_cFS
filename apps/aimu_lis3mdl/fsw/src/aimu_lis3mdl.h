@@ -26,8 +26,8 @@
 **
 *******************************************************************************/
 
-#ifndef _sample_app_h_
-#define _sample_app_h_
+#ifndef _aimu_lis3mdl_h_
+#define _aimu_lis3mdl_h_
 
 /*
 ** Required header files.
@@ -57,12 +57,12 @@
 ** Note: Except for the entry point (SAMPLE_AppMain), these
 **       functions are not called from any other source module.
 */
-void SAMPLE_AppMain(void);
-void SAMPLE_AppInit(void);
-void SAMPLE_ProcessCommandPacket(void);
-void SAMPLE_ProcessGroundCommand(void);
-void SAMPLE_ReportHousekeeping(void);
-void SAMPLE_ResetCounters(void);
+void AIMU_LIS3MDL_AppMain(void);
+void AIMU_LIS3MDL_AppInit(void);
+void AIMU_LIS3MDL_ProcessCommandPacket(void);
+void AIMU_LIS3MDL_ProcessGroundCommand(void);
+void AIMU_LIS3MDL_ReportHousekeeping(void);
+void AIMU_LIS3MDL_ResetCounters(void);
 
 bool SAMPLE_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength);
 

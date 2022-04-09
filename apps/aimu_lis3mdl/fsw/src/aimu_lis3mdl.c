@@ -29,12 +29,12 @@
 **   Include Files:
 */
 
-#include "sample_app.h"
-#include "sample_app_perfids.h"
-#include "sample_app_msgids.h"
-#include "sample_app_msg.h"
-#include "sample_app_events.h"
-#include "sample_app_version.h"
+#include "aimu_lis3mdl.h"
+#include "aimu_lis3mdl_perfids.h"
+#include "aimu_lis3mdl_msgids.h"
+#include "aimu_lis3mdl_msg.h"
+#include "aimu_lis3mdl_events.h"
+#include "aimu_lis3mdl_version.h"
 
 /*
 ** global data
@@ -44,38 +44,38 @@ sample_hk_tlm_t    SAMPLE_HkTelemetryPkt;
 CFE_SB_PipeId_t    SAMPLE_CommandPipe;
 CFE_SB_MsgPtr_t    SAMPLEMsgPtr;
 
-static CFE_EVS_BinFilter_t  SAMPLE_EventFilters[] =
+static CFE_EVS_BinFilter_t  AIMU_LIS3MDL_EventFilters[] =
        {  /* Event ID    mask */
-          {SAMPLE_STARTUP_INF_EID,       0x0000},
-          {SAMPLE_COMMAND_ERR_EID,       0x0000},
-          {SAMPLE_COMMANDNOP_INF_EID,    0x0000},
-          {SAMPLE_COMMANDRST_INF_EID,    0x0000},
+          {AIMU_LIS3MDL_STARTUP_INF_EID,       0x0000},
+          {AIMU_LIS3MDL_COMMAND_ERR_EID,       0x0000},
+          {AIMU_LIS3MDL_COMMANDNOP_INF_EID,    0x0000},
+          {AIMU_LIS3MDL_COMMANDRST_INF_EID,    0x0000},
        };
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /* SAMPLE_AppMain() -- Application entry point and main process loop          */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  * *  * * * * **/
-void SAMPLE_AppMain( void )
+void AIMU_LIS3MDL_AppMain( void )
 {
     int32  status;
     uint32 RunStatus = CFE_ES_RunStatus_APP_RUN;
 
-    CFE_ES_PerfLogEntry(SAMPLE_APP_PERF_ID);
+    CFE_ES_PerfLogEntry(AIMU_LIS3MDL_APP_PERF_ID);
 
-    SAMPLE_AppInit();
+    AIMU_LIS3MDL_AppInit();
 
     /*
     ** SAMPLE Runloop
     */
     while (CFE_ES_RunLoop(&RunStatus) == true)
     {
-        CFE_ES_PerfLogExit(SAMPLE_APP_PERF_ID);
+        CFE_ES_PerfLogExit(AIMU_LIS3MDL_PERF_ID);
 
         /* Pend on receipt of command packet -- timeout set to 500 millisecs */
-        status = CFE_SB_RcvMsg(&SAMPLEMsgPtr, SAMPLE_CommandPipe, 500);
+        status = CFE_SB_RcvMsg(&SAMPLEMsgPtr, AIMU_LIS3MDL_CommandPipe, 500);
         
-        CFE_ES_PerfLogEntry(SAMPLE_APP_PERF_ID);
+        CFE_ES_PerfLogEntry(AIMU_LIS3MDL_PERF_ID);
 
         if (status == CFE_SUCCESS)
         {
@@ -93,7 +93,7 @@ void SAMPLE_AppMain( void )
 /* SAMPLE_AppInit() --  initialization                                       */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
-void SAMPLE_AppInit(void)
+void AIMU_LIS3MDL_AppInit(void)
 {
     /*
     ** Register the app with Executive services
@@ -122,11 +122,11 @@ void SAMPLE_AppInit(void)
                    SAMPLE_APP_HK_TLM_LNGTH, true);
 
     CFE_EVS_SendEvent (SAMPLE_STARTUP_INF_EID, CFE_EVS_EventType_INFORMATION,
-               "SAMPLE App Initialized. Version %d.%d.%d.%d",
-                SAMPLE_APP_MAJOR_VERSION,
-                SAMPLE_APP_MINOR_VERSION, 
-                SAMPLE_APP_REVISION, 
-                SAMPLE_APP_MISSION_REV);
+               "aimu_lis3mdl App Initialized. Version %d.%d.%d.%d",
+                AIMU_LIS3MDL_MAJOR_VERSION,
+                AIMU_LIS3MDL_MINOR_VERSION, 
+                AIMU_LIS3MDL_REVISION, 
+                AIMU_LIS3MDL_MISSION_REV);
 				
 } /* End of SAMPLE_AppInit() */
 
@@ -138,7 +138,7 @@ void SAMPLE_AppInit(void)
 /*     command pipe.                                                          */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * *  * * * * * * *  * *  * * * * */
-void SAMPLE_ProcessCommandPacket(void)
+void AIMU_LIS3MDL_ProcessCommandPacket(void)
 {
     CFE_SB_MsgId_t  MsgId;
 
@@ -146,11 +146,11 @@ void SAMPLE_ProcessCommandPacket(void)
 
     switch (MsgId)
     {
-        case SAMPLE_APP_CMD_MID:
+        case AIMU_LIS3MDL_CMD_MID:
             SAMPLE_ProcessGroundCommand();
             break;
 
-        case SAMPLE_APP_SEND_HK_MID:
+        case AIMU_LIS3MDL_SEND_HK_MID:
             SAMPLE_ReportHousekeeping();
             break;
 
@@ -171,7 +171,7 @@ void SAMPLE_ProcessCommandPacket(void)
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 
-void SAMPLE_ProcessGroundCommand(void)
+void AIMU_LIS3MDL_ProcessGroundCommand(void)
 {
     uint16 CommandCode;
 
@@ -208,7 +208,7 @@ void SAMPLE_ProcessGroundCommand(void)
 /*         telemetry, packetize it and send it to the housekeeping task via   */
 /*         the software bus                                                   */
 /* * * * * * * * * * * * * * * * * * * * * * * *  * * * * * * *  * *  * * * * */
-void SAMPLE_ReportHousekeeping(void)
+void AIMU_LIS3MDL_ReportHousekeeping(void)
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &SAMPLE_HkTelemetryPkt);
     CFE_SB_SendMsg((CFE_SB_Msg_t *) &SAMPLE_HkTelemetryPkt);
@@ -224,7 +224,7 @@ void SAMPLE_ReportHousekeeping(void)
 /*         part of the task telemetry.                                        */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * *  * * * * * * *  * *  * * * * */
-void SAMPLE_ResetCounters(void)
+void AIMU_LIS3MDL_ResetCounters(void)
 {
     /* Status of commands processed by the SAMPLE App */
     SAMPLE_HkTelemetryPkt.sample_command_count       = 0;
@@ -241,7 +241,7 @@ void SAMPLE_ResetCounters(void)
 /* SAMPLE_VerifyCmdLength() -- Verify command packet length                   */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
-bool SAMPLE_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength)
+bool AIMU_LIS3MDL_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength)
 {     
     bool result = true;
 

@@ -18,23 +18,28 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: sample_app_msgids.h
+** File: sample_app_events.h 
 **
 ** Purpose: 
-**  Define Sample App  Message IDs
+**  Define SAMPLE App Events IDs
 **
 ** Notes:
 **
 **
 *************************************************************************/
-#ifndef _sample_app_msgids_h_
-#define _sample_app_msgids_h_
+#ifndef _aimu_lis3mdl_events_h_
+#define _aimu_lis3mdl_events_h_
 
-#define SAMPLE_APP_CMD_MID            	0x1882
-#define SAMPLE_APP_SEND_HK_MID        	0x1883
-#define SAMPLE_APP_HK_TLM_MID		0x0883
 
-#endif /* _sample_app_msgids_h_ */
+#define aimu_lis3mdl_RESERVED_EID              0
+#define aimu_lis3mdl_STARTUP_INF_EID           1 
+#define aimu_lis3mdl_COMMAND_ERR_EID           2
+#define aimu_lis3mdl_COMMANDNOP_INF_EID        3 
+#define aimu_lis3mdl_COMMANDRST_INF_EID        4 
+#define aimu_lis3mdl_INVALID_MSGID_ERR_EID     5 
+#define aimu_lis3mdl_LEN_ERR_EID               6 
+
+#endif /* _aimu_lis3mdl_events_h_ */
 
 /************************/
 /*  End of File Comment */

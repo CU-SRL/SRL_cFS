@@ -31,10 +31,10 @@
 #define _sample_app_msg_h_
 
 /*
-** SAMPLE App command codes
+** AIMU_LIS3MDL command codes
 */
-#define SAMPLE_APP_NOOP_CC                 0
-#define SAMPLE_APP_RESET_COUNTERS_CC       1
+#define AIMU_LIS3MDL_NOOP_CC                 0
+#define AIMU_LIS3MDL_RESET_COUNTERS_CC       1
 
 /*************************************************************************/
 /*
@@ -44,11 +44,11 @@ typedef struct
 {
    uint8    CmdHeader[CFE_SB_CMD_HDR_SIZE];
 
-} SAMPLE_NoArgsCmd_t;
+} AIMU_LIS3MDL_NoArgsCmd_t;
 
 /*************************************************************************/
 /*
-** Type definition (SAMPLE App housekeeping)
+** Type definition (AIMU_LIS3MDL housekeeping)
 */
 typedef struct 
 {
@@ -57,11 +57,11 @@ typedef struct
     uint8              sample_command_count;
     uint8              spare[2];
 
-}   OS_PACK sample_hk_tlm_t  ;
+}   OS_PACK aimu_lis3mdl_hk_tlm_t  ;
 
-#define SAMPLE_APP_HK_TLM_LNGTH   sizeof ( sample_hk_tlm_t )
+#define AIMU_LIS3MDL_HK_TLM_LNGTH   sizeof ( aimu_lis3mdl_hk_tlm_t )
 
-#endif /* _sample_app_msg_h_ */
+#endif /* _aimu_lis3mdl_msg_h_ */
 
 /************************/
 /*  End of File Comment */
