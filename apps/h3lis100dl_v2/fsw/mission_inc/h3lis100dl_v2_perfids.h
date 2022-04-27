@@ -18,7 +18,7 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: sample_app_perfids.h
+** File: h3lis100dl_v2app_perfids.h
 **
 ** Purpose: 
 **  Define Sample App Performance IDs
@@ -26,7 +26,7 @@
 ** Notes:
 **
 *************************************************************************/
-#ifndef _sample_app_perfids_h_
+#ifndef _h3lis100dl_v2_app_perfids_h_
 #define _sample_app_perfids_h_
 
 
