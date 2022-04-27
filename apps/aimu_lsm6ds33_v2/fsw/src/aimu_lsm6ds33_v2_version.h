@@ -27,13 +27,13 @@
 **
 **
 *************************************************************************/
-#ifndef _sample_app_version_h_
-#define _sample_app_version_h_
+#ifndef _aimu_lsm6ds33_v2_version_h_
+#define _aimu_lsm6ds33_v2_version_h_
 
-#define SAMPLE_APP_MAJOR_VERSION    1
-#define SAMPLE_APP_MINOR_VERSION    1
-#define SAMPLE_APP_REVISION         0
-#define SAMPLE_APP_MISSION_REV      0
+#define AIMU_LSM6DS33_V2_MAJOR_VERSION    1
+#define AIMU_LSM6DS33_V2_MINOR_VERSION    1
+#define AIMU_LSM6DS33_V2_REVISION         0
+#define AIMU_LSM6DS33_V2_MISSION_REV      0
       
 #endif /* _sample_app_version_h_ */
 

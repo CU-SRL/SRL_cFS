@@ -27,14 +27,14 @@
 **
 **
 *******************************************************************************/
-#ifndef _lsm6ds33_v2_msg_h_
-#define _lsm6ds33_v2_msg_h_
+#ifndef _aimu_lsm6ds33_v2_msg_h_
+#define _aimu_lsm6ds33_v2_msg_h_
 
 /*
 ** SAMPLE App command codes
 */
-#define LSM6DS33_V2_NOOP_CC                 0
-#define LSM6DS33_V2_RESET_COUNTERS_CC       1
+#define AIMU_LSM6DS33_V2_NOOP_CC                 0
+#define AIMU_LSM6DS33_V2_RESET_COUNTERS_CC       1
 
 /*************************************************************************/
 /*
@@ -44,7 +44,7 @@ typedef struct
 {
    uint8    CmdHeader[CFE_SB_CMD_HDR_SIZE];
 
-} SAMPLE_NoArgsCmd_t;
+} AIMU_LSM6DS33_V2_NoArgsCmd_t;
 
 /*************************************************************************/
 /*
@@ -53,13 +53,13 @@ typedef struct
 typedef struct 
 {
     uint8              TlmHeader[CFE_SB_TLM_HDR_SIZE];
-    uint8              sample_command_error_count;
-    uint8              sample_command_count;
+    uint8              aimu_lsm6ds33_v2_command_error_count;
+    uint8              aimu_lsm6ds33_v2_command_count;
     uint8              spare[2];
 
-}   OS_PACK sample_hk_tlm_t  ;
+}   OS_PACK aimu_lsm6ds33_v2_hk_tlm_t;
 
-#define SAMPLE_APP_HK_TLM_LNGTH   sizeof ( sample_hk_tlm_t )
+#define AIMU_LSM6DS33_V2_HK_TLM_LNGTH   sizeof ( aimu_lsm6ds33_v2_hk_tlm_t )
 
 #endif /* _sample_app_msg_h_ */
 

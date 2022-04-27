@@ -27,12 +27,12 @@
 **
 **
 *************************************************************************/
-#ifndef _lsm6ds33_v2_msgids_h_
-#define _lsm6ds33_v2_msgids_h_
+#ifndef _aimu_lsm6ds33_v2_msgids_h_
+#define _aimu_lsm6ds33_v2_msgids_h_
 
-#define LSM6DS33_V2_CMD_MID            	0x1882
-#define LSM6DS33_V2_SEND_HK_MID        	0x1883
-#define LSM6DS33_V2_HK_TLM_MID		0x0883
+#define AIMU_LSM6DS33_V2_CMD_MID            	0x1882
+#define AIMU_LSM6DS33_V2_SEND_HK_MID        	0x1883
+#define AIMU_LSM6DS33_V2_HK_TLM_MID		0x0883
 
 #endif /* _sample_app_msgids_h_ */
 

@@ -27,17 +27,17 @@
 **
 **
 *************************************************************************/
-#ifndef _lsm6ds33_v2_events_h_
-#define _lsm6ds33_v2_events_h_
+#ifndef _aimu_lsm6ds33_v2_events_h_
+#define _aimu_lsm6ds33_v2_events_h_
 
 
-#define LSM6DS33_V2_RESERVED_EID              0
-#define LSM6DS33_V2_STARTUP_INF_EID           1 
-#define LSM6DS33_V2_COMMAND_ERR_EID           2
-#define LSM6DS33_V2_COMMANDNOP_INF_EID        3 
-#define LSM6DS33_V2_COMMANDRST_INF_EID        4
-#define LSM6DS33_V2_INVALID_MSGID_ERR_EID     5 
-#define LSM6DS33_V2_LEN_ERR_EID               6 
+#define AIMU_LSM6DS33_V2_RESERVED_EID              0
+#define AIMU_LSM6DS33_V2_STARTUP_INF_EID           1 
+#define AIMU_LSM6DS33_V2_COMMAND_ERR_EID           2
+#define AIMU_LSM6DS33_V2_COMMANDNOP_INF_EID        3 
+#define AIMU_LSM6DS33_V2_COMMANDRST_INF_EID        4
+#define AIMU_LSM6DS33_V2_INVALID_MSGID_ERR_EID     5 
+#define AIMU_LSM6DS33_V2_LEN_ERR_EID               6 
 
 #endif /* _sample_app_events_h_ */
 

@@ -26,11 +26,11 @@
 ** Notes:
 **
 *************************************************************************/
-#ifndef _zlsm6ds33_v2_perfids_h_
-#define _lsm6ds33_v2_perfids_h_
+#ifndef _aimu_lsm6ds33_v2_perfids_h_
+#define _aimu_lsm6ds33_v2_perfids_h_
 
 
-#define LSM6DS33_PERF_ID              91 
+#define AIMU_LSM6DS33_V2_PERF_ID              91 
 
 #endif /* _sample_app_perfids_h_ */
 

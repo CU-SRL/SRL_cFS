@@ -7,4 +7,4 @@ include_directories(fsw/platform_inc)
 aux_source_directory(fsw/src APP_SRC_FILES)
 
 # Create the app module
-add_cfe_app(sample_app ${APP_SRC_FILES})
+add_cfe_app(CFE_AIMU_LSM6DS33_V2 ${APP_SRC_FILES})
