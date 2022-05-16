@@ -30,7 +30,7 @@
 #define _aimu_lps25h_v2_perfids_h_
 
 
-#define AIMU_LPS25H_V2_PERF_ID              91 
+#define AIMU_LPS25H_V2_PERF_ID              92
 
 #endif /* _aimu_lps25h_v2_perfids_h_ */
 

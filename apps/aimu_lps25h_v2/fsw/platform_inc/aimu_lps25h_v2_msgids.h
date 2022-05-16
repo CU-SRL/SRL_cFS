@@ -30,11 +30,11 @@
 #ifndef _aimu_lps25h_v2_msgids_h_
 #define _aimu_lps25h_v2_msgids_h_
 
-#define AIMU_LPS25H_V2_CMD_MID            	0x1882
-#define AIMU_LPS25H_V2_SEND_HK_MID        	0x1883
-#define AIMU_LPS25H_V2_SEND_DATA_MID        0x1884
-#define AIMU_LPS25H_V2_HK_TLM_MID		    0x0883
-#define AIMU_LPS25H_V2_DATA_TLM_MID		    0x0884
+#define AIMU_LPS25H_V2_CMD_MID            	0x1889
+#define AIMU_LPS25H_V2_SEND_HK_MID        	0x188A
+#define AIMU_LPS25H_V2_SEND_DATA_MID        0x188B
+#define AIMU_LPS25H_V2_HK_TLM_MID		    0x0885
+#define AIMU_LPS25H_V2_DATA_TLM_MID		    0x0886
 
 #endif /* _aimu_lps25h_v2_msgids_h_ */
 

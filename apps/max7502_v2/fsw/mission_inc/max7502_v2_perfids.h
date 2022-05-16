@@ -30,7 +30,7 @@
 #define _max7502_v2_perfids_h_
 
 
-#define MAX7502_V2_PERF_ID              91 
+#define MAX7502_V2_PERF_ID              92
 
 #endif /* _max7502_v2_perfids_h_ */
 
