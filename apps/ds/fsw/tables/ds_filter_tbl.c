@@ -333,7 +333,7 @@ DS_FilterTable_t DS_FilterTable =
     },
     /* Packet Index 019 */
     {
-      /* .MessageID = */ max7502_V2_DATA_TLM_MID,
+      /* .MessageID = */ MAX7502_V2_DATA_TLM_MID,
       /* .Filter    = */
       {
         /* File table index, filter type, N, X, O */
