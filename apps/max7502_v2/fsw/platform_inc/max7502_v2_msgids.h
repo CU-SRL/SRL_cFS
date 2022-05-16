@@ -34,6 +34,7 @@
 #define MAX7502_V2_SEND_HK_MID        	0x1883
 #define MAX7502_V2_SEND_DATA_MID        0x1884
 #define MAX7502_V2_HK_TLM_MID		    0x0883
+#define MAX7502_V2_DATA_TLM_MID		    0x0884
 
 #endif /* _max7502_v2_msgids_h_ */
 
