@@ -107,13 +107,13 @@ int I2C_open(int I2CBus, uint8_t addr)
 	}
 
 	// Open IO operation
-	if(ioctl(file, I2C_SLAVE, addr) < 0)
-	{
-        CFE_EVS_SendEvent(I2C_OPEN_SLAVE_ERR_EID, CFE_EVS_EventType_ERROR,
-           "I2C_SLAVE address %X failed... ", addr);
-        //I2C_HkTelemetryPkt.i2c_error_count++;
-        
-        return -1;
+//	if(ioctl(file, I2C_SLAVE, addr) < 0)
+//	{
+//        CFE_EVS_SendEvent(I2C_OPEN_SLAVE_ERR_EID, CFE_EVS_EventType_ERROR,
+//           "I2C_SLAVE address %X failed... ", addr);
+//        //I2C_HkTelemetryPkt.i2c_error_count++;
+//
+//        return -1;
 	}
 
 	// Return the file if successful
@@ -138,20 +138,43 @@ void I2C_close(int file)
 /*                  for the register.                                         */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
-bool I2C_write(int file, uint8_t reg, uint8_t val)
+bool I2C_write(uint8_t slave_addr, uint8_t reg, uint8_t val);
 {
-	uint8_t write_buf[2] = { reg, val };
-	if (write(file, write_buf, 2) != 2)
-	{
+    //defs
+    uint8_t buff[2];
+    struct i2c_msg msg[1];
+    struct i2c_rdwr_ioctl_data msgset[1];
+
+    buff[0]=reg;
+    buff[1]=val;
+
+    msg[0].addr=slave_addr;
+    msg[0].flags=0;
+    msg[0].len=2;
+    msg[0].buf=buff;
+
+    msgset[0].msgs=msg;
+    msgset[0].nmsgs=1;
+
+    if(ioctl(i2c_fd, I2C_RDWR, &msgset)<0){
         CFE_EVS_SendEvent(I2C_WRITE_REGISTER_ERR_EID, CFE_EVS_EventType_ERROR,
            "Error failed to write to register %X! ", reg);
-        //I2C_HkTelemetryPkt.i2c_error_count++;
-        
-		return false;
-	}
+        return false;
+    }
 
-	// If not, return succeeded
-	return true;
+    return true;
+//	uint8_t write_buf[2] = { reg, val };
+//	if (write(file, write_buf, 2) != 2)
+//	{
+//        CFE_EVS_SendEvent(I2C_WRITE_REGISTER_ERR_EID, CFE_EVS_EventType_ERROR,
+//           "Error failed to write to register %X! ", reg);
+//        //I2C_HkTelemetryPkt.i2c_error_count++;
+//
+//		return false;
+//	}
+//
+//	// If not, return succeeded
+//	return true;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
