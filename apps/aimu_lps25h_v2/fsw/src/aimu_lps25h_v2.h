@@ -21,7 +21,7 @@
 ** File: aimu_lps25h_v2.h
 **
 ** Purpose:
-**   This file is main hdr file for the SAMPLE application.
+**   This file is main hdr file for the AIMU_LPS25H_V2 application.
 **
 **
 *******************************************************************************/
@@ -44,7 +44,7 @@
 
 /***********************************************************************/
 
-#define SAMPLE_PIPE_DEPTH                     32
+#define AIMU_LPS25H_V2_PIPE_DEPTH                     32
 
 /************************************************************************
 ** Type Definitions
@@ -57,13 +57,13 @@
 ** Note: Except for the entry point (Aimu_lps25h_v2Main), these
 **       functions are not called from any other source module.
 */
-void Aimu_lps25h_v2Main(void);
-void Aimu_lps25h_v2Init(void);
-void SAMPLE_ProcessCommandPacket(void);
-void SAMPLE_ProcessGroundCommand(void);
-void SAMPLE_ReportHousekeeping(void);
-void SAMPLE_ResetCounters(void);
+void AIMU_LPS25H_V2Main(void);
+void AIMU_LPS25H_V2Init(void);
+void AIMU_LPS25H_V2_ProcessCommandPacket(void);
+void AIMU_LPS25H_V2_ProcessGroundCommand(void);
+void AIMU_LPS25H_V2_ReportHousekeeping(void);
+void AIMU_LPS25H_V2_ResetCounters(void);
 
-bool SAMPLE_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength);
+bool AIMU_LPS25H_V2_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength);
 
 #endif /* _aimu_lps25h_v2_h_ */
