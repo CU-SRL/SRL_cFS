@@ -137,7 +137,7 @@ void I2C_close(int file)
  * @return false failure
  */
 
-bool I2C_write(int file, uint8_t slave_addr, uint8_t reg, uint8_t val);
+bool I2C_write(int file, uint8_t slave_addr, uint8_t reg, uint8_t val)
 {
     uint8_t buff[2];
     struct i2c_msg msg[1];
@@ -178,7 +178,7 @@ bool I2C_write(int file, uint8_t slave_addr, uint8_t reg, uint8_t val);
  * @return true success
  * @return false failure
  */
-bool I2C_read(int file, uint8_t slave_addr, uint8_t reg, uint8_t *buffer)
+bool I2C_read(int file, uint8_t slave_addr, uint8_t reg, unsigned int byte_count, uint8_t *buffer)
 {
 
 	uint8_t out[1],in[1];
@@ -209,7 +209,7 @@ bool I2C_read(int file, uint8_t slave_addr, uint8_t reg, uint8_t *buffer)
    msg[1].buf=in;
 
    //load the messages into the data
-   msgset[0]=msg;
+   msgset[0].msgs=msg;
    //set the number of messages to 2
    msgset[0].nmsgs=2;
 
