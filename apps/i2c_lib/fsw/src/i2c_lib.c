@@ -88,7 +88,7 @@ int I2C_Sample_Function( void )
  * @param addr slave addr for the i2c device
  * @return int fd for the opened device
  */
-int I2C_open(int I2CBus, uint8_t addr)
+int I2C_open(int I2CBus)
 {
 	// Declare I2C device name char array
 	char i2cbuf[MAX_BUS];
