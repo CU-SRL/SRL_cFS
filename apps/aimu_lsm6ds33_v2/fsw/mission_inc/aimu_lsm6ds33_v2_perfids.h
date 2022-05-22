@@ -18,10 +18,10 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: sample_app_perfids.h
+** File: aimu_lsm6ds33_v2_perfids.h
 **
 ** Purpose: 
-**  Define Sample App Performance IDs
+**  Define LSM6DS33_V2 Performance IDs
 **
 ** Notes:
 **
@@ -30,9 +30,9 @@
 #define _aimu_lsm6ds33_v2_perfids_h_
 
 
-#define AIMU_LSM6DS33_V2_PERF_ID              91 
+#define AIMU_LSM6DS33_V2_PERF_ID              141 
 
-#endif /* _sample_app_perfids_h_ */
+#endif /* _aimu_lsm6ds33_v2_perfids_h_ */
 
 /************************/
 /*  End of File Comment */

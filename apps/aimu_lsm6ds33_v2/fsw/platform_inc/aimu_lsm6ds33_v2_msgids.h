@@ -18,10 +18,10 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: sample_app_msgids.h
+** File: aimu_lsm6ds33_v2_msgids.h
 **
 ** Purpose: 
-**  Define Sample App  Message IDs
+**  Define LSM6DS33_V2  Message IDs
 **
 ** Notes:
 **
@@ -30,11 +30,11 @@
 #ifndef _aimu_lsm6ds33_v2_msgids_h_
 #define _aimu_lsm6ds33_v2_msgids_h_
 
-#define AIMU_LSM6DS33_V2_CMD_MID            	0x1882
-#define AIMU_LSM6DS33_V2_SEND_HK_MID        	0x1883
-#define AIMU_LSM6DS33_V2_HK_TLM_MID		0x0883
+#define AIMU_LSM6DS33_V2_CMD_MID            	0x18B4
+#define AIMU_LSM6DS33_V2_SEND_HK_MID        	0x18B5
+#define AIMU_LSM6DS33_V2_HK_TLM_MID		0x8B5
 
-#endif /* _sample_app_msgids_h_ */
+#endif /* _aimu_lsm6ds33_v2_msgids_h_ */
 
 /************************/
 /*  End of File Comment */

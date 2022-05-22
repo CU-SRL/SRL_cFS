@@ -18,10 +18,10 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: sample_app_msg.h 
+** File: aimu_lsm6ds33_v2_msg.h 
 **
 ** Purpose: 
-**  Define SAMPLE App  Messages and info
+**  Define LSM6DS33_V2  Messages and info
 **
 ** Notes:
 **
@@ -31,10 +31,12 @@
 #define _aimu_lsm6ds33_v2_msg_h_
 
 /*
-** SAMPLE App command codes
+** LSM6DS33_V2 command codes
 */
 #define AIMU_LSM6DS33_V2_NOOP_CC                 0
 #define AIMU_LSM6DS33_V2_RESET_COUNTERS_CC       1
+#define AIMU_LSM6DS33_V2_INIT                    2
+#define AIMU_LSM6DS33_V2_PROCESS                 3
 
 /*************************************************************************/
 /*
@@ -48,20 +50,29 @@ typedef struct
 
 /*************************************************************************/
 /*
-** Type definition (SAMPLE App housekeeping)
+** Type definition (LSM6DS33_V2 housekeeping)
 */
 typedef struct 
 {
     uint8              TlmHeader[CFE_SB_TLM_HDR_SIZE];
     uint8              aimu_lsm6ds33_v2_command_error_count;
     uint8              aimu_lsm6ds33_v2_command_count;
+    uint8              aimu_lsm6ds33_v2_device_error_count;
     uint8              spare[2];
 
 }   OS_PACK aimu_lsm6ds33_v2_hk_tlm_t;
 
-#define AIMU_LSM6DS33_V2_HK_TLM_LNGTH   sizeof ( aimu_lsm6ds33_v2_hk_tlm_t )
+typedef struct 
+{
+    uint8               TlmHeader[CFE_SB_TLM_HDR_SIZE];
+    // data specs (tbd)
 
-#endif /* _sample_app_msg_h_ */
+}   OS_PACK aimu_lsm6ds33_v2_data_tlm_t  ;
+
+#define AIMU_LSM6DS33_V2_HK_TLM_LNGTH   sizeof ( aimu_lsm6ds33_v2_hk_tlm_t )
+#define AIMU_LSM6DS33_V2_DATA_TLM_LNGTH sizeof ( aimu_lsm6ds33_v2_data_tlm_t )
+
+#endif /* _lsm6ds33_v2_msg_h_ */
 
 /************************/
 /*  End of File Comment */

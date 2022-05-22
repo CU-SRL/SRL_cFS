@@ -45,10 +45,18 @@
 /***********************************************************************/
 
 #define AIMU_LSM6DS33_V2_PIPE_DEPTH                     32
+#define AIMU_LSM6DS33_V2_I2C_BUFFER                     /* fill */
 
 /************************************************************************
 ** Type Definitions
 *************************************************************************/
+
+typedef struct
+{
+    uint8_t status[1];
+    uint8_t buffer[AIMU_LSM6DS33_V2_I2C_BUFFER];
+}   AIMU_LSM6DS33_V2_DATA;
+
 
 /****************************************************************************/
 /*
@@ -59,8 +67,10 @@
 */
 void AIMU_LSM6DS33_V2_AppMain(void);
 void AIMU_LSM6DS33_V2_AppInit(void);
+void AIMU_LSM6DS33_V2_DeviceInit(int i2cbus, aimu_lsm6ds33_v2_hk_tlm_t* AIMU_LSM6DS33_V2_HkTelemetryPkt);
 void AIMU_LSM6DS33_V2_ProcessCommandPacket(void);
 void AIMU_LSM6DS33_V2_ProcessGroundCommand(void);
+void AIMU_LSM6DS33_V2_ProcessDataPacket(int i2cbus, aimu_lsm6ds33_v2_hk_tlm_t* AIMU_LSM6DS33_V2_HkTelemetryPkt, aimu_lsm6ds33_v2_data_tlm_t* AIMU_LSM6DS33_V2_DataTelemetryPkt);
 void AIMU_LSM6DS33_V2_ReportHousekeeping(void);
 void AIMU_LSM6DS33_V2_ResetCounters(void);
 

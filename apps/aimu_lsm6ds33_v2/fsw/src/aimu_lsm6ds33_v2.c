@@ -18,10 +18,10 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: sample_app.c
+** File: aimu_lsm6ds33_v2.c
 **
 ** Purpose:
-**   This file contains the source code for the Sample App.
+**   This file contains the source code for the LSM6DS33_V2 app.
 **
 *******************************************************************************/
 
@@ -36,11 +36,18 @@
 #include "aimu_lsm6ds33_v2_events.h"
 #include "aimu_lsm6ds33_v2_version.h"
 
+#include "i2c_lib.h"
+
+#define AIMU_LSM6DS33_V2_I2C_ADDR  110101xb
+#define AIMU_LSM6DS33_V2_CTRL1_XL  /* fill */
+#define AIMU_LSM6DS33_V2_CTRL2_G   /* fill */
+#define AIMU_LSM6DS33_V2_STATUS    /* fill */
 /*
 ** global data
 */
 
 aimu_lsm6ds33_v2_hk_tlm_t    AIMU_LSM6DS33_V2_HkTelemetryPkt;
+aimu_lsm6ds33_v2_data_tlm_t  AIMU_LSM6DS33_V2_DataTelemetryPkt;
 CFE_SB_PipeId_t    AIMU_LSM6DS33_V2_CommandPipe;
 CFE_SB_MsgPtr_t    AIMU_LSM6DS33_V2MsgPtr;
 
@@ -53,7 +60,7 @@ static CFE_EVS_BinFilter_t  AIMU_LSM6DS33_V2_EventFilters[] =
        };
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/* SAMPLE_AppMain() -- Application entry point and main process loop          */
+/* LSM6DS33_V2_AppMain() -- Application entry point and main process loop          */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  * *  * * * * **/
 void AIMU_LSM6DS33_V2_AppMain( void )
@@ -64,6 +71,9 @@ void AIMU_LSM6DS33_V2_AppMain( void )
     CFE_ES_PerfLogEntry(AIMU_LSM6DS33_V2_PERF_ID);
 
     AIMU_LSM6DS33_V2_AppInit();
+
+    //initializes lsm6ds33 device
+    AIMU_LSM6DS33_V2_DeviceInit(/* i2cbus */, &AIMU_LSM6DS33_V2_HkTelemetryPkt);
 
     /*
     ** SAMPLE Runloop
@@ -76,6 +86,9 @@ void AIMU_LSM6DS33_V2_AppMain( void )
         status = CFE_SB_RcvMsg(&AIMU_LSM6DS33_V2MsgPtr, AIMU_LSM6DS33_V2_CommandPipe, 500);
         
         CFE_ES_PerfLogEntry(AIMU_LSM6DS33_V2_PERF_ID);
+
+        // collects, processes, and sends data after app performance is logged
+        AIMU_LSM6DS33_V2_ProcessData(/* i2cbus */, &AIMU_LSM6DS33_V2_HkTelemetryPkt, &AIMU_LSM6DS33_V2_DataTelemetryPkt);
 
         if (status == CFE_SUCCESS)
         {
@@ -129,6 +142,79 @@ void AIMU_LSM6DS33_V2_AppInit(void)
                 AIMU_LSM6DS33_V2_MISSION_REV);
 				
 } /* End of SAMPLE_AppInit() */
+
+/**
+ * @brief initilizes lsm6ds33 device
+ * 
+ * @param i2cbus used for specifying path (name) of i2c buffer
+ * @param AIMU_LSM6DS33_HkTelemetryPkt empty housekeeping telemetry packet to be updated
+ */
+
+void AIMU_LSM6DS33_V2_DeviceInit(int i2cbus, aimu_lsm6ds33_v2_hk_tlm_t* AIMU_LSM6DS33_V2_HkTelemetryPkt)
+{
+    
+        // modify last two bits of the slave address to correct functionality
+
+	int file = I2C_open(i2cbus, AIMU_LSM6DS33_V2_I2C_ADDR);
+
+	if(!I2C_write(file, AIMU_LSM6DS33_V2_I2C_ADDR, /* fill */))
+	{
+		CFE_EVS_SendEvent(AIMU_LSM6DS33_V2_ACTIVATION_FAILURE_EID, CFE_EVS_EventType_ERROR,
+           "Failed to switch Accel to active...  ");
+        AIMU_LSM6DS33_V2_HkTelemetryPkt->aimu_lsm6ds33_v2_device_error_count++;
+
+		return false;
+	}
+
+	if(!I2C_write(file, AIMU_LSM6DS33_V2_I2C_ADDR, /* fill */))
+	{
+		CFE_EVS_SendEvent(AIMU_LSM6DS33_V2_ACTIVATION_FAILURE_EID, CFE_EVS_EventType_ERROR,
+           "Failed to switch Gyro to active...  ");
+        AIMU_LSM6DS33_V2_HkTelemetryPkt->aimu_lsm6ds33_v2_device_error_count++;
+
+		return false;
+	} 
+
+	I2C_close(file);
+
+	return true;
+}
+
+/**
+ * @brief collects and send data from lsm6ds33 device
+ * 
+ * @param i2cbus used for specifying path (name) of i2c buffer
+ * @param AIMU_LSM6DS33_HkTelemetryPkt housekeeping telemetry path to be updated
+ * @param AIMU_LSM6DS33_DataTelemetryPkt data telemetry path to be updated
+ */
+
+void AIMU_LSM6DS33_V2_ProcessDataPacket(int i2cbus, aimu_lsm6ds33_v2_hk_tlm_t* AIMU_LSM6DS33_HkTelemetryPkt, 
+    aimu_lsm6ds33_v2_data_tlm_t* AIMU_LSM6DS33_DataTelemetryPkt)
+{
+
+    // modify last two bits of the slave address to correct functionality
+	
+    int file = I2C_open(i2cbus, AIMU_LSM6DS33_V2_I2C_ADDR);
+
+    I2C_read(i2cbus, AIMU_LSM6DS33_V2_I2C_ADDR, AIMU_LSM6DS33_V2_STATUS, 1, AIMU_LSM6DS33_V2_DATA.status);
+
+    if(!I2C_read(file, AIMU_LSM6DS33_OUTX_L_G, 12, AIMU_LSM6DS33.buffer)) {
+        CFE_EVS_SendEvent(...);
+        AIMU_LSM6DS33_V2_HkTelemetryPkt.aimu_lsm6ds33_v2_device_error_count++;
+        return;
+    }
+
+    
+	
+    
+
+    CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &AIMU_LSM6DS33_DataTelemetryPkt);
+    CFE_SB_SendMsg((CFE_SB_Msg_t *) &AIMU_LSM6DS33_DataTelemetryPkt);
+
+	// Close the I2C Buffer
+	I2C_close(file);
+}
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 /*  Name:  SAMPLE_ProcessCommandPacket                                        */
@@ -236,6 +322,7 @@ void AIMU_LSM6DS33_V2_ResetCounters(void)
 
 } /* End of SAMPLE_ResetCounters() */
 
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 /*                                                                            */
 /* SAMPLE_VerifyCmdLength() -- Verify command packet length                   */
@@ -265,4 +352,3 @@ bool AIMU_LSM6DS33_V2_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength
     return(result);
 
 } /* End of SAMPLE_VerifyCmdLength() */
-

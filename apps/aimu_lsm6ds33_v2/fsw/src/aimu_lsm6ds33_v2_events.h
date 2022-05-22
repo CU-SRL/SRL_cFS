@@ -18,10 +18,10 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: sample_app_events.h 
+** File: aimu_lsm6ds33_v2_events.h 
 **
 ** Purpose: 
-**  Define SAMPLE App Events IDs
+**  Define LSM6DS33_V2 Events IDs
 **
 ** Notes:
 **
@@ -39,7 +39,13 @@
 #define AIMU_LSM6DS33_V2_INVALID_MSGID_ERR_EID     5 
 #define AIMU_LSM6DS33_V2_LEN_ERR_EID               6 
 
-#endif /* _sample_app_events_h_ */
+/**
+ * LSM6DS33 Specific Events (in progress)
+ */
+
+#define AIMU_LSM6DS33_V2_ACTIVATION_FAILURE_EID        7
+
+#endif /* _aimu_lsm6ds33_v2_events_h_ */
 
 /************************/
 /*  End of File Comment */

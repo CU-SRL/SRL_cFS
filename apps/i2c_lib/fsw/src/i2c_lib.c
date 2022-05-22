@@ -31,6 +31,7 @@
 #include "i2c_lib.h"
 #include "i2c_lib_version.h"
 
+
 /*************************************************************************
 ** Macro Definitions
 *************************************************************************/
@@ -85,39 +86,27 @@ int I2C_Sample_Function( void )
 /* I2C_open() -- This function opens the I2C device, and returns file         */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
+
+
 int I2C_open(int I2CBus, uint8_t addr)
 {
-	// Declare I2C device name char array
-	char i2cbuf[MAX_BUS];
+   
+   char i2cbuf[MAX_BUS];
+   snprintf(i2cbuf, sizeof(i2cbuf), "/dev/i2c-%d", I2CBus);
 
-	// Assign I2C device bus name
-	snprintf(i2cbuf, sizeof(i2cbuf), "/dev/i2c-%d", I2CBus);
+   int file;
 
-	// Declare File Variable
-	int file;
-
-	// Open the I2C Device
-	if ((file = open(i2cbuf, O_RDWR)) < 0)
-	{
-        CFE_EVS_SendEvent(I2C_OPEN_I2C_BUS_ERR_EID, CFE_EVS_EventType_ERROR,
-           "Failed to open I2C BUS %d", I2CBus);
-        //I2C_HkTelemetryPkt.i2c_error_count++;
-
+   if ((file = open(i2cbuf, O_RDWR)) < 0) {
+        char err[200];
+        sprintf(err, "open('%s') in i2c_init", i2cbuf);
+        perror(err);
         return -1;
-	}
+    }
 
-	// Open IO operation
-	if(ioctl(file, I2C_SLAVE, addr) < 0)
-	{
-        CFE_EVS_SendEvent(I2C_OPEN_SLAVE_ERR_EID, CFE_EVS_EventType_ERROR,
-           "I2C_SLAVE address %X failed... ", addr);
-        //I2C_HkTelemetryPkt.i2c_error_count++;
-        
-        return -1;
-	}
+    return file;
 
-	// Return the file if successful
-	return file;
+
+
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
@@ -138,20 +127,36 @@ void I2C_close(int file)
 /*                  for the register.                                         */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
-bool I2C_write(int file, uint8_t reg, uint8_t val)
-{
-	uint8_t write_buf[2] = { reg, val };
-	if (write(file, write_buf, 2) != 2)
-	{
-        CFE_EVS_SendEvent(I2C_WRITE_REGISTER_ERR_EID, CFE_EVS_EventType_ERROR,
-           "Error failed to write to register %X! ", reg);
-        //I2C_HkTelemetryPkt.i2c_error_count++;
-        
-		return false;
-	}
 
-	// If not, return succeeded
-	return true;
+// with this update, the other apps would need to change
+// instead of writing the file, we need to write their address
+
+bool I2C_write(int file, uint8_t slave_addr, uint8_t reg, uint8_t val)
+{
+   uint8_t buffer[2];
+
+    struct i2c_msg msgs[1];
+    struct i2c_rdwr_ioctl_data msgset[1];
+
+    buffer[0] = reg;
+    buffer[1] = val;
+
+    msgs[0].addr = slave_addr;
+    msgs[0].flags = 0;
+    msgs[0].len = 2;
+    msgs[0].buf = buffer;
+
+    msgset[0].msgs = msgs;
+    msgset[0].nmsgs = 1;
+
+    if (ioctl(file, I2C_RDWR, &msgset) < 0) {
+      CFE_EVS_SendEvent(I2C_WRITE_REGISTER_ERR_EID, CFE_EVS_EventType_ERROR, 
+         "Error failed to write to register %X! ", reg);
+      return -1;
+    }
+
+    return 0;
+
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
@@ -159,36 +164,44 @@ bool I2C_write(int file, uint8_t reg, uint8_t val)
 /* I2C_read() -- Reads the specified registers                                */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
-bool I2C_read(int file, uint8_t reg, unsigned int byte_count, uint8_t *buffer)
+bool I2C_read(int file, uint8_t slave_addr, uint8_t reg, unsigned int byte_count, uint8_t *buffer)
 {
-	// Make sure the buffer is declared
-	if (!buffer)
+   if (!buffer)
 	{
 		return false;
 	}
 
-	// Write to the register we want to read from
-	if(!I2C_write(file, reg, 1))
-	{
-        CFE_EVS_SendEvent(I2C_WRITE_REGISTER_ERR_EID, CFE_EVS_EventType_ERROR,
-           "Failed to write to register %X for reading... ", reg);
-        //I2C_HkTelemetryPkt.i2c_error_count++;
+   uint8_t outbuf[1], inbuf[1];
+   struct i2c_msg msgs[2];
+   struct i2c_rdwr_ioctl_data msgset[1];
 
-		return false;
-	}
+   msgs[0].addr = slave_addr;
+    msgs[0].flags = 0;
+    msgs[0].len = 1;
+    msgs[0].buf = outbuf;
 
-	// Read the specific number of bytes
-	if(read(file, buffer, byte_count) != byte_count)
-	{
+    msgs[1].addr = slave_addr;
+    msgs[1].flags = I2C_M_RD | I2C_M_NOSTART;
+    msgs[1].len = 1;
+    msgs[1].buf = inbuf;
+
+    msgset[0].msgs = msgs;
+    msgset[0].nmsgs = 2;
+
+    outbuf[0] = reg;
+
+    inbuf[0] = 0;
+
+    *buffer = 0;
+    if (ioctl(file, I2C_RDWR, &msgset) < 0) {
         CFE_EVS_SendEvent(I2C_REGISTER_READ_ERR_EID, CFE_EVS_EventType_ERROR,
            "Failed to read from %d registers... ", byte_count);
         //I2C_HkTelemetryPkt.i2c_error_count++;
+        return -1;
+    }
 
-		return false;
-	}
-
-	// Return true if succeeded
-	return true;
+    *buffer = inbuf[0];
+    return 0;
 }
 
 /************************/
