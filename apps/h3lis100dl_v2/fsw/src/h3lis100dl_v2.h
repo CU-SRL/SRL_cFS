@@ -26,8 +26,8 @@
 **
 *******************************************************************************/
 
-#ifndef _sample_app_h_
-#define _sample_app_h_
+#ifndef _h3lis100dl_v2_h_
+#define _h3lis100dl_v2_h_
 
 /*
 ** Required header files.
@@ -44,7 +44,7 @@
 
 /***********************************************************************/
 
-#define SAMPLE_PIPE_DEPTH                     32
+#define H3LIS100DL_V2_PIPE_DEPTH                     32
 
 /************************************************************************
 ** Type Definitions
@@ -57,13 +57,13 @@
 ** Note: Except for the entry point (SAMPLE_AppMain), these
 **       functions are not called from any other source module.
 */
-void SAMPLE_AppMain(void);
-void SAMPLE_AppInit(void);
-void SAMPLE_ProcessCommandPacket(void);
-void SAMPLE_ProcessGroundCommand(void);
-void SAMPLE_ReportHousekeeping(void);
-void SAMPLE_ResetCounters(void);
+void H3LIS100DL_V2_AppMain(void);
+void H3LIS100DL_V2_AppInit(void);
+void H3LIS100DL_V2_ProcessCommandPacket(void);
+void H3LIS100DL_V2_ProcessGroundCommand(void);
+void H3LIS100DL_V2_ReportHousekeeping(void);
+void H3LIS100DL_V2_ResetCounters(void);
 
-bool SAMPLE_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength);
+bool H3LIS100DL_V2_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength);
 
 #endif /* _sample_app_h_ */

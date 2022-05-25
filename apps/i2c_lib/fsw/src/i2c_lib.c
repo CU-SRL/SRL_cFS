@@ -88,7 +88,7 @@ int I2C_Sample_Function( void )
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 
 
-int I2C_open(int I2CBus, uint8_t addr)
+int I2C_open(int I2CBus)
 {
    
    char i2cbuf[MAX_BUS];

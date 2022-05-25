@@ -38,7 +38,14 @@
 
 #include "i2c_lib.h"
 
-#define AIMU_LSM6DS33_V2_I2C_ADDR  110101xb
+/**
+ * change bit 7 based on SDO/SA0 pin
+ * if SAD[0] = SA0, 0, else if 1
+*/
+#define AIMU_LSM6DS33_V2_SAD_READ       0xD7 /* this is conncted to supply voltage (default) */
+/* if connected to ground: D5 */
+#define AIMU_LSM6DS33_V2_SAD_WRITE       0xD6 /* this is conncted to supply voltage (default) */
+/* if connected to ground: D4 */
 #define AIMU_LSM6DS33_V2_CTRL1_XL  /* fill */
 #define AIMU_LSM6DS33_V2_CTRL2_G   /* fill */
 #define AIMU_LSM6DS33_V2_STATUS    /* fill */
@@ -127,12 +134,17 @@ void AIMU_LSM6DS33_V2_AppInit(void)
     CFE_SB_CreatePipe(&AIMU_LSM6DS33_V2_CommandPipe, AIMU_LSM6DS33_V2_PIPE_DEPTH,"AIMU_LSM6DS33_V2_CMD_PIPE");
     CFE_SB_Subscribe(AIMU_LSM6DS33_V2_CMD_MID, AIMU_LSM6DS33_V2_CommandPipe);
     CFE_SB_Subscribe(AIMU_LSM6DS33_V2_SEND_HK_MID, AIMU_LSM6DS33_V2_CommandPipe);
+    CFE_SB_Subscribe(AIMU_LSM6DS33_V2_SEND_DATA_MID, AIMU_LSM6DS33_V2_CommandPipe);
 
     AIMU_LSM6DS33_V2_ResetCounters();
 
     CFE_SB_InitMsg(&AIMU_LSM6DS33_V2_HkTelemetryPkt,
                    AIMU_LSM6DS33_V2_HK_TLM_MID,
                    AIMU_LSM6DS33_V2_HK_TLM_LNGTH, true);
+
+    CFE_SB_InitMsg(&AIMU_LSM6DS33_V2_DataTelemetryPkt,
+                   AIMU_LSM6DS33_V2_DATA_TLM_MID,
+                   AIMU_LSM6DS33_V2_DATA_TLM_LNGTH, true);
 
     CFE_EVS_SendEvent (AIMU_LSM6DS33_V2_STARTUP_INF_EID, CFE_EVS_EventType_INFORMATION,
                "AIMU_LSM6DS33_V2 App Initialized. Version %d.%d.%d.%d",
@@ -144,7 +156,7 @@ void AIMU_LSM6DS33_V2_AppInit(void)
 } /* End of SAMPLE_AppInit() */
 
 /**
- * @brief initilizes lsm6ds33 device
+ * @brief initilizes lsm6ds33 device, opening a file and writing to a register
  * 
  * @param i2cbus used for specifying path (name) of i2c buffer
  * @param AIMU_LSM6DS33_HkTelemetryPkt empty housekeeping telemetry packet to be updated
@@ -152,12 +164,11 @@ void AIMU_LSM6DS33_V2_AppInit(void)
 
 void AIMU_LSM6DS33_V2_DeviceInit(int i2cbus, aimu_lsm6ds33_v2_hk_tlm_t* AIMU_LSM6DS33_V2_HkTelemetryPkt)
 {
-    
-        // modify last two bits of the slave address to correct functionality
 
-	int file = I2C_open(i2cbus, AIMU_LSM6DS33_V2_I2C_ADDR);
+	int file = I2C_open(i2cbus);
 
-	if(!I2C_write(file, AIMU_LSM6DS33_V2_I2C_ADDR, /* fill */))
+
+	if(!I2C_write(file, AIMU_LSM6DS33_V2_SAD_WRITE, /* fill */))
 	{
 		CFE_EVS_SendEvent(AIMU_LSM6DS33_V2_ACTIVATION_FAILURE_EID, CFE_EVS_EventType_ERROR,
            "Failed to switch Accel to active...  ");
@@ -166,14 +177,14 @@ void AIMU_LSM6DS33_V2_DeviceInit(int i2cbus, aimu_lsm6ds33_v2_hk_tlm_t* AIMU_LSM
 		return false;
 	}
 
-	if(!I2C_write(file, AIMU_LSM6DS33_V2_I2C_ADDR, /* fill */))
+	if(!I2C_write(file, AIMU_LSM6DS33_V2_SAD_WRITE, /* fill */))
 	{
 		CFE_EVS_SendEvent(AIMU_LSM6DS33_V2_ACTIVATION_FAILURE_EID, CFE_EVS_EventType_ERROR,
            "Failed to switch Gyro to active...  ");
         AIMU_LSM6DS33_V2_HkTelemetryPkt->aimu_lsm6ds33_v2_device_error_count++;
 
 		return false;
-	} 
+	}
 
 	I2C_close(file);
 
@@ -181,7 +192,7 @@ void AIMU_LSM6DS33_V2_DeviceInit(int i2cbus, aimu_lsm6ds33_v2_hk_tlm_t* AIMU_LSM
 }
 
 /**
- * @brief collects and send data from lsm6ds33 device
+ * @brief reads from relevant registers, and sends data down software bus
  * 
  * @param i2cbus used for specifying path (name) of i2c buffer
  * @param AIMU_LSM6DS33_HkTelemetryPkt housekeeping telemetry path to be updated
@@ -191,12 +202,10 @@ void AIMU_LSM6DS33_V2_DeviceInit(int i2cbus, aimu_lsm6ds33_v2_hk_tlm_t* AIMU_LSM
 void AIMU_LSM6DS33_V2_ProcessDataPacket(int i2cbus, aimu_lsm6ds33_v2_hk_tlm_t* AIMU_LSM6DS33_HkTelemetryPkt, 
     aimu_lsm6ds33_v2_data_tlm_t* AIMU_LSM6DS33_DataTelemetryPkt)
 {
-
-    // modify last two bits of the slave address to correct functionality
 	
-    int file = I2C_open(i2cbus, AIMU_LSM6DS33_V2_I2C_ADDR);
+    int file = I2C_open(i2cbus);
 
-    I2C_read(i2cbus, AIMU_LSM6DS33_V2_I2C_ADDR, AIMU_LSM6DS33_V2_STATUS, 1, AIMU_LSM6DS33_V2_DATA.status);
+    I2C_read(i2cbus, AIMU_LSM6DS33_V2_SAD_READ, AIMU_LSM6DS33_V2_STATUS, 1, AIMU_LSM6DS33_V2_DATA.status);
 
     if(!I2C_read(file, AIMU_LSM6DS33_OUTX_L_G, 12, AIMU_LSM6DS33.buffer)) {
         CFE_EVS_SendEvent(...);

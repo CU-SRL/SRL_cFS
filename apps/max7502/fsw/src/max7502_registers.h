@@ -13,7 +13,9 @@
 //                  MAX7502 Registers
 //-------------------------------------------------------
 
+/* 01001000 */
 #define MAX7502_1_I2C_ADDR                 0x48 /*! I2C address */
+/* 01001010 */
 #define MAX7502_2_I2C_ADDR                 0x4A /*! I2C address */
 #define MAX7502_AMBIENT_TEMP               0x00 /*! 9 to 12 bit temperature output */
 #define MAX7502_CONFIG                     0x01 /*! Configuration Register */

@@ -29,57 +29,57 @@
 **   Include Files:
 */
 
-#include "sample_app.h"
-#include "sample_app_perfids.h"
-#include "sample_app_msgids.h"
-#include "sample_app_msg.h"
-#include "sample_app_events.h"
-#include "sample_app_version.h"
+#include "h3lis100dl_v2.h"
+#include "../mission_inc/h3lis100dl_v2_perfids.h"
+#include "../platform_inc/h3lis100dl_v2_msgids.h"
+#include "h3lis100dl_v2_msg.h"
+#include "h3lis100dl_v2_events.h"
+#include "h3lis100dl_v2_version.h"
 
 /*
 ** global data
 */
 
-sample_hk_tlm_t    SAMPLE_HkTelemetryPkt;
-CFE_SB_PipeId_t    SAMPLE_CommandPipe;
-CFE_SB_MsgPtr_t    SAMPLEMsgPtr;
+h3lis100dl_v2_hk_tlm_t    H3LIS100DL_V2_HkTelemetryPkt;
+CFE_SB_PipeId_t    H3LIS100DL_V2_CommandPipe;
+CFE_SB_MsgPtr_t    H3LIS100DL_V2MsgPtr;
 
-static CFE_EVS_BinFilter_t  SAMPLE_EventFilters[] =
+static CFE_EVS_BinFilter_t  H3LIS100DL_V2_EventFilters[] =
        {  /* Event ID    mask */
-          {SAMPLE_STARTUP_INF_EID,       0x0000},
-          {SAMPLE_COMMAND_ERR_EID,       0x0000},
-          {SAMPLE_COMMANDNOP_INF_EID,    0x0000},
-          {SAMPLE_COMMANDRST_INF_EID,    0x0000},
+          {H3LIS100DL_V2_STARTUP_INF_EID,       0x0000},
+          {H3LIS100DL_V2_COMMAND_ERR_EID,       0x0000},
+          {H3LIS100DL_V2_COMMANDNOP_INF_EID,    0x0000},
+          {H3LIS100DL_V2_COMMANDRST_INF_EID,    0x0000},
        };
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /* SAMPLE_AppMain() -- Application entry point and main process loop          */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  * *  * * * * **/
-void SAMPLE_AppMain( void )
+void H3LIS100DL_V2_AppMain( void )
 {
     int32  status;
     uint32 RunStatus = CFE_ES_RunStatus_APP_RUN;
 
-    CFE_ES_PerfLogEntry(SAMPLE_APP_PERF_ID);
+    CFE_ES_PerfLogEntry(H3LIS100DL_V2_PERF_ID);
 
-    SAMPLE_AppInit();
+    H3LIS100DL_V2_AppInit();
 
     /*
     ** SAMPLE Runloop
     */
     while (CFE_ES_RunLoop(&RunStatus) == true)
     {
-        CFE_ES_PerfLogExit(SAMPLE_APP_PERF_ID);
+        CFE_ES_PerfLogExit(H3LIS100DL_V2_PERF_ID);
 
         /* Pend on receipt of command packet -- timeout set to 500 millisecs */
-        status = CFE_SB_RcvMsg(&SAMPLEMsgPtr, SAMPLE_CommandPipe, 500);
+        status = CFE_SB_RcvMsg(&H3LIS100DL_V2MsgPtr, H3LIS100DL_V2_CommandPipe, 500);
         
-        CFE_ES_PerfLogEntry(SAMPLE_APP_PERF_ID);
+        CFE_ES_PerfLogEntry(H3LIS100DL_V2_PERF_ID);
 
         if (status == CFE_SUCCESS)
         {
-            SAMPLE_ProcessCommandPacket();
+            H3LIS100DL_V2_ProcessCommandPacket();
         }
 
     }
@@ -93,7 +93,7 @@ void SAMPLE_AppMain( void )
 /* SAMPLE_AppInit() --  initialization                                       */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
-void SAMPLE_AppInit(void)
+void H3LIS100DL_V2_AppInit(void)
 {
     /*
     ** Register the app with Executive services
@@ -103,30 +103,30 @@ void SAMPLE_AppInit(void)
     /*
     ** Register the events
     */ 
-    CFE_EVS_Register(SAMPLE_EventFilters,
-                     sizeof(SAMPLE_EventFilters)/sizeof(CFE_EVS_BinFilter_t),
+    CFE_EVS_Register(H3LIS100DL_V2_EventFilters,
+                     sizeof(H3LIS100DL_V2_EventFilters)/sizeof(CFE_EVS_BinFilter_t),
                      CFE_EVS_EventFilter_BINARY);
 
     /*
     ** Create the Software Bus command pipe and subscribe to housekeeping
     **  messages
     */
-    CFE_SB_CreatePipe(&SAMPLE_CommandPipe, SAMPLE_PIPE_DEPTH,"SAMPLE_CMD_PIPE");
-    CFE_SB_Subscribe(SAMPLE_APP_CMD_MID, SAMPLE_CommandPipe);
-    CFE_SB_Subscribe(SAMPLE_APP_SEND_HK_MID, SAMPLE_CommandPipe);
+    CFE_SB_CreatePipe(&H3LIS100DL_V2_CommandPipe, H3LIS100DL_V2_PIPE_DEPTH,"SAMPLE_CMD_PIPE");
+    CFE_SB_Subscribe(H3LIS100DL_V2_CMD_MID, H3LIS100DL_V2_CommandPipe);
+    CFE_SB_Subscribe(H3LIS100DL_V2_SEND_HK_MID, H3LIS100DL_V2_CommandPipe);
 
-    SAMPLE_ResetCounters();
+    H3LIS100DL_V2_ResetCounters();
 
-    CFE_SB_InitMsg(&SAMPLE_HkTelemetryPkt,
-                   SAMPLE_APP_HK_TLM_MID,
-                   SAMPLE_APP_HK_TLM_LNGTH, true);
+    CFE_SB_InitMsg(&H3LIS100DL_V2_HkTelemetryPkt,
+                   H3LIS100DL_V2_HK_TLM_MID,
+                   H3LIS100DL_V2_HK_TLM_LNGTH, true);
 
-    CFE_EVS_SendEvent (SAMPLE_STARTUP_INF_EID, CFE_EVS_EventType_INFORMATION,
-               "SAMPLE App Initialized. Version %d.%d.%d.%d",
-                SAMPLE_APP_MAJOR_VERSION,
-                SAMPLE_APP_MINOR_VERSION, 
-                SAMPLE_APP_REVISION, 
-                SAMPLE_APP_MISSION_REV);
+    CFE_EVS_SendEvent (H3LIS100DL_V2_STARTUP_INF_EID, CFE_EVS_EventType_INFORMATION,
+               "H3LIS100DL_V2 Initialized. Version %d.%d.%d.%d",
+                H3LIS100DL_V2_MAJOR_VERSION,
+                H3LIS100DL_V2_MINOR_VERSION, 
+                H3LIS100DL_V2_REVISION, 
+                H3LIS100DL_V2_MISSION_REV);
 				
 } /* End of SAMPLE_AppInit() */
 
@@ -138,25 +138,25 @@ void SAMPLE_AppInit(void)
 /*     command pipe.                                                          */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * *  * * * * * * *  * *  * * * * */
-void SAMPLE_ProcessCommandPacket(void)
+void H3LIS100DL_V2_ProcessCommandPacket(void)
 {
     CFE_SB_MsgId_t  MsgId;
 
-    MsgId = CFE_SB_GetMsgId(SAMPLEMsgPtr);
+    MsgId = CFE_SB_GetMsgId(H3LIS100DL_V2MsgPtr);
 
     switch (MsgId)
     {
-        case SAMPLE_APP_CMD_MID:
-            SAMPLE_ProcessGroundCommand();
+        case H3LIS100DL_V2_CMD_MID:
+            H3LIS100DL_V2_ProcessGroundCommand();
             break;
 
-        case SAMPLE_APP_SEND_HK_MID:
-            SAMPLE_ReportHousekeeping();
+        case H3LIS100DL_V2_SEND_HK_MID:
+            H3LIS100DL_V2_ReportHousekeeping();
             break;
 
         default:
-            SAMPLE_HkTelemetryPkt.sample_command_error_count++;
-            CFE_EVS_SendEvent(SAMPLE_COMMAND_ERR_EID,CFE_EVS_EventType_ERROR,
+            H3LIS100DL_V2_HkTelemetryPkt.h3lis100dl_v2_command_error_count++;
+            CFE_EVS_SendEvent(H3LIS100DL_V2_COMMAND_ERR_EID,CFE_EVS_EventType_ERROR,
 			"SAMPLE: invalid command packet,MID = 0x%x", MsgId);
             break;
     }
@@ -171,24 +171,24 @@ void SAMPLE_ProcessCommandPacket(void)
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 
-void SAMPLE_ProcessGroundCommand(void)
+void H3LIS100DL_V2_ProcessGroundCommand(void)
 {
     uint16 CommandCode;
 
-    CommandCode = CFE_SB_GetCmdCode(SAMPLEMsgPtr);
+    CommandCode = CFE_SB_GetCmdCode(H3LIS100DL_V2MsgPtr);
 
     /* Process "known" SAMPLE app ground commands */
     switch (CommandCode)
     {
-        case SAMPLE_APP_NOOP_CC:
-            SAMPLE_HkTelemetryPkt.sample_command_count++;
-            CFE_EVS_SendEvent(SAMPLE_COMMANDNOP_INF_EID,
+        case H3LIS100DL_V2_NOOP_CC:
+            H3LIS100DL_V2_HkTelemetryPkt.h3lis100dl_v2_command_count++;
+            CFE_EVS_SendEvent(H3LIS100DL_V2_COMMANDNOP_INF_EID,
                         CFE_EVS_EventType_INFORMATION,
-			"SAMPLE: NOOP command");
+			"H3LIS100DL_V2: NOOP command");
             break;
 
-        case SAMPLE_APP_RESET_COUNTERS_CC:
-            SAMPLE_ResetCounters();
+        case H3LIS100DL_V2_RESET_COUNTERS_CC:
+            H3LIS100DL_V2_ResetCounters();
             break;
 
         /* default case already found during FC vs length test */
@@ -208,10 +208,10 @@ void SAMPLE_ProcessGroundCommand(void)
 /*         telemetry, packetize it and send it to the housekeeping task via   */
 /*         the software bus                                                   */
 /* * * * * * * * * * * * * * * * * * * * * * * *  * * * * * * *  * *  * * * * */
-void SAMPLE_ReportHousekeeping(void)
+void H3LIS100DL_V2_ReportHousekeeping(void)
 {
-    CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &SAMPLE_HkTelemetryPkt);
-    CFE_SB_SendMsg((CFE_SB_Msg_t *) &SAMPLE_HkTelemetryPkt);
+    CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &H3LIS100DL_V2_HkTelemetryPkt);
+    CFE_SB_SendMsg((CFE_SB_Msg_t *) &H3LIS100DL_V2_HkTelemetryPkt);
     return;
 
 } /* End of SAMPLE_ReportHousekeeping() */
@@ -224,14 +224,14 @@ void SAMPLE_ReportHousekeeping(void)
 /*         part of the task telemetry.                                        */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * *  * * * * * * *  * *  * * * * */
-void SAMPLE_ResetCounters(void)
+void H3LIS100DL_V2_ResetCounters(void)
 {
     /* Status of commands processed by the SAMPLE App */
-    SAMPLE_HkTelemetryPkt.sample_command_count       = 0;
-    SAMPLE_HkTelemetryPkt.sample_command_error_count = 0;
+    H3LIS100DL_V2_HkTelemetryPkt.h3lis100dl_v2_command_count       = 0;
+    H3LIS100DL_V2_HkTelemetryPkt.h3lis100dl_v2_command_error_count = 0;
 
-    CFE_EVS_SendEvent(SAMPLE_COMMANDRST_INF_EID, CFE_EVS_EventType_INFORMATION,
-		"SAMPLE: RESET command");
+    CFE_EVS_SendEvent(H3LIS100DL_V2_COMMANDRST_INF_EID, CFE_EVS_EventType_INFORMATION,
+		"H3LIS100DL_V2: RESET command");
     return;
 
 } /* End of SAMPLE_ResetCounters() */
@@ -241,7 +241,7 @@ void SAMPLE_ResetCounters(void)
 /* SAMPLE_VerifyCmdLength() -- Verify command packet length                   */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
-bool SAMPLE_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength)
+bool H3LIS100DL_V2_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength)
 {     
     bool result = true;
 
@@ -255,11 +255,11 @@ bool SAMPLE_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength)
         CFE_SB_MsgId_t MessageID   = CFE_SB_GetMsgId(msg);
         uint16         CommandCode = CFE_SB_GetCmdCode(msg);
 
-        CFE_EVS_SendEvent(SAMPLE_LEN_ERR_EID, CFE_EVS_EventType_ERROR,
+        CFE_EVS_SendEvent(H3LIS100DL_V2_LEN_ERR_EID, CFE_EVS_EventType_ERROR,
            "Invalid msg length: ID = 0x%X,  CC = %d, Len = %d, Expected = %d",
               MessageID, CommandCode, ActualLength, ExpectedLength);
         result = false;
-        SAMPLE_HkTelemetryPkt.sample_command_error_count++;
+        H3LIS100DL_V2_HkTelemetryPkt.h3lis100dl_v2_command_error_count++;
     }
 
     return(result);

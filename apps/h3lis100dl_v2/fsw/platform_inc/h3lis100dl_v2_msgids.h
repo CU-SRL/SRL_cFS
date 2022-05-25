@@ -27,12 +27,14 @@
 **
 **
 *************************************************************************/
-#ifndef _sample_app_msgids_h_
-#define _sample_app_msgids_h_
+#ifndef _h3lis100dl_v2_msgids_h_
+#define _h3lis100dl_v2_msgids_h_
 
-#define SAMPLE_APP_CMD_MID            	0x1882
-#define SAMPLE_APP_SEND_HK_MID        	0x1883
-#define SAMPLE_APP_HK_TLM_MID		0x0883
+// unique MIDs still need to be picked, these are unchanged from sample app
+
+#define H3LIS100DL_V2_CMD_MID            	0x1882
+#define H3LIS100DL_V2_SEND_HK_MID        	0x1883
+#define H3LIS100DL_V2_HK_TLM_MID		0x0883
 
 #endif /* _sample_app_msgids_h_ */
 

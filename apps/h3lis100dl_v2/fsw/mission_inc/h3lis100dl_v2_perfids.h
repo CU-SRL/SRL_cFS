@@ -26,11 +26,11 @@
 ** Notes:
 **
 *************************************************************************/
-#ifndef _h3lis100dl_v2_app_perfids_h_
-#define _sample_app_perfids_h_
+#ifndef _h3lis100dl_v2_perfids_h_
+#define _h3lis100dl_v2_perfids_h_
 
 
-#define SAMPLE_APP_PERF_ID              91 
+#define H3LIS100DL_V2_PERF_ID              91 
 
 #endif /* _sample_app_perfids_h_ */
 

@@ -32,7 +32,9 @@
 
 #define AIMU_LSM6DS33_V2_CMD_MID            	0x18B4
 #define AIMU_LSM6DS33_V2_SEND_HK_MID        	0x18B5
-#define AIMU_LSM6DS33_V2_HK_TLM_MID		0x8B5
+#define AIMU_LSM6DS33_V2_SEND_DATA_MID          0x18B6
+#define AIMU_LSM6DS33_V2_HK_TLM_MID		        0x8B5
+#define AIMU_LSM6DS33_V2_DATA_TLM_MID           0x8B6
 
 #endif /* _aimu_lsm6ds33_v2_msgids_h_ */
 

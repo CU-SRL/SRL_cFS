@@ -27,13 +27,13 @@
 **
 **
 *************************************************************************/
-#ifndef _sample_app_version_h_
-#define _sample_app_version_h_
+#ifndef _h3lis100dl_v2_version_h_
+#define _h3lis100dl_v2_version_h_
 
-#define SAMPLE_APP_MAJOR_VERSION    1
-#define SAMPLE_APP_MINOR_VERSION    1
-#define SAMPLE_APP_REVISION         0
-#define SAMPLE_APP_MISSION_REV      0
+#define H3LIS100DL_V2_MAJOR_VERSION    1
+#define H3LIS100DL_V2_MINOR_VERSION    1
+#define H3LIS100DL_V2_REVISION         0
+#define H3LIS100DL_V2_MISSION_REV      0
       
 #endif /* _sample_app_version_h_ */
 

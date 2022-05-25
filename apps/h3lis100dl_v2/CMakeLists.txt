@@ -9,4 +9,4 @@ aux_source_directory(fsw/src APP_SRC_FILES)
 # Create the app module
 
 # line commented our here for testing aimu_lsm6ds33_v2
-# add_cfe_app(CFE_H3LIS100DL_V2 ${APP_SRC_FILES})
+add_cfe_app(CFE_H3LIS100DL_V2 ${APP_SRC_FILES})
