@@ -67,7 +67,7 @@ static CFE_EVS_BinFilter_t  AIMU_LSM6DS33_V2_EventFilters[] =
        };
 
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/* LSM6DS33_V2_AppMain() -- Application entry point and main process loop          */
+/* AIMU_LSM6DS33_V2_AppMain() -- Application entry point and main process loop          */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  * *  * * * * **/
 void AIMU_LSM6DS33_V2_AppMain( void )
@@ -94,11 +94,9 @@ void AIMU_LSM6DS33_V2_AppMain( void )
         
         CFE_ES_PerfLogEntry(AIMU_LSM6DS33_V2_PERF_ID);
 
-        // collects, processes, and sends data after app performance is logged
-        AIMU_LSM6DS33_V2_ProcessData(/* i2cbus */, &AIMU_LSM6DS33_V2_HkTelemetryPkt, &AIMU_LSM6DS33_V2_DataTelemetryPkt);
-
         if (status == CFE_SUCCESS)
         {
+            // process data function called here
             AIMU_LSM6DS33_V2_ProcessCommandPacket();
         }
 
@@ -106,11 +104,11 @@ void AIMU_LSM6DS33_V2_AppMain( void )
 
     CFE_ES_ExitApp(RunStatus);
 
-} /* End of SAMPLE_AppMain() */
+} /* End of AIMU_LSM6DS33_V2_AppMain() */
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
 /*                                                                            */
-/* SAMPLE_AppInit() --  initialization                                       */
+/* AIMU_LSM6DS33_V2_AppInit() --  initialization                                       */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 void AIMU_LSM6DS33_V2_AppInit(void)
@@ -153,7 +151,7 @@ void AIMU_LSM6DS33_V2_AppInit(void)
                 AIMU_LSM6DS33_V2_REVISION, 
                 AIMU_LSM6DS33_V2_MISSION_REV);
 				
-} /* End of SAMPLE_AppInit() */
+} /* End of AIMU_LSM6DS33_V2_AppInit() */
 
 /**
  * @brief initilizes lsm6ds33 device, opening a file and writing to a register
@@ -226,7 +224,7 @@ void AIMU_LSM6DS33_V2_ProcessDataPacket(int i2cbus, aimu_lsm6ds33_v2_hk_tlm_t* A
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
-/*  Name:  SAMPLE_ProcessCommandPacket                                        */
+/*  Name:  AIMU_LSM6DS33_V2_ProcessCommandPacket                                        */
 /*                                                                            */
 /*  Purpose:                                                                  */
 /*     This routine will process any packet that is received on the SAMPLE    */
@@ -249,6 +247,10 @@ void AIMU_LSM6DS33_V2_ProcessCommandPacket(void)
             AIMU_LSM6DS33_V2_ReportHousekeeping();
             break;
 
+        case AIMU_LSM6DS33_V2_SEND_DATA_MID:
+            AIMU_LSM6DS33_V2_ProcessData(/* i2cbus */, &AIMU_LSM6DS33_V2_HkTelemetryPkt, &AIMU_LSM6DS33_V2_DataTelemetryPkt);
+            break;
+
         default:
             AIMU_LSM6DS33_V2_HkTelemetryPkt.aimu_lsm6ds33_v2_command_error_count++;
             CFE_EVS_SendEvent(AIMU_LSM6DS33_V2_COMMAND_ERR_EID,CFE_EVS_EventType_ERROR,
@@ -258,11 +260,11 @@ void AIMU_LSM6DS33_V2_ProcessCommandPacket(void)
 
     return;
 
-} /* End SAMPLE_ProcessCommandPacket */
+} /* End AIMU_LSM6DS33_V2_ProcessCommandPacket */
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 /*                                                                            */
-/* SAMPLE_ProcessGroundCommand() -- SAMPLE ground commands                    */
+/* AIMU_LSM6DS33_V2_ProcessGroundCommand() -- SAMPLE ground commands                    */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 
@@ -286,16 +288,25 @@ void AIMU_LSM6DS33_V2_ProcessGroundCommand(void)
             AIMU_LSM6DS33_V2_ResetCounters();
             break;
 
+        case AIMU_LSM6DS33_V2_INIT:
+            AIMU_LSM6DS33_V2_DeviceInit(/* i2cbus */, &AIMU_LSM6DS33_V2_HkTelemetryPkt);
+            break;
+        
+        case AIMU_LSM6DS33_V2_PROCESS:
+            AIMU_LSM6DS33_V2_ProcessData(/* i2cbus */, &AIMU_LSM6DS33_V2_HkTelemetryPkt, &AIMU_LSM6DS33_V2_DataTelemetryPkt);
+            break;
+        
+
         /* default case already found during FC vs length test */
         default:
             break;
     }
     return;
 
-} /* End of SAMPLE_ProcessGroundCommand() */
+} /* End of AIMU_LSM6DS33_V2_ProcessGroundCommand() */
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
-/*  Name:  SAMPLE_ReportHousekeeping                                              */
+/*  Name:  AIMU_LSM6DS33_V2_ReportHousekeeping                                              */
 /*                                                                            */
 /*  Purpose:                                                                  */
 /*         This function is triggered in response to a task telemetry request */
@@ -309,10 +320,10 @@ void AIMU_LSM6DS33_V2_ReportHousekeeping(void)
     CFE_SB_SendMsg((CFE_SB_Msg_t *) &AIMU_LSM6DS33_V2_HkTelemetryPkt);
     return;
 
-} /* End of SAMPLE_ReportHousekeeping() */
+} /* End of AIMU_LSM6DS33_V2_ReportHousekeeping() */
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
-/*  Name:  SAMPLE_ResetCounters                                               */
+/*  Name:  AIMU_LSM6DS33_V2_ResetCounters                                               */
 /*                                                                            */
 /*  Purpose:                                                                  */
 /*         This function resets all the global counter variables that are     */
@@ -321,7 +332,7 @@ void AIMU_LSM6DS33_V2_ReportHousekeeping(void)
 /* * * * * * * * * * * * * * * * * * * * * * * *  * * * * * * *  * *  * * * * */
 void AIMU_LSM6DS33_V2_ResetCounters(void)
 {
-    /* Status of commands processed by the SAMPLE App */
+    /* Status of commands processed by the AIMU_LSM6DS33_V2 */
     AIMU_LSM6DS33_V2_HkTelemetryPkt.aimu_lsm6ds33_v2_command_count       = 0;
     AIMU_LSM6DS33_V2_HkTelemetryPkt.aimu_lsm6ds33_v2_command_error_count = 0;
 
@@ -329,12 +340,12 @@ void AIMU_LSM6DS33_V2_ResetCounters(void)
 		"AIMU_LSM6DS33_V2: RESET command");
     return;
 
-} /* End of SAMPLE_ResetCounters() */
+} /* End of AIMU_LSM6DS33_V2_ResetCounters() */
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 /*                                                                            */
-/* SAMPLE_VerifyCmdLength() -- Verify command packet length                   */
+/* AIMU_LSM6DS33_V2_VerifyCmdLength() -- Verify command packet length                   */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 bool AIMU_LSM6DS33_V2_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength)
@@ -360,4 +371,4 @@ bool AIMU_LSM6DS33_V2_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength
 
     return(result);
 
-} /* End of SAMPLE_VerifyCmdLength() */
+} /* End of AIMU_LSM6DS33_V2_VerifyCmdLength() */
