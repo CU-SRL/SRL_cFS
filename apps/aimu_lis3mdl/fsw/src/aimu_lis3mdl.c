@@ -334,10 +334,10 @@ bool AIMU_LIS3MDL_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength)
 bool INIT_AIMU_LIS3MDL(int I2CBus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTelemetryPkt)
 {
 	// Open I2C for the device address
-	int file = I2C_open(I2CBus, AIMU_LIS3MDL_I2C_ADDR);
+	int file = I2C_open(I2CBus);
 	
 	// Place Full Scale +-12 Hz
-    if(!I2C_write(file, AIMU_LIS3MDL_CTRL_REG2, 0x40))
+    if(!I2C_write(file, AIMU_LIS3MDL_I2C_ADDR, AIMU_LIS3MDL_CTRL_REG2, 0x40))
     {
         CFE_EVS_SendEvent(AIMU_LIS3MDL_FAILED_FULL_SCALE_CHANGE, CFE_EVS_EventType_ERROR,
            "Failed to place Full Scale +-12 Hz... ");
@@ -346,7 +346,7 @@ bool INIT_AIMU_LIS3MDL(int I2CBus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTelemet
     }
 
     //  Sets UHP mode on the X/Y axes, ODR at 80 Hz and does not activate temperature sensor
-    if(!I2C_write(file, AIMU_LIS3MDL_CTRL_REG1, 0x7C))
+    if(!I2C_write(file, AIMU_LIS3MDL_I2C_ADDR, AIMU_LIS3MDL_CTRL_REG1, 0x7C))
     {
         CFE_EVS_SendEvent(AIMU_LIS3MDL_FAIL_ACTIVATE_TEMP_EID, CFE_EVS_EventType_ERROR,
            "Failed to activate the temperature sensor...  ");
@@ -356,7 +356,7 @@ bool INIT_AIMU_LIS3MDL(int I2CBus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTelemet
     }
 
     // Sets UHP mode on the Z-axis --> Big Endian data selection
-    if(!I2C_write(file, AIMU_LIS3MDL_CTRL_REG4, 0x0C))
+    if(!I2C_write(file, AIMU_LIS3MDL_I2C_ADDR, AIMU_LIS3MDL_CTRL_REG4, 0x0C))
     {
         CFE_EVS_SendEvent(AIMU_LIS3MDL_ACTIVE_ZUHP_EID, CFE_EVS_EventType_ERROR,
            "Failed to enable events on the LPS25H...  ");
@@ -384,15 +384,15 @@ bool INIT_AIMU_LIS3MDL(int I2CBus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTelemet
 void PROCESS_AIMU_LIS3MDL(int i2cbus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTelemetryPkt, aimu_lis3mdl_data_tlm_t* AIMU_LIS3MDL_DataTelemetryPkt)
 {
 	// Open the I2C Device
-	int file = I2C_open(i2cbus, AIMU_LIS3MDL_I2C_ADDR);
+	int file = I2C_open(i2cbus);
 
 	// Check for data in the STATUS register
-	I2C_read(file, AIMU_LIS3MDL_STATUS_REG, 1, AIMU_LIS3MDL.status);
+	I2C_read(file, AIMU_LIS3MDL_I2C_ADDR, AIMU_LIS3MDL_STATUS_REG, 1, AIMU_LIS3MDL.status);
 	if (AIMU_LIS3MDL.status[0] != 0) //double check this
 	{
         float scale = 2281.0; //scale factor found in datasheet (LSB/gauss)
 		// Read the Data Buffer
-		if(!I2C_read(file, AIMU_LIS3MDL_OUT_X_L, 6, AIMU_LIS3MDL.buffer))
+		if(!I2C_read(file, AIMU_LIS3MDL_I2C_ADDR, AIMU_LIS3MDL_OUT_X_L, 6, AIMU_LIS3MDL.buffer))
 		{
 			CFE_EVS_SendEvent(AIMU_LIS3MDL_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read data buffers... ");
         	AIMU_LIS3MDL_HkTelemetryPkt->aimu_lis3mdl_device_error_count++;

@@ -329,11 +329,11 @@ bool AIMU_LSM6DS33_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength)
 bool INIT_AIMU_LSM6DS33(int I2CBus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkTelemetryPkt)
 {
 	// Open I2C for the device address
-	int file = I2C_open(I2CBus, AIMU_LSM6DS33_I2C_ADDR);
+	int file = I2C_open(I2CBus);
 
     // Accel
     // ODR = 0110 (416 Hz (high performance)); FS_XL = 01 (+/-16 g full scale)
-	if(!I2C_write(file, AIMU_LSM6DS33_CTRL1_XL, 0x64))
+	if(!I2C_write(file, AIMU_LSM6DS33_I2C_ADDR, AIMU_LSM6DS33_CTRL1_XL, 0x64))
 	{
 		CFE_EVS_SendEvent(AIMU_LSM6DS33_FAILED_CHANGE_TO_ACTIVE_MODE_ERR_EID, CFE_EVS_EventType_ERROR,
            "Failed to switch Accel to active...  ");
@@ -344,7 +344,7 @@ bool INIT_AIMU_LSM6DS33(int I2CBus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkTele
 
 	// Gyro
     // ODR = 0110 (416 Hz (high performance)); FS_XL = 11 (2000dps)
-	if(!I2C_write(file, AIMU_LSM6DS33_CTRL2_G, 0x68))
+	if(!I2C_write(file, AIMU_LSM6DS33_I2C_ADDR, AIMU_LSM6DS33_CTRL2_G, 0x68))
 	{
 		CFE_EVS_SendEvent(AIMU_LSM6DS33_FAILED_CHANGE_TO_ACTIVE_MODE_ERR_EID, CFE_EVS_EventType_ERROR,
            "Failed to switch Gyro to active...  ");
@@ -379,14 +379,14 @@ void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkT
     float gravity_standard = 9.80665; //do not use because we want in g's
 
 	// Open the I2C Device
-	int file = I2C_open(i2cbus, AIMU_LSM6DS33_I2C_ADDR);
+	int file = I2C_open(i2cbus);
 
 	// Check for data in the STATUS register
-	I2C_read(file, AIMU_LSM6DS33_STATUS_REG, 1, AIMU_LSM6DS33.status);
+	I2C_read(file, AIMU_LSM6DS33_I2C_ADDR, AIMU_LSM6DS33_STATUS_REG, 1, AIMU_LSM6DS33.status);
 	if (AIMU_LSM6DS33.status[0] != 0)
 	{
 		// Read the Data Buffer
-		if(!I2C_read(file, AIMU_LSM6DS33_OUTX_L_G, 12, AIMU_LSM6DS33.buffer))
+		if(!I2C_read(file, AIMU_LSM6DS33_I2C_ADDR, AIMU_LSM6DS33_OUTX_L_G, 12, AIMU_LSM6DS33.buffer))
 		{
 			CFE_EVS_SendEvent(AIMU_LSM6DS33_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read data buffers... ");
         	AIMU_LSM6DS33_HkTelemetryPkt->aimu_lsm6ds33_device_error_count++;
