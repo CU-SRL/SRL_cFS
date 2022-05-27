@@ -228,6 +228,18 @@ bool I2C_read(int file, uint8_t slave_addr, uint8_t reg, uint8_t *buffer)
 	return true;
 }
 
+/**
+ * @brief reads the specfied number of bytes starting at a specific register
+ * 
+ * @param file file descriptor for device
+ * @param slave_addr address of slave device on i2cbus
+ * @param start_addr address of register to start reading from
+ * @param length number of bytes wanted to be read
+ * @param buffer buffer where read data is to be stored
+ * @return true successfully read data
+ * @return false failed reading data
+ */
+
 bool I2C_multi_read(int file, uint8_t slave_addr, uint8_t start_addr, uint8_t length, uint8_t *buffer) {
    uint8_t out[1];
    struct i2c_msg msg[2];
