@@ -298,10 +298,10 @@ bool MPL3115A2_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength)
 bool INIT_MPL3115A2(int I2CBus, mpl3115a2_hk_tlm_t* MPL3115A2_HkTelemetryPkt)
 {
 	// Open I2C for the device address
-	int file = I2C_open(I2CBus, MPL3115_I2C_ADDR);
+	int file = I2C_open(I2CBus);
 	
 	// Place MPL3115A2 into standby mode
-	if(!I2C_write(file, MPL3115_CTRL_REG1, 0))
+	if(!I2C_write(file, MPL3115_I2C_ADDR, MPL3115_CTRL_REG1, 0))
 	{
 		CFE_EVS_SendEvent(MPL3115A2_FAILED_CHANGE_TO_STANDBY_MODE_ERR_EID, CFE_EVS_EventType_ERROR,
            "Failed to place MPL3115A2 into Standby Mode... ");
@@ -310,7 +310,7 @@ bool INIT_MPL3115A2(int I2CBus, mpl3115a2_hk_tlm_t* MPL3115A2_HkTelemetryPkt)
 	}
 
 	// Set the MPL3115A2 sample rate to 34ms
-	if(!I2C_write(file, MPL3115_CTRL_REG1, 0x98))
+	if(!I2C_write(file, MPL3115_I2C_ADDR, MPL3115_CTRL_REG1, 0x98))
 	{
 		CFE_EVS_SendEvent(MPL3115A2_RATE_SWITCH_ERR_EID, CFE_EVS_EventType_ERROR,
            "Failed to switch output on MPL3115A2 to 34ms...  ");
@@ -320,7 +320,7 @@ bool INIT_MPL3115A2(int I2CBus, mpl3115a2_hk_tlm_t* MPL3115A2_HkTelemetryPkt)
 	}
 
 	// Switch the MPL3115A2 to active, set altimeter mode, set polling mode
-	if(!I2C_write(file, MPL3115_CTRL_REG1, 0xB9))
+	if(!I2C_write(file, MPL3115_I2C_ADDR, MPL3115_CTRL_REG1, 0xB9))
 	{
 		CFE_EVS_SendEvent(MPL3115A2_FAILED_CHANGE_TO_ACTIVE_MODE_ERR_EID, CFE_EVS_EventType_ERROR,
            "Failed to switch MPL3115A2 to active...  ");
@@ -330,7 +330,7 @@ bool INIT_MPL3115A2(int I2CBus, mpl3115a2_hk_tlm_t* MPL3115A2_HkTelemetryPkt)
 	}
 
 	// Enable Events on the MPL3115A2
-	if(!I2C_write(file, MPL3115_PT_DATA_CFG, 0x07))
+	if(!I2C_write(file, MPL3115_I2C_ADDR, MPL3115_PT_DATA_CFG, 0x07))
 	{
 		CFE_EVS_SendEvent(MPL3115A2_ENABLE_EVENTS_ERR_EID, CFE_EVS_EventType_ERROR,
            "Failed to enable events on the MPL3115A2...  ");
@@ -358,14 +358,14 @@ bool INIT_MPL3115A2(int I2CBus, mpl3115a2_hk_tlm_t* MPL3115A2_HkTelemetryPkt)
 void PROCESS_MPL3115A2(int i2cbus, mpl3115a2_hk_tlm_t* MPL3115A2_HkTelemetryPkt, mpl3115a2_data_tlm_t* MPL3115A2_DataTelemetryPkt)
 {
 	// Open the I2C Device
-	int file = I2C_open(i2cbus, MPL3115_I2C_ADDR);
+	int file = I2C_open(i2cbus);
 
 	// Check for data in the STATUS register
-	I2C_read(file, MPL3115_STATUS, 1, MPL3115A2.status);
+	I2C_read(file, MPL3115_I2C_ADDR, MPL3115_STATUS, 1, MPL3115A2.status);
 	if (MPL3115A2.status[0] != 0)
 	{
 		// Read the Data Buffer
-		if(!I2C_read(file, MPL3115_OUT_P_MSB, 5, MPL3115A2.buffer))
+		if(!I2C_read(file, MPL3115_I2C_ADDR, MPL3115_OUT_P_MSB, 5, MPL3115A2.buffer))
 		{
 			CFE_EVS_SendEvent(MPL3115A2_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read data buffers... ");
         	MPL3115A2_HkTelemetryPkt->mpl3115a2_device_error_count++;
