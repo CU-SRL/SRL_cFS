@@ -382,11 +382,11 @@ void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkT
 	int file = I2C_open(i2cbus);
 
 	// Check for data in the STATUS register
-	I2C_read(file, AIMU_LSM6DS33_I2C_ADDR, AIMU_LSM6DS33_STATUS_REG, 1, AIMU_LSM6DS33.status);
+	I2C_read(file, AIMU_LSM6DS33_I2C_ADDR, AIMU_LSM6DS33_STATUS_REG, AIMU_LSM6DS33.status);
 	if (AIMU_LSM6DS33.status[0] != 0)
 	{
 		// Read the Data Buffer
-		if(!I2C_read(file, AIMU_LSM6DS33_I2C_ADDR, AIMU_LSM6DS33_OUTX_L_G, 12, AIMU_LSM6DS33.buffer))
+		if(!I2C_multi_read(file, AIMU_LSM6DS33_I2C_ADDR, AIMU_LSM6DS33_OUTX_L_G, 12, AIMU_LSM6DS33.buffer))
 		{
 			CFE_EVS_SendEvent(AIMU_LSM6DS33_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read data buffers... ");
         	AIMU_LSM6DS33_HkTelemetryPkt->aimu_lsm6ds33_device_error_count++;
