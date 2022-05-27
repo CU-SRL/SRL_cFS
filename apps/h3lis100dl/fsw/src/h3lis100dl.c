@@ -329,11 +329,11 @@ bool H3LIS100DL_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength)
 bool INIT_H3LIS100DL(int I2CBus, h3lis100dl_hk_tlm_t* H3LIS100DL_HkTelemetryPkt)
 {
 	// Open I2C for the device address
-	int file = I2C_open(I2CBus, H3LIS100DL_I2C_ADDR);
+	int file = I2C_open(I2CBus);
 
     // Accel
     // ODR = 00110 (400 Hz (high performance)); 111 to enable all exes
-	if(!I2C_write(file, H3LIS100DL_CTRL1_G, 0x37))
+	if(!I2C_write(file, H3LIS100DL_I2C_ADDR, H3LIS100DL_CTRL1_G, 0x37))
 	{
 		CFE_EVS_SendEvent(H3LIS100DL_FAILED_ENABLE_AXES, CFE_EVS_EventType_ERROR,
            "Failed to switch enable axes...  ");
@@ -343,7 +343,7 @@ bool INIT_H3LIS100DL(int I2CBus, h3lis100dl_hk_tlm_t* H3LIS100DL_HkTelemetryPkt)
 	}
 
     // ODR = 0110 (Normal Mode);  HPc = 64 => 11
-	if(!I2C_write(file, H3LIS100DL_CTRL2_G, 0x03))
+	if(!I2C_write(file, H3LIS100DL_I2C_ADDR, H3LIS100DL_CTRL2_G, 0x03))
 	{
 		CFE_EVS_SendEvent(H3LIS100DL_FAILED_CONFIGURE_HPCFILTER, CFE_EVS_EventType_ERROR,
            "Failed to configure high-pass filter cutoff frequency... ");
@@ -375,14 +375,14 @@ void PROCESS_H3LIS100DL(int i2cbus, h3lis100dl_hk_tlm_t* H3LIS100DL_HkTelemetryP
     
 
 	// Open the I2C Device
-	int file = I2C_open(i2cbus, H3LIS100DL_I2C_ADDR);
+	int file = I2C_open(i2cbus);
 
 	// Check for data in the STATUS register
-	I2C_read(file, H3LIS100DL_STATUS_REG, 15, H3LIS100DL.status);
+	I2C_read(file, H3LIS100DL_I2C_ADDR, H3LIS100DL_STATUS_REG, 15, H3LIS100DL.status);
 	if (H3LIS100DL.status[0] != 0)
 	{
 		// Read the Data Buffer
-		if(!I2C_read(file, (H3LIS100DL_OUTX - 1U), 6, H3LIS100DL.buffer))
+		if(!I2C_read(file, H3LIS100DL_I2C_ADDR, (H3LIS100DL_OUTX - 1U), 6, H3LIS100DL.buffer))
 		{
 			CFE_EVS_SendEvent(H3LIS100DL_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read data buffers... ");
         	H3LIS100DL_HkTelemetryPkt->h3lis100dl_device_error_count++;
