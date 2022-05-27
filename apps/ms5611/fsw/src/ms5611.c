@@ -307,7 +307,7 @@ bool INIT_MS5611(int I2CBus, ms5611_hk_tlm_t* MS5611_HkTelemetryPkt)
 	
     //read PROM for everything needed in calculations
     for(int i = 0; i < 6; i++){
-        if(!I2C_read(file, MS5611_READ_PROM + i*2, 1, MS5611.prom[i]))
+        if(!I2C_read(file,MS5611_I2C_ADDR, MS5611_READ_PROM + i*2, 1, MS5611.prom[i]))
 		{
 			CFE_EVS_SendEvent(MS5611_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read PROM with offset %d...", i);
             MS5611_HkTelemetryPkt->ms5611_device_error_count++;
@@ -381,7 +381,7 @@ void PROCESS_MS5611(int i2cbus, ms5611_hk_tlm_t* MS5611_HkTelemetryPkt, ms5611_d
 
 uint32_t readRawData(int file, uint8_t reg){
     //conversion D1 to get pressure data, must have some sort of delay after
-        if(!I2C_write(file, MS5611_I2C_ADDR, (reg + 0x08)))
+        if(!I2C_write(file, MS5611_I2C_ADDR,MS5611_I2C_ADDR, (reg + 0x08)))
         {
             CFE_EVS_SendEvent(MS5611_FAILED_TO_ACTIVATE_EID, CFE_EVS_EventType_ERROR,
             "Failed to configure conversion ... ");
@@ -393,7 +393,7 @@ uint32_t readRawData(int file, uint8_t reg){
 
 
         // Read the Data Buffer
-		if(!I2C_read(file, MS5611_ADC_READ, 3, MS5611.buffer))
+		if(!I2C_read(file,MS5611_I2C_ADDR, MS5611_ADC_READ, 3, MS5611.buffer))
 		{
 			CFE_EVS_SendEvent(MS5611_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read data buffers... ");
             MS5611_HkTelemetryPkt.ms5611_device_error_count++;

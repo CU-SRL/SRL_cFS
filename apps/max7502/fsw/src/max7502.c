@@ -342,7 +342,7 @@ bool INIT_MAX7502(int I2CBus, max7502_hk_tlm_t* MAX7502_HkTelemetryPkt, uint8 De
     }
 	
 	// Configure fault queue to 4 faults needed to trigger OS
-	if(!I2C_write(file, MAX7502_CONFIG, 0x14))
+	if(!I2C_write(file, MAX7502_2_I2C_ADDR,MAX7502_CONFIG, 0x14))
 	{
 		CFE_EVS_SendEvent(MAX7502_FAILED_TO_CONFIGURE, CFE_EVS_EventType_ERROR,
            "Failed to place configure device %ld ... ", DeviceNumber);
@@ -381,11 +381,11 @@ void PROCESS_MAX7502(int i2cbus, max7502_hk_tlm_t* MAX7502_HkTelemetryPkt, max75
     MAX7502_DataTelemetryPkt->DeviceNumber = DeviceNumber; //set device number so telemetry packets can be disinguished
 
 	// Check for data in the STATUS register
-	I2C_read(file, MAX7502_CONFIG, 1, MAX7502.status);
+	I2C_read(file,MAX7502_2_I2C_ADDR, MAX7502_CONFIG, 1, MAX7502.status);
 	if (MAX7502.status[0] != 0)
 	{
 		// Read the Data Buffer
-		if(!I2C_read(file, MAX7502_AMBIENT_TEMP, 2, MAX7502.buffer))
+		if(!I2C_read(file, MAX7502_2_I2C_ADDR,MAX7502_AMBIENT_TEMP, 2, MAX7502.buffer))
 		{
 			CFE_EVS_SendEvent(MAX7502_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read data buffers... ");
         	MAX7502_HkTelemetryPkt->max7502_device_error_count++;
