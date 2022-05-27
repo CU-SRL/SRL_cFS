@@ -378,11 +378,12 @@ void PROCESS_H3LIS100DL(int i2cbus, h3lis100dl_hk_tlm_t* H3LIS100DL_HkTelemetryP
 	int file = I2C_open(i2cbus);
 
 	// Check for data in the STATUS register
-	I2C_read(file, H3LIS100DL_I2C_ADDR, H3LIS100DL_STATUS_REG, 15, H3LIS100DL.status);
+    // removed 15 byte argument, was unsure why that was there (might be a mistake tho)
+	I2C_read(file, H3LIS100DL_I2C_ADDR, H3LIS100DL_STATUS_REG, H3LIS100DL.status);
 	if (H3LIS100DL.status[0] != 0)
 	{
 		// Read the Data Buffer
-		if(!I2C_read(file, H3LIS100DL_I2C_ADDR, (H3LIS100DL_OUTX - 1U), 6, H3LIS100DL.buffer))
+		if(!I2C_multi_read(file, H3LIS100DL_I2C_ADDR, (H3LIS100DL_OUTX - 1U), 6, H3LIS100DL.buffer))
 		{
 			CFE_EVS_SendEvent(H3LIS100DL_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read data buffers... ");
         	H3LIS100DL_HkTelemetryPkt->h3lis100dl_device_error_count++;

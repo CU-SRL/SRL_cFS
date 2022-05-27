@@ -361,11 +361,11 @@ void PROCESS_MPL3115A2(int i2cbus, mpl3115a2_hk_tlm_t* MPL3115A2_HkTelemetryPkt,
 	int file = I2C_open(i2cbus);
 
 	// Check for data in the STATUS register
-	I2C_read(file, MPL3115_I2C_ADDR, MPL3115_STATUS, 1, MPL3115A2.status);
+	I2C_read(file, MPL3115_I2C_ADDR, MPL3115_STATUS, MPL3115A2.status);
 	if (MPL3115A2.status[0] != 0)
 	{
 		// Read the Data Buffer
-		if(!I2C_read(file, MPL3115_I2C_ADDR, MPL3115_OUT_P_MSB, 5, MPL3115A2.buffer))
+		if(!I2C_multi_read(file, MPL3115_I2C_ADDR, MPL3115_OUT_P_MSB, 5, MPL3115A2.buffer))
 		{
 			CFE_EVS_SendEvent(MPL3115A2_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read data buffers... ");
         	MPL3115A2_HkTelemetryPkt->mpl3115a2_device_error_count++;

@@ -304,16 +304,19 @@ bool INIT_MCP98001(int I2CBus, mcp98001_hk_tlm_t* MCP98001_HkTelemetryPkt, uint8
 {
     int file;
 	//Device
-    // Open I2C 
-	if(DeviceNumber==1){
-        file = I2C_open(I2CBus, MCP98001_1_I2C_ADDR);
+    // Open I2C
+    file = I2C_open(I2CBus);
+
+    uint8_t curr_addr;
+    if(DeviceNumber==1){
+        curr_addr = MCP98001_1_I2C_ADDR;
     }
     else{
-        file = I2C_open(I2CBus, MCP98001_2_I2C_ADDR);
+        curr_addr = MCP98001_2_I2C_ADDR;
     }
-	
-	// Configure resolution to 12 bits
-	if(!I2C_write(file, MCP98001_CONFIG, 0x60))
+    
+    // Configure resolution to 12 bits
+	if(!I2C_write(file, curr_addr, MCP98001_CONFIG, 0x60))
 	{
 		CFE_EVS_SendEvent(MCP98001_FAILED_TO_CONFIGURE, CFE_EVS_EventType_ERROR,
            "Failed to place MCP98001 resolution to 12 bits... ");
@@ -342,19 +345,22 @@ void PROCESS_MCP98001(int i2cbus, mcp98001_hk_tlm_t* MCP98001_HkTelemetryPkt, mc
     int file;
 
 	// Open the I2C Device
-	if(DeviceNumber==1){
-        file = I2C_open(i2cbus, MCP98001_1_I2C_ADDR);
+    file = I2C_open(i2cbus);
+
+    uint8_t curr_addr;
+    if(DeviceNumber==1){
+        curr_addr = MCP98001_1_I2C_ADDR;
     }
     else{
-        file = I2C_open(i2cbus, MCP98001_2_I2C_ADDR);
+        curr_addr = MCP98001_2_I2C_ADDR;
     }
 
 	// Check for data in the STATUS register
-	I2C_read(file, MCP98001_CONFIG, 1, MCP98001.status);
+	I2C_read(file, curr_addr, MCP98001_CONFIG, MCP98001.status);
 	if (MCP98001.status[0] != 0)
 	{
 		// Read the Data Buffer
-		if(!I2C_read(file, MCP98001_AMBIENT_TEMP, 2, MCP98001.buffer))
+		if(!I2C_multi_read(file, curr_addr, MCP98001_AMBIENT_TEMP, 2, MCP98001.buffer))
 		{
 			CFE_EVS_SendEvent(MCP98001_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read data buffers... ");
         	MCP98001_HkTelemetryPkt->mcp98001_device_error_count++;
