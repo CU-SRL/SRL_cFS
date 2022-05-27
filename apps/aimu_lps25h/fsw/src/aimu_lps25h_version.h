@@ -21,7 +21,7 @@
 ** File: lps25h_version.h
 **
 ** Purpose: 
-**  The LPS25H Application header file containing version number
+**  The LIS3MDL Application header file containing version number
 **
 ** Notes:
 **

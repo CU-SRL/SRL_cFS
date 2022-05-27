@@ -21,7 +21,7 @@
 ** File: aimu_lps25h_msg.h 
 **
 ** Purpose: 
-**  Define LPS25H App Messages and info
+**  Define LIS3MDL App Messages and info
 **
 ** Notes:
 **
@@ -31,12 +31,12 @@
 #define _aimu_lps25h_msg_h_
 
 /*
-** LPS25H App command codes
+** LIS3MDL App command codes
 */
 #define AIMU_LPS25H_NOOP_CC                 0
 #define AIMU_LPS25H_RESET_COUNTERS_CC       1
 
-/* Device Command Codes*/
+/* Device Command Codes */
 #define AIMU_LPS25H_INIT          10 // Should also be able to be down automatically when flight ready
 #define AIMU_LPS25H_SHUTDOWN      11
 #define AIMU_LPS25H_RESET         12
@@ -54,7 +54,7 @@ typedef struct
 
 /*************************************************************************/
 /*
-** Type definition (LPS25H App housekeeping)
+** Type definition (LIS3MDL App housekeeping)
 */
 typedef struct 
 {
@@ -70,9 +70,10 @@ typedef struct
 
 typedef struct 
 {
-    uint8                TlmHeader[CFE_SB_TLM_HDR_SIZE];
-    float               AIMU_LPS25H_PRESSURE;
-    float               AIMU_LPS25H_TEMPERATURE;
+    uint8               TlmHeader[CFE_SB_TLM_HDR_SIZE];
+    float              AIMU_LPS25H_MAGSIGX;
+    float              AIMU_LPS25H_MAGSIGY;
+    float              AIMU_LPS25H_MAGSIGZ;
 
 }   OS_PACK aimu_lps25h_data_tlm_t  ;
 
