@@ -68,6 +68,9 @@ void MAX7502_AppMain( void )
 
     MAX7502_AppInit();
 
+    INIT_MAX7502(2, &MAX7502_HkTelemetryPkt, 1);
+    INIT_MAX7502(2, &MAX7502_HkTelemetryPkt, 2);
+
     MAX7502_HkTelemetryPkt.AppStatus = RunStatus;
 
     /*
@@ -123,12 +126,17 @@ void MAX7502_AppInit(void)
     CFE_SB_CreatePipe(&MAX7502_CommandPipe, MAX7502_PIPE_DEPTH,"MAX7502_CMD_PIPE");
     CFE_SB_Subscribe(MAX7502_CMD_MID, MAX7502_CommandPipe);
     CFE_SB_Subscribe(MAX7502_SEND_HK_MID, MAX7502_CommandPipe);
+    CFE_SB_Subscribe(MAX7502_SEND_DATA_MID, MAX7502_CommandPipe);
 
     MAX7502_ResetCounters();
 
     CFE_SB_InitMsg(&MAX7502_HkTelemetryPkt,
                    MAX7502_HK_TLM_MID,
                    MAX7502_HK_TLM_LNGTH, true);
+    
+    CFE_SB_InitMsg(&MAX7502_DataTelemetryPkt,
+                   MAX7502_DATA_TLM_MID,
+                   MAX7502_DATA_TLM_LNGTH, true);
 
     CFE_EVS_SendEvent (MAX7502_STARTUP_INF_EID, CFE_EVS_EventType_INFORMATION,
                "MAX7502 App Initialized. Version %d.%d.%d.%d\n",
@@ -167,6 +175,11 @@ void MAX7502_ProcessCommandPacket(void)
 
         case MAX7502_SEND_HK_MID:
             MAX7502_ReportHousekeeping();
+            break;
+
+        case MAX7502_SEND_DATA_MID:
+            PROCESS_MAX7502(2, &MAX7502_HkTelemetryPkt, &MAX7502_DataTelemetryPkt, 1);
+            PROCESS_MAX7502(2, &MAX7502_HkTelemetryPkt, &MAX7502_DataTelemetryPkt, 2);
             break;
 
         default:
@@ -241,6 +254,22 @@ void MAX7502_ReportHousekeeping(void)
     return;
 
 } /* End of MAX7502_ReportHousekeeping() */
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
+/*  Name:  MAX7502_SendDataPacket                                         */
+/*                                                                            */
+/*  Purpose:                                                                  */
+/*         This function is triggered in response to a task telemetry request */
+/*         from the housekeeping task. This function will gather the Apps     */
+/*         telemetry, packetize it and send it to the ram folder via DS       */
+/* * * * * * * * * * * * * * * * * * * * * * * *  * * * * * * *  * *  * * * * */
+void MAX7502_SendDataPacket(void)
+{
+    CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &MAX7502_DataTelemetryPkt);
+    CFE_SB_SendMsg((CFE_SB_Msg_t *) &MAX7502_DataTelemetryPkt);
+    return;
+
+} /* End of MAX7502_SendDataPacket() */
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 /*  Name:  MAX7502_ResetCounters                                            */
@@ -349,6 +378,8 @@ void PROCESS_MAX7502(int i2cbus, max7502_hk_tlm_t* MAX7502_HkTelemetryPkt, max75
         file = I2C_open(i2cbus, MAX7502_2_I2C_ADDR);
     }
 
+    MAX7502_DataTelemetryPkt->DeviceNumber = DeviceNumber; //set device number so telemetry packets can be disinguished
+
 	// Check for data in the STATUS register
 	I2C_read(file, MAX7502_CONFIG, 1, MAX7502.status);
 	if (MAX7502.status[0] != 0)
@@ -370,7 +401,7 @@ void PROCESS_MAX7502(int i2cbus, max7502_hk_tlm_t* MAX7502_HkTelemetryPkt, max75
 		t = MAX7502.buffer[0];
 		t <<= 8;
 		t |= MAX7502.buffer[1];
-		t >>= 4;
+		t >>= 7;
 
 		if(t & 0x800)
 		{
@@ -378,10 +409,12 @@ void PROCESS_MAX7502(int i2cbus, max7502_hk_tlm_t* MAX7502_HkTelemetryPkt, max75
 		}
 
 		float temp = t;
-		temp /= 16.0;
+        temp /= 16.0;
 
 
 		MAX7502_DataTelemetryPkt->MAX7502_TEMPERATURE = temp;
+
+        MAX7502_SendDataPacket();
 
 		// Print Processed Values if the debug flag is enabled for this app
 		CFE_EVS_SendEvent(MAX7502_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Temperature: %F ", temp);

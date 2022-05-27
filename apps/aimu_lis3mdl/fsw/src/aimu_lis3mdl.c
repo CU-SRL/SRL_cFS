@@ -36,6 +36,7 @@
 #include "aimu_lis3mdl_events.h"
 #include "aimu_lis3mdl_version.h"
 
+
 #include "i2c_lib.h"
 
 /*
@@ -67,6 +68,9 @@ void AIMU_LIS3MDL_AppMain( void )
     CFE_ES_PerfLogEntry(AIMU_LIS3MDL_PERF_ID);
 
     AIMU_LIS3MDL_AppInit();
+
+    INIT_AIMU_LIS3MDL(2, &AIMU_LIS3MDL_HkTelemetryPkt); //initialize device
+
 
     //After Initialization
     AIMU_LIS3MDL_HkTelemetryPkt.AppStatus = RunStatus;
@@ -125,12 +129,17 @@ void AIMU_LIS3MDL_AppInit(void)
     CFE_SB_CreatePipe(&AIMU_LIS3MDL_CommandPipe, AIMU_LIS3MDL_PIPE_DEPTH, "LIS3MDL_CMD_PIPE");
     CFE_SB_Subscribe(AIMU_LIS3MDL_CMD_MID, AIMU_LIS3MDL_CommandPipe);
     CFE_SB_Subscribe(AIMU_LIS3MDL_SEND_HK_MID, AIMU_LIS3MDL_CommandPipe);
+    CFE_SB_Subscribe(AIMU_LIS3MDL_SEND_DATA_MID, AIMU_LIS3MDL_CommandPipe);
 
     AIMU_LIS3MDL_ResetCounters();
 
     CFE_SB_InitMsg(&AIMU_LIS3MDL_HkTelemetryPkt,
                    AIMU_LIS3MDL_HK_TLM_MID,
                    AIMU_LIS3MDL_HK_TLM_LNGTH, true);
+
+    CFE_SB_InitMsg(&AIMU_LIS3MDL_DataTelemetryPkt,
+                   AIMU_LIS3MDL_DATA_TLM_MID,
+                   AIMU_LIS3MDL_DATA_TLM_LNGTH, true);
 
     CFE_EVS_SendEvent (AIMU_LIS3MDL_STARTUP_INF_EID, CFE_EVS_EventType_INFORMATION,
                "AIMU_LIS3MDL App Initialized. Version %d.%d.%d.%d\n",
@@ -169,6 +178,10 @@ void AIMU_LIS3MDL_ProcessCommandPacket(void)
 
         case AIMU_LIS3MDL_SEND_HK_MID:
             AIMU_LIS3MDL_ReportHousekeeping();
+            break;
+
+        case AIMU_LIS3MDL_SEND_DATA_MID:
+            PROCESS_AIMU_LIS3MDL(2, &AIMU_LIS3MDL_HkTelemetryPkt, &AIMU_LIS3MDL_DataTelemetryPkt);
             break;
 
         default:
@@ -238,6 +251,24 @@ void AIMU_LIS3MDL_ReportHousekeeping(void)
 {
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &AIMU_LIS3MDL_HkTelemetryPkt);
     CFE_SB_SendMsg((CFE_SB_Msg_t *) &AIMU_LIS3MDL_HkTelemetryPkt);
+    return;
+
+} /* End of AIMU_LIS3MDL_ReportHousekeeping() */
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
+/*  Name:  AIMU_LIS3MDL_SendDataPacket                                        */
+/*                                                                            */
+/*  Purpose:                                                                  */
+/*         This function is triggered in response to a task telemetry request */
+/*         from the housekeeping task. This function will gather the Apps     */
+/*         telemetry, packetize it and send it to the ram folder via DS       */
+/* * * * * * * * * * * * * * * * * * * * * * * *  * * * * * * *  * *  * * * * */
+void AIMU_LIS3MDL_SendDataPacket(void)
+{
+
+
+    CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &AIMU_LIS3MDL_DataTelemetryPkt);
+    CFE_SB_SendMsg((CFE_SB_Msg_t *) &AIMU_LIS3MDL_DataTelemetryPkt);
     return;
 
 } /* End of AIMU_LIS3MDL_ReportHousekeeping() */
@@ -359,7 +390,7 @@ void PROCESS_AIMU_LIS3MDL(int i2cbus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTele
 	I2C_read(file, AIMU_LIS3MDL_STATUS_REG, 1, AIMU_LIS3MDL.status);
 	if (AIMU_LIS3MDL.status[0] != 0) //double check this
 	{
-        float scale = 2281;
+        float scale = 2281.0; //scale factor found in datasheet (LSB/gauss)
 		// Read the Data Buffer
 		if(!I2C_read(file, AIMU_LIS3MDL_OUT_X_L, 6, AIMU_LIS3MDL.buffer))
 		{
@@ -381,22 +412,37 @@ void PROCESS_AIMU_LIS3MDL(int i2cbus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTele
 		zlm = AIMU_LIS3MDL.buffer[4];
 		zhm = AIMU_LIS3MDL.buffer[5];	
 
-        int16_t x, y, z;
-
+        int16_t x, y, z; //combine low and high bits in twos complement
         x = (xhm << 8 | xlm);
+        if(x & 0x800)
+		{
+			x |= 0xF000;
+		}
+
         y = (yhm << 8 | ylm);
+        if(y & 0x800)
+		{
+			y |= 0xF000;
+		}
+
         z = (zhm << 8 | zlm);
+        if(z & 0x800)
+		{
+			z |= 0xF000;
+		}
 
         //read magnetic field
-        float magx, magy, magz;
-        magx = x / scale;
-        magy = y / scale;
-        magz = z / scale;
+        float magx, magy, magz; //divide by scale factor
+        magx = ((float)x / scale);
+        magy = ((float)y / scale);
+        magz = ((float)z / scale); 
 
 		// Store into packet
 		AIMU_LIS3MDL_DataTelemetryPkt->AIMU_LIS3MDL_MAGSIGX = magx;
         AIMU_LIS3MDL_DataTelemetryPkt->AIMU_LIS3MDL_MAGSIGY = magy;
         AIMU_LIS3MDL_DataTelemetryPkt->AIMU_LIS3MDL_MAGSIGZ = magz;
+
+        AIMU_LIS3MDL_SendDataPacket(); //send data packet telemetry
 
 		// Print Processed Values if the debug flag is enabled for this app
 		CFE_EVS_SendEvent(AIMU_LIS3MDL_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Mag-x: %F Mag-y: %F  Mag-z: %F ", magx, magy, magz);

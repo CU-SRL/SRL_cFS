@@ -43,7 +43,7 @@
 
 #define H3LIS100DL_DEVICE_INIT_ERR_EID                        20
 #define H3LIS100DL_FAILED_ENABLE_AXES                         21
-#define H3LIS100DL_FAILED_CHANGE_TO_ACTIVE_MODE_ERR_EID       22
+#define H3LIS100DL_FAILED_CONFIGURE_HPCFILTER                 22
 #define H3LIS100DL_REGISTERS_READ_ERR_EID                     23
 #define H3LIS100DL_DATA_DBG_EID                               24
 

@@ -73,6 +73,7 @@ typedef struct
     uint8                TlmHeader[CFE_SB_TLM_HDR_SIZE];
     float               MS5611_PRESSURE;
     float               MS5611_TEMPERATURE;
+    float               MS5611_ALTITUDE;
 
 }   OS_PACK ms5611_data_tlm_t  ;
 

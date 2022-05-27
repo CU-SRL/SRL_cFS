@@ -78,7 +78,6 @@ struct MS5611_data {
 	
 	/* Data Variables */
 	uint16_t prom[6];
-	uint8_t delay;
 } MS5611;
 
 /****************************************************************************/
@@ -103,8 +102,9 @@ bool MS5611_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength);
 **
 */
 
-/* MS5611 Accel + Gyro */
+/* MS5611 Accel */
 bool INIT_MS5611(int I2CBus, ms5611_hk_tlm_t* MS5611_HkTelemetryPkt);
 void PROCESS_MS5611(int i2cbus, ms5611_hk_tlm_t* MS5611_HkTelemetryPkt, ms5611_data_tlm_t* MS5611_DataTelemetryPkt);
+uint32_t readRawData(int file, uint8_t reg);
 
 #endif /* _ms5611_h_ */

@@ -70,6 +70,8 @@
 #define FILE_CFE_APP_HK_PKTS  4
 #define FILE_CFE_APP_TLM_PKTS 5
 
+#define FILE_SENSOR_APP_DATA_PKTS 6
+
 
 /*
 ** Sample Destination File Table Data
@@ -165,24 +167,24 @@ DS_DestFileTable_t DS_DestFileTable =
 
       /* .FileNameType  = */ DS_BY_COUNT,
       /* .EnableState   = */ DS_DISABLED,
-      /* .MaxFileSize   = */ (1024 * 1024 * 2),         /* 2 M-bytes */
-      /* .MaxFileAge    = */ (60 * 60 * 2),             /* 2 hours */
+      /* .MaxFileSize   = */ (1024),         /* 1024 bytes */
+      /* .MaxFileAge    = */ (60),             /* 1 minute */
       /* .SequenceCount = */ 5000,
     },
-    /* File Index 06 */
+    /* File Index 06 Data Filter*/
     {
 #if (DS_MOVE_FILES == TRUE)
       /* .Movename      = */ DS_EMPTY_STRING,
 #endif
-      /* .Pathname      = */ DS_EMPTY_STRING,
-      /* .Basename      = */ DS_EMPTY_STRING,
-      /* .Extension     = */ DS_EMPTY_STRING,
+      /* .Pathname      = */ "/ram/",
+      /* .Basename      = */ "sensor",
+      /* .Extension     = */ ".data",
 
-      /* .FileNameType  = */ DS_UNUSED,
-      /* .EnableState   = */ DS_UNUSED,
-      /* .MaxFileSize   = */ DS_UNUSED,
-      /* .MaxFileAge    = */ DS_UNUSED,
-      /* .SequenceCount = */ DS_UNUSED,
+      /* .FileNameType  = */ DS_BY_COUNT,
+      /* .EnableState   = */ DS_ENABLED,
+      /* .MaxFileSize   = */ (1024 * 1024 * 2),         /* 2 Mbytes */
+      /* .MaxFileAge    = */ (30 * 60),                /* 30 Minutes */
+      /* .SequenceCount = */ 6000,
     },
     /* File Index 07 */
     {

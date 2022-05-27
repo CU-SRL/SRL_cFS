@@ -41,10 +41,9 @@
 
 /* DEVICE SPECFIC EVENTS */
 
-#define AIMU_LPS25H_FAILED_FULL_SCALE_CHANGE                   20
-#define AIMU_LPS25H_FAIL_ACTIVATE_TEMP_EID                     21
-#define AIMU_LPS25H_FAILED_CHANGE_TO_ACTIVE_MODE_ERR_EID       22
-#define AIMU_LPS25H_ACTIVE_ZUHP_EID                            23
+#define AIMU_LPS25H_DEVICE_INIT_ERR_EID                        20
+#define AIMU_LPS25H_FAILED_TO_ACTIVATE_EID                     21
+#define AIMU_LPS25H_SAMPLE_RATE_EID                            22
 #define AIMU_LPS25H_REGISTERS_READ_ERR_EID                     25
 #define AIMU_LPS25H_DATA_DBG_EID                               26
 

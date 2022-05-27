@@ -310,7 +310,7 @@ bool INIT_MS5611(int I2CBus, ms5611_hk_tlm_t* MS5611_HkTelemetryPkt)
         if(!I2C_read(file, MS5611_READ_PROM + i*2, 1, MS5611.prom[i]))
 		{
 			CFE_EVS_SendEvent(MS5611_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read PROM with offset %d...", i);
-        	MS5611_HkTelemetryPkt->ms5611_device_error_count++;
+            MS5611_HkTelemetryPkt->ms5611_device_error_count++;
 
 			return;
 		}
@@ -337,54 +337,77 @@ bool INIT_MS5611(int I2CBus, ms5611_hk_tlm_t* MS5611_HkTelemetryPkt)
 void PROCESS_MS5611(int i2cbus, ms5611_hk_tlm_t* MS5611_HkTelemetryPkt, ms5611_data_tlm_t* MS5611_DataTelemetryPkt)
 {
     //define variables needed for data calculations
+    double sealevelP = 101325;
 
 	// Open the I2C Device
-	int file = I2C_open(i2cbus, MS5611_I2C_ADDR);
+	int file = I2C_open(i2cbus, MS5611_I2C_ADDR); 
 
-	// Check for data in the STATUS register
-	I2C_read(file, MS5611_CONV_D1, 1, MS5611.status);
-	if (MS5611.status[0] != 0)
-	{
-		// Read the Data Buffer
+    /* Process the Data Buffer */
+    uint32_t D1, D2;
+
+    //Pressure
+    D1 = readRawData(file, MS5611_CONV_D1);
+    //Temperature
+    D2 = readRawData(file, MS5611_CONV_D2);
+
+    int32_t dT = D2 - (uint32_t)MS5611.prom[4] * 256;
+
+    //below calculations are taken from Arduino Code for sensor and must be checked
+    //need to decide of ADC is reading for temperature or pressure
+    int64_t OFF = (int64_t)MS5611.prom[1] * 65536 + (int64_t)MS5611.prom[3] * dT / 128;
+    int64_t SENS = (int64_t)MS5611.prom[0] * 32768 + (int64_t)MS5611.prom[2] * dT / 256;
+
+    //calculate pressure
+    float pressure = (D1 * SENS / 2097152 - OFF) / 32768;		
+
+    // Temperature (in C)
+    float temp = (2000 + ((int64_t) dT * MS5611.prom[5]) / 8388608) / 100.0;
+
+    //calculate altitude
+    float altitude = (44330.0f * (1.0f - pow((double)pressure / sealevelP, 0.1902949f)));
+
+    // Store into packet
+    MS5611_DataTelemetryPkt->MS5611_PRESSURE = pressure;
+    MS5611_DataTelemetryPkt->MS5611_TEMPERATURE = temp;
+    MS5611_DataTelemetryPkt->MS5611_ALTITUDE = altitude;
+
+    // Print Processed Values if the debug flag is enabled for this app
+    CFE_EVS_SendEvent(MS5611_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Pressure: %F Temperature: %F , Altitude: %F", pressure, temp, altitude);
+
+
+	// Close the I2C Buffer
+	I2C_close(file);
+}
+
+uint32_t readRawData(int file, uint8_t reg){
+    //conversion D1 to get pressure data, must have some sort of delay after
+        if(!I2C_write(file, MS5611_I2C_ADDR, (reg + 0x08)))
+        {
+            CFE_EVS_SendEvent(MS5611_FAILED_TO_ACTIVATE_EID, CFE_EVS_EventType_ERROR,
+            "Failed to configure conversion ... ");
+            MS5611_HkTelemetryPkt.ms5611_device_error_count++;
+            return;
+        }
+        
+        delay(10);
+
+
+        // Read the Data Buffer
 		if(!I2C_read(file, MS5611_ADC_READ, 3, MS5611.buffer))
 		{
 			CFE_EVS_SendEvent(MS5611_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read data buffers... ");
-        	MS5611_HkTelemetryPkt->ms5611_device_error_count++;
+            MS5611_HkTelemetryPkt.ms5611_device_error_count++;
 
 			return;
 		}
 
-		/* Process the Data Buffer */
-			
+
 		// Pressure
-		uint32_t D1, D2; //raw pressure and temperature data
-        uint8_t vxa, vha, vla;
-        vxa = MS5611.buffer[0];
-        vha = MS5611.buffer[1];
-        vla = MS5611.buffer[2];
-        D1 = ((int32_t)vxa << 16) | ((int32_t)vha << 8) | vla;
+        uint8_t vx, vh, vl;
+        vx = MS5611.buffer[0];
+        vh = MS5611.buffer[1];
+        vl = MS5611.buffer[2];
+        uint32_t D = ((int32_t)vx << 16) | ((int32_t)vh << 8) | vl;
 
-        int32_t dT = D2 - (uint32_t)MS5611.prom[4] * 256;
-
-        //below calculations are taken from Arduino Code for sensor and must be checked
-        //need to decide of ADC is reading for temperature or pressure
-        int64_t OFF = (int64_t)MS5611.prom[1] * 65536 + (int64_t)MS5611.prom[3] * dT / 128;
-        int64_t SENS = (int64_t)MS5611.prom[0] * 32768 + (int64_t)MS5611.prom[2] * dT / 256;
-
-        float pressure = (D1 * SENS / 2097152 - OFF) / 32768;		
-
-		// Temperature (in C)
-        float temp = (2000 + ((int64_t) dT * MS5611.prom[5]) / 8388608) / 100.0;
-
-
-		// Store into packet
-		MS5611_DataTelemetryPkt->MS5611_PRESSURE = pressure;
-		MS5611_DataTelemetryPkt->MS5611_TEMPERATURE = temp;
-
-		// Print Processed Values if the debug flag is enabled for this app
-		CFE_EVS_SendEvent(MS5611_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Pressure: %F Temperature: %F ", pressure, temp);
-	}
-
-	// Close the I2C Buffer
-	I2C_close(file);
+        return D;
 }

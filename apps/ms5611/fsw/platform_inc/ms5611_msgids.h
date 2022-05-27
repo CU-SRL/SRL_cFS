@@ -30,10 +30,11 @@
 #ifndef _ms5611_msgids_h_
 #define _ms5611_msgids_h_
 
-#define MS5611_CMD_MID            	0x18DB
-#define MS5611_SEND_HK_MID        	0x18DC
-#define MS5611_HK_TLM_MID		    0x08DA
-#define MS5611_DATA_TLM_MID		0x08DB
+#define MS5611_CMD_MID            	0x18F5
+#define MS5611_SEND_HK_MID        	0x18F6
+#define MS5611_SEND_DATA_MID       	0x18C3
+#define MS5611_HK_TLM_MID		    0x08F5
+#define MS5611_DATA_TLM_MID		    0x08F6
 
 #endif /* _ms5611_msgids_h_ */
 
