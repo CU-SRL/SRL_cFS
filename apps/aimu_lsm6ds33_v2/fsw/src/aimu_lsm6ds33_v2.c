@@ -215,7 +215,7 @@ void AIMU_LSM6DS33_V2_ProcessDataPacket(int i2cbus, aimu_lsm6ds33_v2_hk_tlm_t* A
 {
 	
     int file = I2C_open(i2cbus);
-    
+
     // stores status from register in data struct status
     I2C_read(file, AIMU_LSM6DS33_V2_SAD_READ, STATUS_REG, AIMU_LSM6DS33_V2_DATA.status);
 
@@ -237,6 +237,9 @@ void AIMU_LSM6DS33_V2_ProcessDataPacket(int i2cbus, aimu_lsm6ds33_v2_hk_tlm_t* A
     tempL = AIMU_LSM6DS33_V2_DATA.buffer[0];
     tempH = AIMU_LSM6DS33_V2_DATA.buffer[1];
 
+    uint16_t temp;
+    temp = (tempH << 8) | tempL;
+
     // gyroscope output register
     uint8_t gxL, gxH, gyL, gyH, gzL, gzH;
     gxL = AIMU_LSM6DS33_V2_DATA.buffer[2];
@@ -246,7 +249,12 @@ void AIMU_LSM6DS33_V2_ProcessDataPacket(int i2cbus, aimu_lsm6ds33_v2_hk_tlm_t* A
     gzL = AIMU_LSM6DS33_V2_DATA.buffer[6];
     gzH = AIMU_LSM6DS33_V2_DATA.buffer[7];
 
-    // accerometer output register
+    uint16_t gx, gy, gz;
+    gx = (gxH << 8) | gxL;
+    gy = (gyH << 8) | gyL;
+    gz = (gzH << 8) | gzL;
+
+    // accelerometer output register
     uint8_t axL, axH, ayL, ayH, azL, azH;
     axL = AIMU_LSM6DS33_V2_DATA.buffer[8];
     axH = AIMU_LSM6DS33_V2_DATA.buffer[9];
@@ -255,7 +263,10 @@ void AIMU_LSM6DS33_V2_ProcessDataPacket(int i2cbus, aimu_lsm6ds33_v2_hk_tlm_t* A
     azL = AIMU_LSM6DS33_V2_DATA.buffer[12];
     azH = AIMU_LSM6DS33_V2_DATA.buffer[13];
 
-
+    uint16_t ax, ay, az;
+    ax = (axH << 8) | axL;
+    ay = (ayH << 8) | ayL;
+    az = (azH << 8) | azL;
 
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &AIMU_LSM6DS33_V2_DataTelemetryPkt);
     CFE_SB_SendMsg((CFE_SB_Msg_t *) &AIMU_LSM6DS33_V2_DataTelemetryPkt);

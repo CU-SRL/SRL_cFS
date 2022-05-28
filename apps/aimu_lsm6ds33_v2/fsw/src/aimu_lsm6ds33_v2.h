@@ -53,7 +53,7 @@
 
 struct AIMU_LSM6DS33_V2_data {
 	uint8_t status[1];
-    // buffer to hold actual data
+    // buffer to hold sensor data
 	uint8_t buffer[AIMU_LSM6DS33_V2_I2C_BUFFER];
 } AIMU_LSM6DS33_V2_DATA;
 
