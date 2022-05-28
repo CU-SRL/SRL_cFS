@@ -44,14 +44,16 @@
 */
 #define AIMU_LSM6DS33_V2_SAD_READ       0xD7 /* this is conncted to supply voltage (default) */
 /* if connected to ground: D5 */
-#define AIMU_LSM6DS33_V2_SAD_WRITE       0xD6 /* this is conncted to supply voltage (default) */
+#define AIMU_LSM6DS33_V2_SAD_WRITE      0xD6 /* this is conncted to supply voltage (default) */
 /* if connected to ground: D4 */
-#define AIMU_LSM6DS33_V2_CTRL1_XL  /* fill */
-#define AIMU_LSM6DS33_V2_CTRL2_G   /* fill */
-#define AIMU_LSM6DS33_V2_STATUS    /* fill */
+#define CTRL1_XL                        0x10 /* accel activation control register */
+#define CTRL2_G                         0x11 /* gyro activation control register */
+
 /*
 ** global data
 */
+
+int bus = 2;
 
 aimu_lsm6ds33_v2_hk_tlm_t    AIMU_LSM6DS33_V2_HkTelemetryPkt;
 aimu_lsm6ds33_v2_data_tlm_t  AIMU_LSM6DS33_V2_DataTelemetryPkt;
@@ -80,10 +82,10 @@ void AIMU_LSM6DS33_V2_AppMain( void )
     AIMU_LSM6DS33_V2_AppInit();
 
     //initializes lsm6ds33 device
-    AIMU_LSM6DS33_V2_DeviceInit(/* i2cbus */, &AIMU_LSM6DS33_V2_HkTelemetryPkt);
+    AIMU_LSM6DS33_V2_DeviceInit(bus, &AIMU_LSM6DS33_V2_HkTelemetryPkt);
 
     /*
-    ** SAMPLE Runloop
+    ** LSM6DS_V2 Runloop
     */
     while (CFE_ES_RunLoop(&RunStatus) == true)
     {
@@ -165,8 +167,10 @@ void AIMU_LSM6DS33_V2_DeviceInit(int i2cbus, aimu_lsm6ds33_v2_hk_tlm_t* AIMU_LSM
 
 	int file = I2C_open(i2cbus);
 
+    // 01000100 - power on modes for accelerometer (104Hz ODR, 16g full-scale, 200Hz Bandwidth)
+    // control register for activation: CTRL1_XL (11h)
 
-	if(!I2C_write(file, AIMU_LSM6DS33_V2_SAD_WRITE, /* fill */))
+	if(!I2C_write(file, AIMU_LSM6DS33_V2_SAD_WRITE, CTRL1_XL, 0x44))
 	{
 		CFE_EVS_SendEvent(AIMU_LSM6DS33_V2_ACTIVATION_FAILURE_EID, CFE_EVS_EventType_ERROR,
            "Failed to switch Accel to active...  ");
@@ -175,7 +179,10 @@ void AIMU_LSM6DS33_V2_DeviceInit(int i2cbus, aimu_lsm6ds33_v2_hk_tlm_t* AIMU_LSM
 		return false;
 	}
 
-	if(!I2C_write(file, AIMU_LSM6DS33_V2_SAD_WRITE, /* fill */))
+    // 01000100 - power on modes for gyroscope (104Hz ODR, 500 dps full-scale)
+    // control register for for activation: CTRL2_G (11h)
+
+	if(!I2C_write(file, AIMU_LSM6DS33_V2_SAD_WRITE, CTRL2_G, 0x44))
 	{
 		CFE_EVS_SendEvent(AIMU_LSM6DS33_V2_ACTIVATION_FAILURE_EID, CFE_EVS_EventType_ERROR,
            "Failed to switch Gyro to active...  ");
@@ -183,6 +190,12 @@ void AIMU_LSM6DS33_V2_DeviceInit(int i2cbus, aimu_lsm6ds33_v2_hk_tlm_t* AIMU_LSM
 
 		return false;
 	}
+
+    /**
+     * Auto-incrementation of register addresses enabled by default,
+        so no need to configure in CTRL3_C 
+     * 
+     */
 
 	I2C_close(file);
 
@@ -203,13 +216,15 @@ void AIMU_LSM6DS33_V2_ProcessDataPacket(int i2cbus, aimu_lsm6ds33_v2_hk_tlm_t* A
 	
     int file = I2C_open(i2cbus);
 
-    I2C_read(i2cbus, AIMU_LSM6DS33_V2_SAD_READ, AIMU_LSM6DS33_V2_STATUS, 1, AIMU_LSM6DS33_V2_DATA.status);
+    I2C_read(file, AIMU_LSM6DS33_V2_SAD_READ, AIMU_LSM6DS33_V2_STATUS, AIMU_LSM6DS33_V2_DATA.status);
 
-    if(!I2C_read(file, AIMU_LSM6DS33_OUTX_L_G, 12, AIMU_LSM6DS33.buffer)) {
+    if(!I2C_multi_read(file, AIMU_LSM6DS33_OUTX_L_G, 12, AIMU_LSM6DS33.buffer)) {
         CFE_EVS_SendEvent(...);
         AIMU_LSM6DS33_V2_HkTelemetryPkt.aimu_lsm6ds33_v2_device_error_count++;
         return;
     }
+
+
 
     
 	
@@ -248,7 +263,7 @@ void AIMU_LSM6DS33_V2_ProcessCommandPacket(void)
             break;
 
         case AIMU_LSM6DS33_V2_SEND_DATA_MID:
-            AIMU_LSM6DS33_V2_ProcessData(/* i2cbus */, &AIMU_LSM6DS33_V2_HkTelemetryPkt, &AIMU_LSM6DS33_V2_DataTelemetryPkt);
+            AIMU_LSM6DS33_V2_ProcessData(bus, &AIMU_LSM6DS33_V2_HkTelemetryPkt, &AIMU_LSM6DS33_V2_DataTelemetryPkt);
             break;
 
         default:
@@ -289,11 +304,11 @@ void AIMU_LSM6DS33_V2_ProcessGroundCommand(void)
             break;
 
         case AIMU_LSM6DS33_V2_INIT:
-            AIMU_LSM6DS33_V2_DeviceInit(/* i2cbus */, &AIMU_LSM6DS33_V2_HkTelemetryPkt);
+            AIMU_LSM6DS33_V2_DeviceInit(bus, &AIMU_LSM6DS33_V2_HkTelemetryPkt);
             break;
         
         case AIMU_LSM6DS33_V2_PROCESS:
-            AIMU_LSM6DS33_V2_ProcessData(/* i2cbus */, &AIMU_LSM6DS33_V2_HkTelemetryPkt, &AIMU_LSM6DS33_V2_DataTelemetryPkt);
+            AIMU_LSM6DS33_V2_ProcessData(bus, &AIMU_LSM6DS33_V2_HkTelemetryPkt, &AIMU_LSM6DS33_V2_DataTelemetryPkt);
             break;
         
 
