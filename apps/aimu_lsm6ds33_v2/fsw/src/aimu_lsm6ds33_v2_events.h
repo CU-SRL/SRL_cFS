@@ -43,7 +43,8 @@
  * LSM6DS33 Specific Events (in progress)
  */
 
-#define AIMU_LSM6DS33_V2_ACTIVATION_FAILURE_EID        7
+#define AIMU_LSM6DS33_V2_ACTIVATION_FAILURE_EID    7
+#define AIMU_LSM6DS33_V2_REGISTERS_READ_ERR_EID    8
 
 #endif /* _aimu_lsm6ds33_v2_events_h_ */
 

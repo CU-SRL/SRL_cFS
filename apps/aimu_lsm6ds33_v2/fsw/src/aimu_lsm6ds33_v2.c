@@ -42,12 +42,12 @@
  * change bit 7 based on SDO/SA0 pin
  * if SAD[0] = SA0, 0, else if 1
 */
-#define AIMU_LSM6DS33_V2_SAD_READ       0xD7 /* this is conncted to supply voltage (default) */
-/* if connected to ground: D5 */
-#define AIMU_LSM6DS33_V2_SAD_WRITE      0xD6 /* this is conncted to supply voltage (default) */
-/* if connected to ground: D4 */
+#define AIMU_LSM6DS33_V2_SAD_READ       0xD7 /* this is conncted to supply voltage (default), if connected to ground: D5 */
+#define AIMU_LSM6DS33_V2_SAD_WRITE      0xD6 /* this is conncted to supply voltage (default), if connected to ground: D4 */
 #define CTRL1_XL                        0x10 /* accel activation control register */
 #define CTRL2_G                         0x11 /* gyro activation control register */
+#define STATUS_REG                      0x1E /* Status data register */
+#define OUT_TEMP_L                      0x20 /* first register to be read (temperature) */
 
 /*
 ** global data
@@ -159,7 +159,7 @@ void AIMU_LSM6DS33_V2_AppInit(void)
  * @brief initilizes lsm6ds33 device, opening a file and writing to a register
  * 
  * @param i2cbus used for specifying path (name) of i2c buffer
- * @param AIMU_LSM6DS33_HkTelemetryPkt empty housekeeping telemetry packet to be updated
+ * @param AIMU_LSM6DS33_V2_HkTelemetryPkt empty housekeeping telemetry packet to be updated
  */
 
 void AIMU_LSM6DS33_V2_DeviceInit(int i2cbus, aimu_lsm6ds33_v2_hk_tlm_t* AIMU_LSM6DS33_V2_HkTelemetryPkt)
@@ -206,32 +206,59 @@ void AIMU_LSM6DS33_V2_DeviceInit(int i2cbus, aimu_lsm6ds33_v2_hk_tlm_t* AIMU_LSM
  * @brief reads from relevant registers, and sends data down software bus
  * 
  * @param i2cbus used for specifying path (name) of i2c buffer
- * @param AIMU_LSM6DS33_HkTelemetryPkt housekeeping telemetry path to be updated
- * @param AIMU_LSM6DS33_DataTelemetryPkt data telemetry path to be updated
+ * @param AIMU_LSM6DS33_V2_HkTelemetryPkt housekeeping telemetry path to be updated
+ * @param AIMU_LSM6DS33_V2_DataTelemetryPkt data telemetry path to be updated
  */
 
-void AIMU_LSM6DS33_V2_ProcessDataPacket(int i2cbus, aimu_lsm6ds33_v2_hk_tlm_t* AIMU_LSM6DS33_HkTelemetryPkt, 
-    aimu_lsm6ds33_v2_data_tlm_t* AIMU_LSM6DS33_DataTelemetryPkt)
+void AIMU_LSM6DS33_V2_ProcessDataPacket(int i2cbus, aimu_lsm6ds33_v2_hk_tlm_t* AIMU_LSM6DS33_V2_HkTelemetryPkt, 
+    aimu_lsm6ds33_v2_data_tlm_t* AIMU_LSM6DS33_V2_DataTelemetryPkt)
 {
 	
     int file = I2C_open(i2cbus);
+    
+    // stores status from register in data struct status
+    I2C_read(file, AIMU_LSM6DS33_V2_SAD_READ, STATUS_REG, AIMU_LSM6DS33_V2_DATA.status);
 
-    I2C_read(file, AIMU_LSM6DS33_V2_SAD_READ, AIMU_LSM6DS33_V2_STATUS, AIMU_LSM6DS33_V2_DATA.status);
-
-    if(!I2C_multi_read(file, AIMU_LSM6DS33_OUTX_L_G, 12, AIMU_LSM6DS33.buffer)) {
-        CFE_EVS_SendEvent(...);
-        AIMU_LSM6DS33_V2_HkTelemetryPkt.aimu_lsm6ds33_v2_device_error_count++;
+    // checking to see if there is any data that needs reading
+    if (AIMU_LSM6DS33_V2_DATA.status[0] == 0) {
         return;
     }
 
+    if(!I2C_multi_read(file, AIMU_LSM6DS33_V2_SAD_READ, OUT_TEMP_L, 14, AIMU_LSM6DS33_V2_DATA.buffer))
+	{
+		CFE_EVS_SendEvent(AIMU_LSM6DS33_V2_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read data buffers... ");
+    	AIMU_LSM6DS33_V2_HkTelemetryPkt->aimu_lsm6ds33_v2_device_error_count++;
+
+		return;
+	}
+
+    // temperature output data register
+    uint8_t tempL, tempH;
+    tempL = AIMU_LSM6DS33_V2_DATA.buffer[0];
+    tempH = AIMU_LSM6DS33_V2_DATA.buffer[1];
+
+    // gyroscope output register
+    uint8_t gxL, gxH, gyL, gyH, gzL, gzH;
+    gxL = AIMU_LSM6DS33_V2_DATA.buffer[2];
+    gxH = AIMU_LSM6DS33_V2_DATA.buffer[3];
+    gyL = AIMU_LSM6DS33_V2_DATA.buffer[4];
+    gyH = AIMU_LSM6DS33_V2_DATA.buffer[5];
+    gzL = AIMU_LSM6DS33_V2_DATA.buffer[6];
+    gzH = AIMU_LSM6DS33_V2_DATA.buffer[7];
+
+    // accerometer output register
+    uint8_t axL, axH, ayL, ayH, azL, azH;
+    axL = AIMU_LSM6DS33_V2_DATA.buffer[8];
+    axH = AIMU_LSM6DS33_V2_DATA.buffer[9];
+    ayL = AIMU_LSM6DS33_V2_DATA.buffer[10];
+    ayH = AIMU_LSM6DS33_V2_DATA.buffer[11];
+    azL = AIMU_LSM6DS33_V2_DATA.buffer[12];
+    azH = AIMU_LSM6DS33_V2_DATA.buffer[13];
 
 
-    
-	
-    
 
-    CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &AIMU_LSM6DS33_DataTelemetryPkt);
-    CFE_SB_SendMsg((CFE_SB_Msg_t *) &AIMU_LSM6DS33_DataTelemetryPkt);
+    CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &AIMU_LSM6DS33_V2_DataTelemetryPkt);
+    CFE_SB_SendMsg((CFE_SB_Msg_t *) &AIMU_LSM6DS33_V2_DataTelemetryPkt);
 
 	// Close the I2C Buffer
 	I2C_close(file);

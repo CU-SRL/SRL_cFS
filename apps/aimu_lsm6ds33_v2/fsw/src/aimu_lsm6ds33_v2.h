@@ -45,17 +45,17 @@
 /***********************************************************************/
 
 #define AIMU_LSM6DS33_V2_PIPE_DEPTH                     32
-#define AIMU_LSM6DS33_V2_I2C_BUFFER                     /* fill */
+#define AIMU_LSM6DS33_V2_I2C_BUFFER                     0x70 /* 14 registers */
 
 /************************************************************************
 ** Type Definitions
 *************************************************************************/
 
-typedef struct
-{
-    uint8_t status[1];
-    uint8_t buffer[AIMU_LSM6DS33_V2_I2C_BUFFER];
-}   AIMU_LSM6DS33_V2_DATA;
+struct AIMU_LSM6DS33_V2_data {
+	uint8_t status[1];
+    // buffer to hold actual data
+	uint8_t buffer[AIMU_LSM6DS33_V2_I2C_BUFFER];
+} AIMU_LSM6DS33_V2_DATA;
 
 
 /****************************************************************************/
@@ -73,7 +73,6 @@ void AIMU_LSM6DS33_V2_ProcessGroundCommand(void);
 void AIMU_LSM6DS33_V2_ProcessDataPacket(int i2cbus, aimu_lsm6ds33_v2_hk_tlm_t* AIMU_LSM6DS33_V2_HkTelemetryPkt, aimu_lsm6ds33_v2_data_tlm_t* AIMU_LSM6DS33_V2_DataTelemetryPkt);
 void AIMU_LSM6DS33_V2_ReportHousekeeping(void);
 void AIMU_LSM6DS33_V2_ResetCounters(void);
-
 bool AIMU_LSM6DS33_V2_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength);
 
 #endif /* _sample_app_h_ */
