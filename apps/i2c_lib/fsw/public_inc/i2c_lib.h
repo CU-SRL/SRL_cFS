@@ -82,7 +82,6 @@ int32 I2C_sample_Function( void );
 int I2C_open(int I2CBus);
 void I2C_close(int file);
 bool I2C_write(int file, uint8_t slave_addr, uint8_t reg, uint8_t val);
-bool I2C_read(int file, uint8_t slave_addr, uint8_t reg, uint8_t *buffer);
 bool I2C_multi_read(int file, uint8_t slave_addr, uint8_t start_addr, uint8_t length, uint8_t *buffer);
 
 #endif /* _i2c_lib_h_ */

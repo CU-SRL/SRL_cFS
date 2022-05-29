@@ -168,67 +168,6 @@ bool I2C_write(int file, uint8_t slave_addr, uint8_t reg, uint8_t val)
 }
 
 /**
- * @brief read the specified register from the specified device 
- *       follows figure 9 of https://www.ti.com/lit/an/slva704/slva704.pdf
- * 
- * @param file fd for the device
- * @param slave_addr slave address for the device
- * @param reg register to read from 
- * @param buffer output buffer for the byte
- * @return true success
- * @return false failure
- */
-bool I2C_read(int file, uint8_t slave_addr, uint8_t reg, uint8_t *buffer)
-{
-
-	uint8_t out[1],in[1];
-   struct i2c_msg msg[2];
-   struct i2c_rdwr_ioctl_data msgset[1];
-
-   
-   // Make sure the buffer is declared
-	if (!buffer)
-	{
-		return false;
-	}
-   //set the first message data to the register
-   out[0]=reg;
-   //set input to 0
-   in[0]=0;
-
-   //set the first message to be sent to the register of the device to read
-   msg[0].addr=slave_addr;
-   msg[0].flags=0;
-   msg[0].len=1;
-   msg[0].buf=out;
-
-   //set the second message to be the read message
-   msg[1].addr=slave_addr;
-   msg[1].flags=I2C_M_RD;
-   msg[1].len=1;
-   msg[1].buf=in;
-
-   //load the messages into the data
-   msgset[0].msgs=msg;
-   //set the number of messages to 2
-   msgset[0].nmsgs=2;
-
-   //send off the messages to the device and ensure that it works properly
-   if(ioctl(file,I2C_RDWR,&msgset)<0){
-        CFE_EVS_SendEvent(I2C_REGISTER_READ_ERR_EID, CFE_EVS_EventType_ERROR,
-           "Failed to read from register... ");
-        //I2C_HkTelemetryPkt.i2c_error_count++;
-
-		return false;
-   }
-
-   //returned register from device is in[0] 
-   *buffer=in[0];
-	// Return true if succeeded
-	return true;
-}
-
-/**
  * @brief reads the specfied number of bytes starting at a specific register
  * 
  * @param file file descriptor for device

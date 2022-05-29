@@ -307,7 +307,7 @@ bool INIT_MS5611(int I2CBus, ms5611_hk_tlm_t* MS5611_HkTelemetryPkt)
 	
     //read PROM for everything needed in calculations
     for(int i = 0; i < 6; i++){
-        if(!I2C_read(file,MS5611_I2C_ADDR, MS5611_READ_PROM + i*2, MS5611.prom[i]))
+        if(!I2C_multi_read(file,MS5611_I2C_ADDR, MS5611_READ_PROM + i*2, 1, MS5611.prom[i]))
 		{
 			CFE_EVS_SendEvent(MS5611_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read PROM with offset %d...", i);
             MS5611_HkTelemetryPkt->ms5611_device_error_count++;

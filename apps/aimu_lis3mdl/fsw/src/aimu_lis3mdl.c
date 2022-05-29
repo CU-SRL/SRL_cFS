@@ -387,7 +387,7 @@ void PROCESS_AIMU_LIS3MDL(int i2cbus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTele
 	int file = I2C_open(i2cbus);
 
 	// Check for data in the STATUS register
-	I2C_read(file, AIMU_LIS3MDL_I2C_ADDR, AIMU_LIS3MDL_STATUS_REG, AIMU_LIS3MDL.status);
+	I2C_multi_read(file, AIMU_LIS3MDL_I2C_ADDR, AIMU_LIS3MDL_STATUS_REG, 1, AIMU_LIS3MDL.status);
 	if (AIMU_LIS3MDL.status[0] != 0) //double check this
 	{
         float scale = 2281.0; //scale factor found in datasheet (LSB/gauss)

@@ -368,7 +368,7 @@ void PROCESS_AIMU_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemet
 	int file = I2C_open(i2cbus);
 
 	// Check for data in the STATUS register
-	I2C_read(file, AIMU_LPS25H_I2C_ADDR, AIMU_LPS25H_STATUS_REG, AIMU_LPS25H.status);
+	I2C_multi_read(file, AIMU_LPS25H_I2C_ADDR, AIMU_LPS25H_STATUS_REG, 1, AIMU_LPS25H.status);
 	if (AIMU_LPS25H.status[0] != 0) //double check this
 	{
 		// Read the Data Buffer

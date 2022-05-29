@@ -379,7 +379,7 @@ void PROCESS_H3LIS100DL(int i2cbus, h3lis100dl_hk_tlm_t* H3LIS100DL_HkTelemetryP
 
 	// Check for data in the STATUS register
     // removed 15 byte argument, was unsure why that was there (might be a mistake tho)
-	I2C_read(file, H3LIS100DL_I2C_ADDR, H3LIS100DL_STATUS_REG, H3LIS100DL.status);
+	I2C_multi_read(file, H3LIS100DL_I2C_ADDR, H3LIS100DL_STATUS_REG, 1, H3LIS100DL.status);
 	if (H3LIS100DL.status[0] != 0)
 	{
 		// Read the Data Buffer

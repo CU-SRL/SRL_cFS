@@ -356,7 +356,7 @@ void PROCESS_MCP98001(int i2cbus, mcp98001_hk_tlm_t* MCP98001_HkTelemetryPkt, mc
     }
 
 	// Check for data in the STATUS register
-	I2C_read(file, curr_addr, MCP98001_CONFIG, MCP98001.status);
+	I2C_multi_read(file, curr_addr, MCP98001_CONFIG, 1, MCP98001.status);
 	if (MCP98001.status[0] != 0)
 	{
 		// Read the Data Buffer

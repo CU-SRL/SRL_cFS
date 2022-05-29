@@ -385,7 +385,7 @@ void PROCESS_MAX7502(int i2cbus, max7502_hk_tlm_t* MAX7502_HkTelemetryPkt, max75
     MAX7502_DataTelemetryPkt->DeviceNumber = DeviceNumber; //set device number so telemetry packets can be disinguished
 
 	// Check for data in the STATUS register
-	I2C_read(file, curr_addr, MAX7502_CONFIG, MAX7502.status);
+	I2C_multi_read(file, curr_addr, MAX7502_CONFIG, 1, MAX7502.status);
 	if (MAX7502.status[0] != 0)
 	{
 		// Read the Data Buffer
