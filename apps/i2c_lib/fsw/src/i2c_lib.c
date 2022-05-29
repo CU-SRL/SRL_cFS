@@ -201,7 +201,7 @@ bool I2C_multi_read(int file, uint8_t slave_addr, uint8_t start_addr, uint8_t le
 
    //set the second message to be the read message
    msg[1].addr    = slave_addr;
-   msg[1].flags   = I2C_M_RD;
+   msg[1].flags   = I2C_M_RD | I2C_M_NOSTART;
    msg[1].len     = length;
    msg[1].buf     = buffer;
 
