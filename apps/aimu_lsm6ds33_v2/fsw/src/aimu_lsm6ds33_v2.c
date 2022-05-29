@@ -233,12 +233,12 @@ void AIMU_LSM6DS33_V2_ProcessDataPacket(int i2cbus, aimu_lsm6ds33_v2_hk_tlm_t* A
 	}
 
     // temperature output data register
-    uint8_t tempL, tempH;
-    tempL = AIMU_LSM6DS33_V2_DATA.buffer[0];
-    tempH = AIMU_LSM6DS33_V2_DATA.buffer[1];
+    uint8_t tL, tH;
+    tL = AIMU_LSM6DS33_V2_DATA.buffer[0];
+    tH = AIMU_LSM6DS33_V2_DATA.buffer[1];
 
-    uint16_t temp;
-    temp = (tempH << 8) | tempL;
+    uint16_t t;
+    t = (tH << 8) | tL;
 
     // gyroscope output register
     uint8_t gxL, gxH, gyL, gyH, gzL, gzH;
@@ -267,6 +267,37 @@ void AIMU_LSM6DS33_V2_ProcessDataPacket(int i2cbus, aimu_lsm6ds33_v2_hk_tlm_t* A
     ax = (axH << 8) | axL;
     ay = (ayH << 8) | ayL;
     az = (azH << 8) | azL;
+
+    // scaling
+
+    float lin_acc_sens = 0.488 / 1000;
+    float ang_rate_sens = 70 / 1000;
+
+    float temp, gyro_x, gyro_y, gyro_z, accel_x, accel_y, accel_z;
+
+    // unit: celcius
+    temp = (float)t;
+
+    // unit: dps
+    gyro_x = (float)gx * ang_rate_sens;
+    gyro_y = (float)gy * ang_rate_sens;
+    gyro_z = (float)gz * ang_rate_sens;
+
+    // unit: g
+    accel_x = (float)ax * lin_acc_sens;
+    accel_y = (float)ax * lin_acc_sens;
+    accel_z = (float)ax * lin_acc_sens;    
+
+    // putting data into packet
+
+    AIMU_LSM6DS33_V2_DataTelemetryPkt->AIMU_LSM6DS33_V2_ACCELERATIONX = accel_x;
+    AIMU_LSM6DS33_V2_DataTelemetryPkt->AIMU_LSM6DS33_V2_ACCELERATIONY = accel_y;
+    AIMU_LSM6DS33_V2_DataTelemetryPkt->AIMU_LSM6DS33_V2_ACCELERATIONZ = accel_x;
+	AIMU_LSM6DS33_V2_DataTelemetryPkt->AIMU_LSM6DS33_V2_ANGULAR_RATEX = gyro_x;
+    AIMU_LSM6DS33_V2_DataTelemetryPkt->AIMU_LSM6DS33_V2_ANGULAR_RATEY = gyro_y;
+    AIMU_LSM6DS33_V2_DataTelemetryPkt->AIMU_LSM6DS33_V2_ANGULAR_RATEZ = gyro_z;
+    // cosmos would need modification to account for temperature
+    AIMU_LSM6DS33_V2_DataTelemetryPkt->AIMU_LSM6DS33_V2_TEMPERATURE   = temp;
 
     CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &AIMU_LSM6DS33_V2_DataTelemetryPkt);
     CFE_SB_SendMsg((CFE_SB_Msg_t *) &AIMU_LSM6DS33_V2_DataTelemetryPkt);

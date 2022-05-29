@@ -65,7 +65,14 @@ typedef struct
 typedef struct 
 {
     uint8               TlmHeader[CFE_SB_TLM_HDR_SIZE];
-    // data specs (tbd)
+    float               AIMU_LSM6DS33_V2_ACCELERATIONX;
+    float               AIMU_LSM6DS33_V2_ACCELERATIONY;
+    float               AIMU_LSM6DS33_V2_ACCELERATIONZ;
+    float               AIMU_LSM6DS33_V2_ANGULAR_RATEX;
+    float               AIMU_LSM6DS33_V2_ANGULAR_RATEY;
+    float               AIMU_LSM6DS33_V2_ANGULAR_RATEZ;
+    // cosmos would need to be updated
+    float               AIMU_LSM6DS33_V2_TEMPERATURE;
 
 }   OS_PACK aimu_lsm6ds33_v2_data_tlm_t  ;
 
