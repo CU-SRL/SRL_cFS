@@ -206,7 +206,7 @@ These are instructions on how to build the core Flight System. Similiar steps ar
 	$ sudo ./core-cpu1
 
 ---
-### Instructions for flashing cFS unto the BeagleBone Black
+### Instructions for flashing cFS onto the BeagleBone Black
 Flashing onto the BeagleBone Black is simple but time consuming. In order to do so the BBB must first be setup using the setupBBB.sh script found in the INSTALL directory.
 
 **NOTE: An SD card is required every boot. The bigger the SD card the better with a max of 32Gb (for now until tested higher).**
