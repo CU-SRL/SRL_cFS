@@ -8,7 +8,7 @@
     - [Instructions for cFS compilation on Raspberry PI - Development ONLY](#Instructions-for-cFS-compilation-on-Raspberry-PI---Development-ONLY)
     - [Instructions for Development Machine Setup](#Instructions-for-Development-Machine-Setup)
     - [Instructions for cFS compiliation](#Instructions-for-cFS-compiliation)
-    - [Instructions for flashing cFS unto the BeagleBone Black](#Instructions-for-flashing-cFS-unto-the-BeagleBone-Black)
+    - [Instructions for flashing cFS onto the BeagleBone Black](#Instructions-for-flashing-cFS-unto-the-BeagleBone-Black)
 3. [Code Version Notes](#Code-Version-Notes)
 
 ## Introduction
@@ -206,14 +206,14 @@ These are instructions on how to build the core Flight System. Similiar steps ar
 	$ sudo ./core-cpu1
 
 ---
-### Instructions for flashing cFS unto the BeagleBone Black
-Flashing onto the BeagleBone Black is super simple. In order to do so the BBB must first be setup using the setupBBB.sh script found in the INSTALL directory.
+### Instructions for flashing cFS onto the BeagleBone Black
+Flashing onto the BeagleBone Black is simple but time consuming. In order to do so the BBB must first be setup using the setupBBB.sh script found in the INSTALL directory.
 
 **NOTE: An SD card is required every boot. The bigger the SD card the better with a max of 32Gb (for now until tested higher).**
 
-#### Setting up the BeagleBone Black
 You need a computer capable of Serial Communication. Ideally Mac or Linux computers as they are the easiest to use because of in built terminal commands. For Windows computers google the equivalent of the following commands.
 
+#### Setting up the BeagleBone Black On Unix Based OS
 Once your computer is connected to the BBB pull up a terminal and determine which USB port corresponds to your BBB and then connect to it using a baud of 115200 by running the following commands.
 
 	# List Devices, find the tty.usbxxx where xxx is something
@@ -232,11 +232,14 @@ After a successful connection it is now time to prep the SD, and get ready for S
 	# Say the disk name is /dev/disk2. Now format the card to FAT32 by running the following command:
 	$ sudo diskutil eraseDisk FAT32 MYSD MBRFormat /dev/disk2
 	
-On Linux use fdisk, the commands are the following and use the following [guide](https://ragnyll.gitlab.io/2018/05/22/format-a-sd-card-to-fat-32linux.html FAT32)
+On Linux use fdisk, the commands are the following and use the following [guide](https://ragnyll.gitlab.io/2018/05/22/format-a-sd-card-to-fat-32linux.html)
 
-For Windows, use the in built windows disk formatter. Just right click the SD card, select FAT32, and let it go.
+#### Setting up the BeagleBone Black On Windows
+For Windows, use the in built windows disk formatter. Just right click the SD card, select FAT32, and let it go with the default size. Ensure that [PuTTY](https://www.puttygen.com/) is installed and find the ID of the serial communication port in device manager under the ports option(will be in the form of COM# where # is a number). In PuTTY set communication type to serial, enter COM# found in device manager, set speed to 115200. Save the entered information as armBBB and press open. After a few moments a terminal should open and propmt for username(debian) and password(temppwd).
 
-Once the SD card has been formatted, you need to copy the INSTALL folder into the SD card then place the mini-sd into the BeagleBone Black and reboot the BeagleBone Black. After that is done you need to mount the SD card tho only this first time as the INSTALL script will creates services that will mount the SD on boot. In order to mount the SD card do the following commands in the BBB:
+
+#### ALL OS BeagleBone Black Commands
+Once the SD card has been formatted, you need to copy the INSTALL and arm-bbb folders into the SD card then place the mini-sd into the BeagleBone Black and reboot the BeagleBone Black. After that is done you need to mount the SD card tho only this first time as the INSTALL script will creates services that will mount the SD on boot. In order to mount the SD card do the following commands in the BBB:
 
 	# Create mount point
 	$ sudo mkdir /mnt/extsd
@@ -271,7 +274,28 @@ You can verify that it indeed compiled for ARM by executing the following on the
 	# You should see an output of something like the following
 	FILL THIS IN
 
-Afterwhich you know need to attach the SD card you were using to setup the BBB to your computer again. Then just drag and drop the arm-bbb folder from build/exe/ into your SD card root folder. Finally eject that SD card, place into BBB, and power on the BBB. cFS should now automatically start and you can check that by executing the following command on the BBB:
+Afterwhich you know need to attach the SD card you were using to setup the BBB to your computer again. Then just drag and drop the arm-bbb folder from build/exe/ into your SD card root folder. To obtain the compiled code local OS shouldn't matter, but PuTTY can be used on windows in place of the SCP command. Both the command and script provided are intended to run on vm and copy from vm to your local machine.
+
+
+```bash
+#SCP command for copy from vm to local machine
+#assumes CFS root dir is /home/<identikey>/SRL_CFs
+scp -r /home/$(whoami)/SRL_cFS/build/exe/arm-bbb <local machine username>@<ip_of_machine>:<path to file>
+```
+A build and send script is provided below, but note it has been found to not work for everyone. Prior to execution provide the script with a minimum of +x perms(chmod +x).
+
+```bash
+#assumes CFS root dir is /home/<identikey>/SRL_CFs
+#! /bin/bash
+cd /home/$(whoami)/SRL_cFS
+rm -rf build
+make BUILDTYPE=release OMIT_DEPRECEATED=true prep
+make -j 4 || exit 1
+sudo make install || exit 1
+scp -r /home/$(whoami)/SRL_cFS/build/exe/arm-bbb <local machine username>@$(pinky $(whoami) | grep -Po '\d+\.\d+\.\d+\.\d+'):<path to file>
+```
+
+Finally eject that SD card, place into BBB, and power on the BBB. cFS should now automatically start and you can check that by executing the following command on the BBB:
 
 	sudo systemctl status start-cfs.service
 	
