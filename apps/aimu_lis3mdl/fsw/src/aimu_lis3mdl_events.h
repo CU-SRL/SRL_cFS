@@ -47,6 +47,7 @@
 #define AIMU_LIS3MDL_ACTIVE_ZUHP_EID                            23
 #define AIMU_LIS3MDL_REGISTERS_READ_ERR_EID                     25
 #define AIMU_LIS3MDL_DATA_DBG_EID                               26
+#define AIMU_LIS3MDL_STATUS_ERROR_EID                           27
 
 #endif /* _aimu_lis3mdl_events_h_ */
 

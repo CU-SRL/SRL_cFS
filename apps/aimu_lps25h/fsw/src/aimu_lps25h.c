@@ -368,7 +368,13 @@ void PROCESS_AIMU_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemet
 	int file = I2C_open(i2cbus);
 
 	// Check for data in the STATUS register
-	I2C_multi_read(file, AIMU_LPS25H_I2C_ADDR, AIMU_LPS25H_STATUS_REG, 1, AIMU_LPS25H.status);
+    bool status;
+    status = I2C_multi_read(file, AIMU_LPS25H_I2C_ADDR, AIMU_LPS25H_STATUS_REG, 1, AIMU_LPS25H.status);
+
+    if (!status) {
+        CFE_EVS_SendEvent(AIMU_LPS25H_STATUS_ERROR_EID, CFE_EVS_EventType_ERROR, "Failed to read STATUS register... ");
+    }
+
 	if (AIMU_LPS25H.status[0] != 0) //double check this
 	{
 		// Read the Data Buffer

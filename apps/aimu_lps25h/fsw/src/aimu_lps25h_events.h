@@ -46,6 +46,7 @@
 #define AIMU_LPS25H_SAMPLE_RATE_EID                            22
 #define AIMU_LPS25H_REGISTERS_READ_ERR_EID                     25
 #define AIMU_LPS25H_DATA_DBG_EID                               26
+#define AIMU_LPS25H_STATUS_ERROR_EID                           27
 
 #endif /* _aimu_lps25h_events_h_ */
 

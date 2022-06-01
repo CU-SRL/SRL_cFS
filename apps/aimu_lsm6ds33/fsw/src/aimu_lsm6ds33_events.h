@@ -46,6 +46,7 @@
 #define AIMU_LSM6DS33_FAILED_CHANGE_TO_ACTIVE_MODE_ERR_EID       22
 #define AIMU_LSM6DS33_REGISTERS_READ_ERR_EID                     23
 #define AIMU_LSM6DS33_DATA_DBG_EID                               24
+#define AIMU_LSM6DS33_STATUS_ERROR_EID                           25
 
 
 #endif /* _aimu_lsm6ds33_events_h_ */
