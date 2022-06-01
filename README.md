@@ -24,6 +24,12 @@ The core Flight System is a Flight Software architecture framework that was desi
 * [Zoe Roy](https://github.com/zroy33 "zroy33")
 * [Jason Popich](https://github.com/japopich "japopich")
 * [Andrew Lee](https://github.com/anle7157 "anle7157")
+* [Andrew Scott](https://github.com/mTopy "mTopy")
+* [Winnie Regan](https://github.com/winniesn "winniesn")
+* [Jacob Dean](https://github.com/sesquipedalianThaumaturge)
+* [Nico Madrid](https://github.com/Nic0M)
+* [Daniil Garusov](https://github.com/Daniil-Garusov)
+* [Rahul Sampangiramiah](https://github.com/rahulsampa)
 
 ---
 ## Compilation Instructions
@@ -282,18 +288,7 @@ Afterwhich you know need to attach the SD card you were using to setup the BBB t
 #assumes CFS root dir is /home/<identikey>/SRL_CFs
 scp -r /home/$(whoami)/SRL_cFS/build/exe/arm-bbb <local machine username>@<ip_of_machine>:<path to file>
 ```
-A build and send script is provided below, but note it has been found to not work for everyone. Prior to execution provide the script with a minimum of +x perms(chmod +x).
-
-```bash
-#assumes CFS root dir is /home/<identikey>/SRL_CFs
-#! /bin/bash
-cd /home/$(whoami)/SRL_cFS
-rm -rf build
-make BUILDTYPE=release OMIT_DEPRECEATED=true prep
-make -j 4 || exit 1
-sudo make install || exit 1
-scp -r /home/$(whoami)/SRL_cFS/build/exe/arm-bbb <local machine username>@$(pinky $(whoami) | grep -Po '\d+\.\d+\.\d+\.\d+'):<path to file>
-```
+A build and send script can be obtained by reaching out to software team lead.
 
 Finally eject that SD card, place into BBB, and power on the BBB. cFS should now automatically start and you can check that by executing the following command on the BBB:
 
