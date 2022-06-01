@@ -18,23 +18,23 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: sample_app_msg.h 
+** File: h3lis100dl_v2_msg.h 
 **
 ** Purpose: 
-**  Define SAMPLE App  Messages and info
+**  Define H3LIS100DL_V2 App Messages and Info
 **
 ** Notes:
 **
 **
 *******************************************************************************/
+
 #ifndef _h3lis100dl_v2_msg_h_
 #define _h3lis100dl_v2_msg_h_
 
-/*
-** SAMPLE App command codes
-*/
-#define H3LIS100DL_V2_NOOP_CC                 0
-#define H3LIS100DL_V2_RESET_COUNTERS_CC       1
+/* Command Codes */
+#define H3LIS100DL_V2_NOOP_CC               0   /* NO-OP */
+#define H3LIS100DL_V2_RESET_CC              1   /* Reset Counters */
+#define H3LIS100DL_V2_PROCESS_CC            2   /* Process */
 
 /*************************************************************************/
 /*
