@@ -66,7 +66,6 @@ int I2C_LibInit(void)
  * 
  * @return int 
  */
-
 int I2C_Sample_Function( void ) 
 {
    OS_printf ("I2C_Sample_Function called\n");
@@ -77,9 +76,11 @@ int I2C_Sample_Function( void )
 
 
 /****************************************/
-/*        SINGLE-BYTE I2C DRIVER        */
+/*               I2C DRIVER             */
 /****************************************/
 // Assuming Linux OS
+// https://www.kernel.org/doc/Documentation/i2c/dev-interface
+// https://github.com/torvalds/linux/blob/master/include/uapi/linux/i2c.h
 
 /**
  * @brief Open i2c device and returns the fd for it
@@ -90,23 +91,21 @@ int I2C_Sample_Function( void )
  */
 int I2C_open(int I2CBus)
 {
-   //test
+   /* File Variable */
+   int file;
+
 	// Declare I2C device name char array
 	char i2cbuf[MAX_BUS];
 
 	// Assign I2C device bus name
 	snprintf(i2cbuf, sizeof(i2cbuf), "/dev/i2c-%d", I2CBus);
 
-	// Declare File Variable
-	int file;
-
 	// Open the I2C Device
 	if ((file = open(i2cbuf, O_RDWR)) < 0)
 	{
         CFE_EVS_SendEvent(I2C_OPEN_I2C_BUS_ERR_EID, CFE_EVS_EventType_ERROR,
-           "Failed to open I2C BUS %d", I2CBus);
+                           "Failed to open I2C BUS %d", I2CBus);
         //I2C_HkTelemetryPkt.i2c_error_count++;
-
         return -1;
 	}
 
@@ -115,15 +114,95 @@ int I2C_open(int I2CBus)
 }
 
 /**
- * @brief close a given fd
+ * @brief Close a given file descriptor
  * 
- * @param file file descriptor for the file to close
+ * @param file File descriptor for the file to close
  */
-
 void I2C_close(int file)
 {
 	close(file);
 }
+
+/**
+ * @brief Reads the specified number of bytes from an I2C slave register
+ *
+ * @param file File descriptor for the I2C device
+ * @param addr Address of the I2C slave
+ * @param reg Register in the slave to be read from
+ * @param len Number of bytes to be read
+ * @param buf Buffer that will store data that is read
+ *
+ * @return true Successfully read data
+ * @return false Failed reading data
+ */
+bool I2C_Read(int file, uint8_t addr, uint8_t reg, uint8_t len, uint8_t *buf)
+{
+   /* Specify which slave to communicate with */
+   if (ioctl(file, I2C_SLAVE, addr) < 0)
+   {
+      /* Error Handling */
+      CFE_EVS_SendEvent(I2C_OPEN_I2C_BUS_ERR_EID, CFE_EVS_EventType_ERROR,
+                        "ioctl(%d,I2C_SLAVE,0x%x) failed and returned errno %d", file, addr, errno)
+      return false;
+   }
+
+   /* Choose the register */
+   buf[0] = reg;
+
+   /* Read bytes */
+   if (read(file, buf, len) != len)
+   {
+      /* Error handling */
+      CFE_EVS_SendEvent(I2C_REGISTER_READ_ERR_EID, CFE_EVS_EventType_ERROR,
+                        "Failed to read %d bytes from slave 0x%x at register 0x%x", len, addr, reg);
+      return false;
+   }
+   /* Else buf[0] through buf[len-1] has len bytes that were read */
+
+   return true;
+}
+
+/**
+ * @brief Writes the specified number of bytes to an I2C slave register
+ *
+ * @param file File descriptor for the I2C device
+ * @param addr Address of the I2C slave
+ * @param len Number of bytes in the buffer
+ * @param buf Buffer that has the data to be written with the first byte as the desired register
+ *
+ * @return true Successfully wrote data
+ * @return false Failed writing data
+ */
+bool I2C_Write(int file, uint8_t addr, uint8_t len, uint8_t *buf)
+{
+   /* Specify which slave to communicate with */
+   if (ioctl(file, I2C_SLAVE, addr) < 0)
+   {
+      /* Error Handling */
+      return false;
+   }
+
+   /* Buffer contents */
+   // buf[0] = reg;
+   // buf[1] = val1;
+   // buf[2] = val2;
+   // ...
+
+   /* Write bytes */
+   if (write(file, buf, len) != len)
+   {
+      /* Error handling */
+      CFE_EVS_SendEvent(I2C_REGISTER_WRITE_ERR_EID, CFE_EVS_EventType_ERROR,
+                        "Failed to write %d bytes from slave 0x%x at register 0x%x", len-1, addr, reg);
+      return false;
+   }
+
+   return true;
+}
+
+/************************/
+/*  End of File Comment */
+/************************/
 
 /**
  * @brief This I2C write function assumes that you are using a one-byte register. Therefore you must first 
@@ -223,7 +302,3 @@ bool I2C_multi_read(int file, uint8_t slave_addr, uint8_t start_addr, uint8_t le
 	// Return true if succeeded
 	return true;
 }
-
-/************************/
-/*  End of File Comment */
-/************************/

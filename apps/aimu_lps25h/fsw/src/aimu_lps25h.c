@@ -333,7 +333,9 @@ bool INIT_AIMU_LPS25H(int I2CBus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemetryP
 	int file = I2C_open(I2CBus);
 	
 	// PD = 1 (active mode);  ODR = 011 (12.5 Hz pressure & temperature output data rate)
-	if(!I2C_write(file, AIMU_LPS25H_I2C_ADDR, AIMU_LPS25H_CTRL_REG1, 0xB0))
+    AIMU_LPS25H.buffer[0] = AIMU_LPS25H_CTRL_REG1;
+    AIMU_LPS25H.buffer[1] = 0xB0;
+	if(!I2C_Write(file, AIMU_LPS25H_I2C_ADDR, 2, AIMU_LPS25H.buffer))
 	{
 		CFE_EVS_SendEvent(AIMU_LPS25H_FAILED_TO_ACTIVATE_EID, CFE_EVS_EventType_ERROR,
            "Failed to activate the sensor properly... ");
@@ -359,68 +361,32 @@ bool INIT_AIMU_LPS25H(int I2CBus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemetryP
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
 void PROCESS_AIMU_LPS25H(int i2cbus, aimu_lps25h_hk_tlm_t* AIMU_LPS25H_HkTelemetryPkt, aimu_lps25h_data_tlm_t* AIMU_LPS25H_DataTelemetryPkt)
 {
-
-    //define variables needed for data calculations
-    float temp_scale = 480.0;
-    float temp_offset = 42.5;
-
-	// Open the I2C Device
+	/* Open the I2C Device */
 	int file = I2C_open(i2cbus);
 
 	// Check for data in the STATUS register
-	I2C_multi_read(file, AIMU_LPS25H_I2C_ADDR, AIMU_LPS25H_STATUS_REG, 1, AIMU_LPS25H.status);
-	if (AIMU_LPS25H.status[0] != 0) //double check this
-	{
-		// Read the Data Buffer
-		if(!I2C_multi_read(file, AIMU_LPS25H_I2C_ADDR, AIMU_LPS25H_PRESS_OUT_XL, 6, AIMU_LPS25H.buffer))
-		{
-			CFE_EVS_SendEvent(AIMU_LPS25H_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read data buffers... ");
-        	AIMU_LPS25H_HkTelemetryPkt->aimu_lps25h_device_error_count++;
+    if (!I2C_Read(file, AIMU_LPS25H_I2C_ADDR, 1, AIMU_LPS25H.status))
+    {
+        CFE_EVS_SendEvent(AIMU_LPS25H_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read from status register... ");
+        AIMU_LPS25H_HkTelemetryPkt->aimu_lps25h_device_error_count++;
+        return;
+    }
 
-			return;
-		}
+    /* Check if new data in the status register */
+	if (AIMU_LPS25H.status[0] != 0)
+	{
+		/* Read new data into the buffer */
+        if(!I2C_Read(file, AIMU_LPS25H_I2C_ADDR, AIMU_LPS25H_PRESS_OUT_XL, 1, AIMU_LPS25H.buffer))
+        {
+            CFE_EVS_SendEvent(AIMU_LPS25H_REGISTERS_READ_ERR_EID, CFE_EVS_EventType_ERROR, "Failed to read from OUT_XL register... ");
+        	AIMU_LPS25H_HkTelemetryPkt->aimu_lps25h_device_error_count++;
+            return;
+        }
 
 		/* Process the Data Buffer */
-			
-		// Pressure (in hPa)
-		int32_t raw_pressure;
-        //combine high and low bits into twos complement number
-		raw_pressure = AIMU_LPS25H.buffer[2] << 16;
-        raw_pressure |= AIMU_LPS25H.buffer[1] << 8;
-        raw_pressure |= AIMU_LPS25H.buffer[0];
-        //raw_pressure >>= 8; //bc it's 24 bits not 32
-
-        if(raw_pressure & 0x800000)
-		{
-			raw_pressure |= 0xF00000;
-		}
-
-        float pressure = (float)raw_pressure / 4096.0;		
-
-		// Temperature (in C) 
-        //combine high and low bits into twos complement number
-        int16_t t;
-		t = AIMU_LPS25H.buffer[3];
-		t |= AIMU_LPS25H.buffer[4] << 8;
-
-        if(t & 0x800)
-		{
-			t |= 0xF000;
-		}
-
-        float temp = temp_offset + ((float)t / temp_scale);
-
-
-		// Store into packet
-		AIMU_LPS25H_DataTelemetryPkt->AIMU_LPS25H_PRESSURE = pressure;
-		AIMU_LPS25H_DataTelemetryPkt->AIMU_LPS25H_TEMPERATURE = temp;
-
-        AIMU_LPS25H_SendDataPacket();
-
-		// Print Processed Values if the debug flag is enabled for this app
-		CFE_EVS_SendEvent(AIMU_LPS25H_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Pressure: %F Temperature: %F ", pressure, temp);
+        CFE_EVS_SendEvent(AIMU_LPS25H_DATA_DBG_EID, CFE_EVS_EventType_ERROR, "OUT_XL Register: 0x%X", AIMU_LPS25H.buffer[0]);
 	}
 
-	// Close the I2C Buffer
+	/* Close the I2C device */
 	I2C_close(file);
 }
