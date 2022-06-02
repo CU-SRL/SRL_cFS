@@ -55,12 +55,12 @@
 /************************************************************************
 ** Error ID Definitions
 *************************************************************************/
-#define I2C_OPEN_I2C_BUS_ERR_EID      101
-#define I2C_OPEN_SLAVE_ERR_EID        102
-#define I2C_REGISTER_WRITE_ERR_EID    103
-#define I2C_WRITE_REGISTER_ERR_EID    I2C_REGISTER_WRITE_ERR_EID
-#define I2C_REGISTER_READ_ERR_EID     104
-#define I2C_READ_REGISTER_ERR_EID     I2C_REGISTER_READ_ERR_EID
+#define I2C_OPEN_I2C_BUS_ERR_EID        101
+#define I2C_SET_SLAVE_ERR_EID           102
+#define I2C_NULL_BUF_ERR_EID            103
+#define I2C_SPECIFY_REGISTER_ERR_EID    104
+#define I2C_READ_FROM_REGISTER_ERR_EID  105
+#define I2C_WRITE_TO_REGISTER_ERR_EID   106
 
 /*************************************************************************
 ** Exported Functions
@@ -79,15 +79,12 @@
 **  \endreturns
 ** 
 *************************************************************************/
-int32 I2C_sample_Function( void ); 
+int32 I2C_Sample_Function( void ); 
 
-int I2C_open(int I2CBus);
-void I2C_close(int file);
+int I2C_Open(int I2CBus);
+void I2C_Close(int file);
 bool I2C_Read(int file, uint8_t addr, uint8_t reg, uint8_t len, uint8_t *buf);
-bool I2C_Write(int file, uint8_t addr, uint8_t len, uint8_t *buf);
-
-bool I2C_write(int file, uint8_t slave_addr, uint8_t reg, uint8_t val);
-bool I2C_multi_read(int file, uint8_t slave_addr, uint8_t start_addr, uint8_t length, uint8_t *buffer);
+bool I2C_Write(int file, uint8_t addr, uint8_t reg, uint8_t len, uint8_t *buf);
 
 #endif /* _i2c_lib_h_ */
 

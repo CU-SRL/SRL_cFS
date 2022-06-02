@@ -42,263 +42,209 @@
 *************************************************************************/
 int I2C_LibInit(void);
 
+/*************************************************************************
+** Functions
+*************************************************************************/
 
 /**
  * @brief CFE init function for the library
  * 
- * @return int 
+ * @return int
  */
 int I2C_LibInit(void)
 {
-    
-    OS_printf ("I2C Lib Initialized.  Version %d.%d.%d.%d\n",
-                I2C_LIB_MAJOR_VERSION,
-                I2C_LIB_MINOR_VERSION, 
-                I2C_LIB_REVISION, 
-                I2C_LIB_MISSION_REV);
-                
-    return CFE_SUCCESS;
- 
-}/* End I2C_LibInit */
+   OS_printf("I2C Lib Initialized. Version %d.%d.%d.%d\n",
+      I2C_LIB_MAJOR_VERSION,
+      I2C_LIB_MINOR_VERSION, 
+      I2C_LIB_REVISION, 
+      I2C_LIB_MISSION_REV);
+
+   return CFE_SUCCESS;
+
+} /* End I2C_LibInit() */
+
 
 /**
- * @brief sample i2c device function
+ * @brief Sample I2C device function
  * 
  * @return int 
  */
-int I2C_Sample_Function( void ) 
+int I2C_Sample_Function(void) 
 {
-   OS_printf ("I2C_Sample_Function called\n");
+   OS_printf("I2C_Sample_Function called\n");
 
    return(CFE_SUCCESS);
    
-} /* End I2C_sample_Function */
+} /* End I2C_Sample_Function() */
 
 
 /****************************************/
 /*               I2C DRIVER             */
 /****************************************/
-// Assuming Linux OS
-// https://www.kernel.org/doc/Documentation/i2c/dev-interface
-// https://github.com/torvalds/linux/blob/master/include/uapi/linux/i2c.h
+
 
 /**
- * @brief Open i2c device and returns the fd for it
+ * @brief Open I2C device and returns the file descriptor for it
  * 
- * @param I2CBus logical bus the i2c device is on
- * @param addr slave addr for the i2c device
- * @return int fd for the opened device
+ * @param I2CBus Logical bus the I2C device is on
+ *
+ * @return int File descriptor for the opened I2C device
  */
-int I2C_open(int I2CBus)
+int I2C_Open(int I2CBus)
 {
-   /* File Variable */
+   /* File descriptor variable for the I2C device */
    int file;
 
-	// Declare I2C device name char array
+	/* I2C device name character array buffer */
 	char i2cbuf[MAX_BUS];
 
-	// Assign I2C device bus name
+	/* Assign I2C device bus name to the buffer */
 	snprintf(i2cbuf, sizeof(i2cbuf), "/dev/i2c-%d", I2CBus);
 
-	// Open the I2C Device
+	/* Open the I2C device */
 	if ((file = open(i2cbuf, O_RDWR)) < 0)
 	{
-        CFE_EVS_SendEvent(I2C_OPEN_I2C_BUS_ERR_EID, CFE_EVS_EventType_ERROR,
-                           "Failed to open I2C BUS %d", I2CBus);
-        //I2C_HkTelemetryPkt.i2c_error_count++;
-        return -1;
+      /* Error handling */
+      CFE_EVS_SendEvent(I2C_OPEN_I2C_BUS_ERR_EID, CFE_EVS_EventType_ERROR,
+         "Failed to open I2C BUS %d", I2CBus);
+      /* TODO: Increase error count for I2C housekeeping packet */
+      return -1;
 	}
 
-	// Return the file if successful
+	/* Return the file descriptor for the opened I2C device */
 	return file;
-}
+
+} /* End of I2C_Open() */
+
 
 /**
- * @brief Close a given file descriptor
+ * @brief Close a given I2C device file descriptor
  * 
- * @param file File descriptor for the file to close
+ * @param file I2C device file descriptor to close
  */
-void I2C_close(int file)
+void I2C_Close(int file)
 {
 	close(file);
-}
+
+} /* End of I2C_Close() */
+
 
 /**
  * @brief Reads the specified number of bytes from an I2C slave register
  *
- * @param file File descriptor for the I2C device
- * @param addr Address of the I2C slave
- * @param reg Register in the slave to be read from
- * @param len Number of bytes to be read
- * @param buf Buffer that will store data that is read
+ * @param file I2C device file descriptor
+ * @param addr I2C slave address (7 bit, MSB is 0)
+ * @param reg Address of register to be read from
+ * @param len Number of bytes to be read into the buffer (also the minimum required size of the buffer)
+ * @param buf Buffer that will store the data read in
  *
- * @return true Successfully read data
- * @return false Failed reading data
+ * @return CFE_SUCCESS Successfully read data
+ * @return -1 Failed reading data
  */
-bool I2C_Read(int file, uint8_t addr, uint8_t reg, uint8_t len, uint8_t *buf)
+int I2C_Read(int file, uint8_t addr, uint8_t reg, uint8_t len, uint8_t *buf)
 {
+   /* Check if buffer is declared */
+   if (!buf)
+   {
+      CFE_EVS_SendEvent(I2C_NULL_BUF_ERR_EID, CFE_EVS_EventType_ERROR,
+         "No buffer declared to read to, Slave = 0x%x, Reg = 0x%x", addr, reg);
+      /* TODO: Increase error count for I2C housekeeping packet */
+      return -1;
+   }
+
    /* Specify which slave to communicate with */
    if (ioctl(file, I2C_SLAVE, addr) < 0)
    {
-      /* Error Handling */
-      CFE_EVS_SendEvent(I2C_OPEN_I2C_BUS_ERR_EID, CFE_EVS_EventType_ERROR,
-                        "ioctl(%d,I2C_SLAVE,0x%x) failed and returned errno %d", file, addr, errno)
-      return false;
+      /* Failed to set slave address with ioctl call */
+      CFE_EVS_SendEvent(I2C_SET_SLAVE_ERR_EID, CFE_EVS_EventType_ERROR,
+         "Failed setting slave address 0x%x, errno = %d" addr, errno);
+      /* TODO: Increase error count for I2C housekeeping packet */
+      return -1;
    }
 
-   /* Choose the register */
+   /* Write to the bus to indicate the register being used */
    buf[0] = reg;
+   if (write(file, buf, 1) != 1)
+   {
+      /* Failed to write the byte containing the register information */
+      CFE_EVS_SendEvent(I2C_SPECIFY_REGISTER_ERR_EID, CFE_EVS_EventType_ERROR,
+         "Failed to write register address 0x%x to I2C Bus %d", reg, file);
+      /* TODO: Increase error count for I2C housekeeping packet */
+      return -1;
+   }
 
-   /* Read bytes */
+   /* Read bytes from the register specified above into the buffer */
    if (read(file, buf, len) != len)
    {
-      /* Error handling */
-      CFE_EVS_SendEvent(I2C_REGISTER_READ_ERR_EID, CFE_EVS_EventType_ERROR,
-                        "Failed to read %d bytes from slave 0x%x at register 0x%x", len, addr, reg);
-      return false;
+      /* Failed to read all of the bytes */
+      CFE_EVS_SendEvent(I2C_READ_FROM_REGISTER_ERR_EID, CFE_EVS_EventType_ERROR,
+         "Failed to read %d bytes, Slave = 0x%x, Reg = 0x%x", len, addr, reg);
+      /* TODO: Increase error count for I2C housekeeping packet */
+      return -1;
    }
-   /* Else buf[0] through buf[len-1] has len bytes that were read */
 
-   return true;
-}
+   return CFE_SUCCESS;
+
+} /* End of I2C_Read() */
+
 
 /**
- * @brief Writes the specified number of bytes to an I2C slave register
+ * @brief Writes the data in buffer to an I2C slave register
  *
- * @param file File descriptor for the I2C device
- * @param addr Address of the I2C slave
- * @param len Number of bytes in the buffer
- * @param buf Buffer that has the data to be written with the first byte as the desired register
+ * @param file I2C device file descriptor
+ * @param addr I2C slave address (7 bit, MSB is 0)
+ * @param reg Address of register that will be wrote to
+ * @param len Number of bytes in the buffer (also the minimum required size of the buffer)
+ * @param buf Buffer containing data to write
  *
- * @return true Successfully wrote data
- * @return false Failed writing data
+ * @return CFE_SUCCESS Successfully wrote data
+ * @return -1 Failed writing data
  */
-bool I2C_Write(int file, uint8_t addr, uint8_t len, uint8_t *buf)
+bool I2C_Write(int file, uint8_t addr, uint8_t reg, uint8_t len, uint8_t *buf)
 {
+   /* Check if buffer is declared */
+   if (!buf)
+   {
+      CFE_EVS_SendEvent(I2C_NULL_BUF_ERR_EID, CFE_EVS_EventType_ERROR,
+         "No buffer declared to write to, Slave = 0x%x, Reg = 0x%x", addr, reg);
+      /* TODO: Increase error count for I2C housekeeping packet */
+      return -1;
+   }
+
    /* Specify which slave to communicate with */
    if (ioctl(file, I2C_SLAVE, addr) < 0)
    {
-      /* Error Handling */
-      return false;
+      /* Failed to set slave address with ioctl call */
+      CFE_EVS_SendEvent(I2C_SET_SLAVE_ERR_EID, CFE_EVS_EventType_ERROR,
+         "Failed setting slave address 0x%x, errno = %d" addr, errno);
+      /* TODO: Increase error count for I2C housekeeping packet */
+      return -1;
    }
 
-   /* Buffer contents */
-   // buf[0] = reg;
-   // buf[1] = val1;
-   // buf[2] = val2;
-   // ...
+   /* Write to the bus to indicate the register being used */
+   if (write(file, &reg, 1) != 1)
+   {
+      /* Failed to write the byte containing the register information */
+      CFE_EVS_SendEvent(I2C_SPECIFY_REGISTER_ERR_EID, CFE_EVS_EventType_ERROR,
+         "Failed to write register address 0x%x to I2C Bus %d", reg, file);
+      /* TODO: Increase error count for I2C housekeeping packet */
+      return -1;
+   }
 
-   /* Write bytes */
+   /* Write bytes from the buffer to the register specified above */
    if (write(file, buf, len) != len)
    {
-      /* Error handling */
-      CFE_EVS_SendEvent(I2C_REGISTER_WRITE_ERR_EID, CFE_EVS_EventType_ERROR,
-                        "Failed to write %d bytes from slave 0x%x at register 0x%x", len-1, addr, reg);
-      return false;
+      /* Failed to write all of the bytes */
+      CFE_EVS_SendEvent(I2C_WRITE_TO_REGISTER_ERR_EID, CFE_EVS_EventType_ERROR,
+         "Failed to write all %d bytes, Slave = 0x%x, Reg = 0x%x", len, addr, reg);
+      /* TODO: Increase error count for I2C housekeeping packet */
+      return -1;
    }
 
-   return true;
-}
+   return CFE_SUCCESS;
+
+} /* End of I2C_Write() */
 
 /************************/
 /*  End of File Comment */
 /************************/
-
-/**
- * @brief This I2C write function assumes that you are using a one-byte register. Therefore you must first 
- *        write the register address and then write the value for the register
- *       follows figure 8 of https://www.ti.com/lit/an/slva704/slva704.pdf
- * 
- * @param file file descriptor for the device
- * @param slave_addr i2c slave addr for the device
- * @param reg desired register to write
- * @param val value write
- * @return true success
- * @return false failure
- */
-
-bool I2C_write(int file, uint8_t slave_addr, uint8_t reg, uint8_t val)
-{
-    uint8_t buff[2];
-    struct i2c_msg msg[1];
-    struct i2c_rdwr_ioctl_data msgset[1];
-
-   //set register value into the buffer
-    buff[0]=reg;
-    buff[1]=val;
-
-   //load the message to be sent
-    msg[0].addr=slave_addr;
-    msg[0].flags=0;
-    msg[0].len=2;
-    msg[0].buf=buff;
-   //load the data
-    msgset[0].msgs=msg;
-    msgset[0].nmsgs=1;
-
-   //make sure it was written properly
-    if(ioctl(file, I2C_RDWR, &msgset)<0){
-        CFE_EVS_SendEvent(I2C_WRITE_REGISTER_ERR_EID, CFE_EVS_EventType_ERROR,
-           "Error failed to write to register %X! ", reg);
-
-        return false;
-    }
-
-    return true;
-}
-
-/**
- * @brief reads the specfied number of bytes starting at a specific register
- * 
- * @param file file descriptor for device
- * @param slave_addr address of slave device on i2cbus
- * @param start_addr address of register to start reading from
- * @param length number of bytes wanted to be read
- * @param buffer buffer where read data is to be stored
- * @return true successfully read data
- * @return false failed reading data
- */
-
-bool I2C_multi_read(int file, uint8_t slave_addr, uint8_t start_addr, uint8_t length, uint8_t *buffer) {
-   uint8_t out[1];
-   struct i2c_msg msg[2];
-   struct i2c_rdwr_ioctl_data msgset[1];
-
-   
-   // Make sure the buffer is declared
-	if (!buffer)
-	{
-		return false;
-	}
-   //set the first message data to the register
-   out[0] = start_addr;
-
-   //set the first message to be sent to the register of the device to read
-   msg[0].addr    = slave_addr;
-   msg[0].flags   = 0;
-   msg[0].len     = 1;
-   msg[0].buf     = out;
-
-   //set the second message to be the read message
-   msg[1].addr    = slave_addr;
-   msg[1].flags   = I2C_M_RD | I2C_M_NOSTART;
-   msg[1].len     = length;
-   msg[1].buf     = buffer;
-
-   //load the messages into the data
-   msgset[0].msgs=msg;
-   //set the number of messages to 2
-   msgset[0].nmsgs=2;
-
-   //send off the messages to the device and ensure that it works properly
-   if(ioctl(file,I2C_RDWR,&msgset)<0){
-        CFE_EVS_SendEvent(I2C_REGISTER_READ_ERR_EID, CFE_EVS_EventType_ERROR,
-           "Failed to read from %d registers... ", length);
-        //I2C_HkTelemetryPkt.i2c_error_count++;
-
-		return false;
-   }
-
-	// Return true if succeeded
-	return true;
-}
