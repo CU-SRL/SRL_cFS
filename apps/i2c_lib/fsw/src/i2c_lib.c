@@ -90,6 +90,7 @@ int I2C_Sample_Function( void )
  */
 int I2C_open(int I2CBus)
 {
+   //test
 	// Declare I2C device name char array
 	char i2cbuf[MAX_BUS];
 
