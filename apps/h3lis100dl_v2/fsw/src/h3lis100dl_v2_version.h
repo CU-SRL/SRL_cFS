@@ -30,8 +30,8 @@
 #ifndef _h3lis100dl_v2_version_h_
 #define _h3lis100dl_v2_version_h_
 
-#define H3LIS100DL_V2_MAJOR_VERSION    1
-#define H3LIS100DL_V2_MINOR_VERSION    1
+#define H3LIS100DL_V2_MAJOR_VERSION    2
+#define H3LIS100DL_V2_MINOR_VERSION    0
 #define H3LIS100DL_V2_REVISION         0
 #define H3LIS100DL_V2_MISSION_REV      0
       

@@ -18,10 +18,10 @@
 **      See the License for the specific language governing permissions and
 **      limitations under the License.
 **
-** File: sample_app_events.h 
+** File: H3LIS100DL_V2_events.h 
 **
 ** Purpose: 
-**  Define SAMPLE App Events IDs
+**  Define H3LIS100DL_V2 App Events IDs
 **
 ** Notes:
 **
@@ -30,14 +30,27 @@
 #ifndef _h3lis100dl_v2_events_h_
 #define _h3lis100dl_v2_events_h_
 
+/* Event IDs */
 
-#define H3LIS100DL_V2_RESERVED_EID              0
-#define H3LIS100DL_V2_STARTUP_INF_EID           1 
-#define H3LIS100DL_V2_COMMAND_ERR_EID           2
-#define H3LIS100DL_V2_COMMANDNOP_INF_EID        3 
-#define H3LIS100DL_V2_COMMANDRST_INF_EID        4
-#define H3LIS100DL_V2_INVALID_MSGID_ERR_EID     5 
-#define H3LIS100DL_V2_LEN_ERR_EID               6 
+/* Reserved */
+#define H3LIS100DL_V2_RESERVED_EID              0       /* Reserved */
+
+/* Start Up Message: INF - "Informational" */
+#define H3LIS100DL_V2_INIT_INF_EID              1       /* Startup/
+
+/* Processed Command: INF - "Informational" */
+#define H3LIS100DL_V2_NOOP_INF_EID              2       /* NO-OP */
+#define H3LIS100DL_V2_RESET_INF_EID             3       /* Reset Counters */
+#define H3LIS100DL_V2_PROCESS_INF_EID           4       /* Process */
+
+/* Invalid Command Packet: ERR - "Error" */
+#define H3LIS100DL_V2_MID_ERR_EID               5       /* Invalid Message ID */
+#define H3LIS100DL_V2_CC1_ERR_EID               6       /* Invalid Command Code */
+#define H3LIS100DL_V2_LEN_ERR_EID               7       /* Unexpected Command Packet Length */
+#define H3LIS100DL_V2_PIPE_ERR_EID              8       /* SB Bus Pipe Read Error */
+
+
+#define H3LIS100DL_V2_EVT_COUNT                 8       /* Total Count of Event Message IDs */
 
 #endif /* _sample_app_events_h_ */
 
