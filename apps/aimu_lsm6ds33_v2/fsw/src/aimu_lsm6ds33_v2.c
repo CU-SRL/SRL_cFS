@@ -240,6 +240,10 @@ void AIMU_LSM6DS33_V2_ProcessDataPacket(int i2cbus, aimu_lsm6ds33_v2_hk_tlm_t* A
     uint16_t t;
     t = (tH << 8) | tL;
 
+    if (t & 0x800) {
+	    t |= 0xF000;
+	}
+
     // gyroscope output register
     uint8_t gxL, gxH, gyL, gyH, gzL, gzH;
     gxL = AIMU_LSM6DS33_V2_DATA.buffer[2];
@@ -251,8 +255,17 @@ void AIMU_LSM6DS33_V2_ProcessDataPacket(int i2cbus, aimu_lsm6ds33_v2_hk_tlm_t* A
 
     uint16_t gx, gy, gz;
     gx = (gxH << 8) | gxL;
+    if (gx & 0x800) {
+	    gx |= 0xF000;
+	}
     gy = (gyH << 8) | gyL;
+    if (gy & 0x800) {
+	    gy |= 0xF000;
+	}
     gz = (gzH << 8) | gzL;
+    if (gz & 0x800) {
+	    gz |= 0xF000;
+	}
 
     // accelerometer output register
     uint8_t axL, axH, ayL, ayH, azL, azH;
@@ -265,8 +278,17 @@ void AIMU_LSM6DS33_V2_ProcessDataPacket(int i2cbus, aimu_lsm6ds33_v2_hk_tlm_t* A
 
     uint16_t ax, ay, az;
     ax = (axH << 8) | axL;
+    if (ax & 0x800) {
+	    ax |= 0xF000;
+	}
     ay = (ayH << 8) | ayL;
+    if (ay & 0x800) {
+	    ay |= 0xF000;
+	}
     az = (azH << 8) | azL;
+    if (az & 0x800) {
+	    az |= 0xF000;
+	}
 
     // scaling
 
