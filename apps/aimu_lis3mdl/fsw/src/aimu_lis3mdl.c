@@ -387,7 +387,13 @@ void PROCESS_AIMU_LIS3MDL(int i2cbus, aimu_lis3mdl_hk_tlm_t* AIMU_LIS3MDL_HkTele
 	int file = I2C_open(i2cbus);
 
 	// Check for data in the STATUS register
-	I2C_multi_read(file, AIMU_LIS3MDL_I2C_ADDR, AIMU_LIS3MDL_STATUS_REG, 1, AIMU_LIS3MDL.status);
+    bool status;
+	status = I2C_multi_read(file, AIMU_LIS3MDL_I2C_ADDR, AIMU_LIS3MDL_STATUS_REG, 1, AIMU_LIS3MDL.status);
+
+    if (!status) {
+        CFE_EVS_SendEvent(AIMU_LIS3MDL_STATUS_ERROR_EID, CFE_EVS_EventType_ERROR, "Failed to read STATUS register... ");
+    }
+
 	if (AIMU_LIS3MDL.status[0] != 0) //double check this
 	{
         float scale = 2281.0; //scale factor found in datasheet (LSB/gauss)
