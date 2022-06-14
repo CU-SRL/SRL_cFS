@@ -35,7 +35,8 @@
 ** Macro Definitions
 *************************************************************************/
 #define I2C_PIPE_DEPTH      32
-#define MAX_BUS             64
+#define MAX_BUS             10
+
 
 /*************************************************************************
 ** Private Function Prototypes
@@ -137,34 +138,92 @@ void I2C_close(int file)
  * @return false failure
  */
 
-bool I2C_write(int file, uint8_t slave_addr, uint8_t reg, uint8_t val)
+int I2C_write(int file, uint8_t slave_addr, uint8_t reg, uint8_t val)
 {
-    uint8_t buff[2];
-    struct i2c_msg msg[1];
-    struct i2c_rdwr_ioctl_data msgset[1];
 
-   //set register value into the buffer
-    buff[0]=reg;
-    buff[1]=val;
+	open(file,O_RDWR);
 
-   //load the message to be sent
-    msg[0].addr=slave_addr;
-    msg[0].flags=0;
-    msg[0].len=2;
-    msg[0].buf=buff;
-   //load the data
-    msgset[0].msgs=msg;
-    msgset[0].nmsgs=1;
+    uint8_t buff[2]={
+		{reg},{val}
+	};
+    struct i2c_msg msg[1]={
+		{
+			.addr=slave_addr,
+			.flags=0,
+			.len=2,
+			.buf=buff,
+		},
+	};
+    struct i2c_rdwr_ioctl_data msgset[1]={
+		{
+			.msgs=msg,
+			.nmsgs=1,
+		},
+	};
 
    //make sure it was written properly
     if(ioctl(file, I2C_RDWR, &msgset)<0){
         CFE_EVS_SendEvent(I2C_WRITE_REGISTER_ERR_EID, CFE_EVS_EventType_ERROR,
            "Error failed to write to register %X! ", reg);
-
-        return false;
+        return -1;
     }
 
-    return true;
+	close(file);
+    return 0;
+}
+
+/**
+ * @brief provide single byte read for i2c devices
+ * 
+ * @param file file descriptor for device/i2c logical bus
+ * @param addr slave addr of the i2c device
+ * @param reg  desired register to read
+ * @param buff location for the return to be saved
+ * @return int 0 for success negative on failure
+ */
+int I2C_single_byte_read(int file, uint8 addr, uint8 reg, uint8* buff){
+
+	open(file,O_RDWR);
+    uint64_t funcs;
+    int err;
+    uint8_t out[1]={
+        reg
+    };
+   struct i2c_msg msg[2]={
+    {
+        .addr    = addr,
+        .flags   = 0,
+        .len     = 1,
+        .buf     = out,
+    },{
+        .addr    = addr,
+        .flags   = I2C_M_RD,
+        .len     = 1,
+        .buf     = buff,
+    }
+   };
+   struct i2c_rdwr_ioctl_data msgset[1]={
+    {
+        .msgs=msg,
+        .nmsgs=2,
+    },
+   };
+ 
+    if (ioctl(file, I2C_FUNCS, &funcs) < 0) {
+        err=errno;
+        printf("%s\n",strerror(err));
+        return -1;
+    }
+
+    err=0;
+    if (ioctl(file, I2C_RDWR, &msgset) < 0) {
+        err=errno;
+        printf("%s\n",strerror(err));
+        return -1;
+    }
+
+	close(file);
+    return 0;
 }
 
 /**
@@ -179,16 +238,18 @@ bool I2C_write(int file, uint8_t slave_addr, uint8_t reg, uint8_t val)
  * @return false failed reading data
  */
 
-bool I2C_multi_read(int file, uint8_t slave_addr, uint8_t start_addr, uint8_t length, uint8_t *buffer) {
+int I2C_multi_read(int file, uint8_t slave_addr, uint8_t start_addr, uint8_t length, uint8_t *buffer) {
    uint8_t out[1];
+   uint64_t funcs;
+   int err;
    struct i2c_msg msg[2];
    struct i2c_rdwr_ioctl_data msgset[1];
 
-   
+   open(file,O_RDWR);
    // Make sure the buffer is declared
 	if (!buffer)
 	{
-		return false;
+		return -1;
 	}
    //set the first message data to the register
    out[0] = start_addr;
@@ -210,17 +271,25 @@ bool I2C_multi_read(int file, uint8_t slave_addr, uint8_t start_addr, uint8_t le
    //set the number of messages to 2
    msgset[0].nmsgs=2;
 
+	 
+    if (ioctl(file, I2C_FUNCS, &funcs) < 0) {
+        err=errno;
+        printf("%s\n",strerror(err));
+        return -1;
+    }
+
    //send off the messages to the device and ensure that it works properly
    if(ioctl(file,I2C_RDWR,&msgset)<0){
         CFE_EVS_SendEvent(I2C_REGISTER_READ_ERR_EID, CFE_EVS_EventType_ERROR,
            "Failed to read from %d registers... ", length);
         //I2C_HkTelemetryPkt.i2c_error_count++;
 
-		return false;
+		return -2;
    }
 
+	close(file);
 	// Return true if succeeded
-	return true;
+	return 0;
 }
 
 /************************/

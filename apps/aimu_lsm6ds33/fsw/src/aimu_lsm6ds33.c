@@ -477,7 +477,11 @@ void PROCESS_AIMU_LSM6DS33(int i2cbus, aimu_lsm6ds33_hk_tlm_t* AIMU_LSM6DS33_HkT
 
 		// Print Processed Values if the debug flag is enabled for this app
 		CFE_EVS_SendEvent(AIMU_LSM6DS33_DATA_DBG_EID, CFE_EVS_EventType_DEBUG, "Acceleration (x, y, z): %F, %F, %F Angular Rate (x, y, z): %F, %F, %F ", accelx, accely, accelz, gyx, gyy, gyz);
-	}
+	}else{
+        if(I2C_single_byte_read(file, AIMU_LSM6DS33_I2C_ADDR, AIMU_LSM6DS33_STATUS_REG, AIMU_LSM6DS33.status)==0){
+            printf("Read lsm6ds33 status register with single byte: %d",AIMU_LSM6DS33.status);
+        };
+    }
 
 	// Close the I2C Buffer
 	I2C_close(file);
