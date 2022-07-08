@@ -35,6 +35,8 @@
 */
 #define MAX7502_V2_NOOP_CC                 0
 #define MAX7502_V2_RESET_COUNTERS_CC       1
+#define MAX7502_V2_INIT                    2
+#define MAX7502_V2_PROCESS                 3
 
 /*************************************************************************/
 /*
@@ -54,12 +56,22 @@ typedef struct
 {
     uint8              TlmHeader[CFE_SB_TLM_HDR_SIZE];
     uint8              max7502_v2_command_error_count;
-    uint8              max7502_v2_command_count;
+    uint8              max7502_v2_command_count; //more error counts??
     uint8              spare[2];
 
 }   OS_PACK max7502_v2_hk_tlm_t  ;
 
+
+typedef struct 
+{
+    uint8              TlmHeader[CFE_SB_TLM_HDR_SIZE];
+    float              MAX7502_V2_TEMPERATURE; 
+
+}   OS_PACK max7502_v2_data_tlm_t  ;
+
+
 #define MAX7502_V2_HK_TLM_LNGTH   sizeof ( max7502_v2_hk_tlm_t )
+#define MAX7502_V2_DATA_TLM_LNGTH   sizeof ( max7502_v2_data_tlm_t )
 
 #endif /* _max7502_v2_msg_h_ */
 

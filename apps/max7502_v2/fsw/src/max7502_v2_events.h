@@ -39,6 +39,8 @@
 #define MAX7502_V2_INVALID_MSGID_ERR_EID     5 
 #define MAX7502_V2_LEN_ERR_EID               6 
 
+//need to device specfic events. the data sheet is kinda lacking tbh
+
 #endif /* _max7502_v2_events_h_ */
 
 /************************/

@@ -31,7 +31,7 @@
 #define _max7502_v2_version_h_
 
 #define MAX7502_V2_MAJOR_VERSION    1
-#define MAX7502_V2_MINOR_VERSION    1
+#define MAX7502_V2_MINOR_VERSION    1 //how do versions work?
 #define MAX7502_V2_REVISION         0
 #define MAX7502_V2_MISSION_REV      0
       
